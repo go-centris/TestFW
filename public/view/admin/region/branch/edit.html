@@ -1,0 +1,132 @@
+{% extends "../../app.html" %} 
+{% block content %} 
+{% set RootName = 'admin-branch' %}
+{% set routerName = 'admin/'+modulNameUrl+'/branch' %}
+
+{% include "../../../viewComponentsAdmin/alertMsg.html"%}
+
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8"   enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+    <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <div class="form-group m-t-15 custom-radio-ml">
+                        <label>{{locale.Get("Region")}}</label>
+                        <select class="form-select" id="RegionID" name="RegionID" >
+                            <option selected>Open this select menu</option>
+                            {% for region in regions %}
+                            <option  id="radio{{region.RegionID}}" {%if post.RegionID==region.ID %} selected {% endif %} value="{{region.ID}}">{{region.Name}}</option>
+                            {% endfor %}
+                        </select>
+                        {% if err.RoleID_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.RoleID}}</div>
+                        {% endif %}
+
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label for="Title">{{locale.Get("Title")}}</label>
+                        <input class="form-control {{err.Title_valid}}" id="Title" name="Title" value="{{post.Title}}" type="text">
+                        {% if err.Title_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.Title}}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BranchCode">Branch Code</label>
+                        <input class="form-control {{err.BranchCode_valid}}" id="BranchCode" name="BranchCode" value="{{post.BranchCode}}" type="text">
+                        {% if err.BranchCode_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.BranchCode}}</div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="ManagerName">Manager Name</label>
+                        <input class="form-control {{err.ManagerName_valid}}" id="ManagerName" name="ManagerName" value="{{post.ManagerName}}" type="text">
+                        {% if err.ManagerName_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.ManagerName}}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ManagerPhone">Manager Phone</label>
+                        <input class="form-control {{err.ManagerPhone_valid}}" id="ManagerPhone" name="ManagerPhone" value="{{post.ManagerPhone}}" type="text">
+                        {% if err.ManagerPhone_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.ManagerPhone}}</div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="ManagerMail">Manager Mail</label>
+                        <input class="form-control {{err.ManagerMail_valid}}" id="ManagerMail" name="ManagerMail" value="{{post.ManagerMail}}" type="text">
+                        {% if err.ManagerMail_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.ManagerMail}}</div>
+                        {% endif %}
+                    </div>
+
+
+
+
+                </div>
+
+
+                <div class="card-body">
+
+
+                    <button class="btn btn-sm btn-success" type="submit"> Kaydet</button>
+
+                    <a class="btn btn-sm btn-warning" href="/{{routerName}}"> Bolgeler Listesine Dön</a>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-md-3">
+            <div class="default-according style-1 faq-accordion job-accordion">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="p-0">
+                                    <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="true" aria-controls="collapseicon2">Other Menu</button>
+                                </h5>
+                            </div>
+                            <div class="collapse show" id="collapseicon2" aria-labelledby="collapseicon2" data-parent="#accordion" style="">
+                                <div class="card-body post-about" >
+                                    <div class="social-network theme-form"><span class="f-w-600">Menus</span>
+                                        <a href="/admin/branch/create" class="btn social-btn  mb-2 btn-google text-center">Yeni ekle</a>
+                                        <a href="/admin/region" class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Bolgeler</a>
+                                        <a href="/admin/branch" class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Branchler</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+
+{% endblock %}
+{% block jsInline %}
+
+{% endblock %}

@@ -1,0 +1,267 @@
+<!--Loop over the `payload` variable, which is the list of articles-->
+{% extends "../../app.html" %}
+{% block content %}
+{% set RootName = 'admin-user' %}
+{% set routerName = 'admin/'+modulNameUrl+'/user' %}
+
+{% include "../../../viewComponentsAdmin/alertMsgJS.html"%}
+
+<form accept-charset="UTF-8" action="/{{routerName}}/update" enctype="multipart/form-data" method="POST">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+    <input name="userID" type="hidden" value="{{data.ID}}">
+    <input name="ID" type="hidden" value="{{data.ID}}">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <strong> {{locale.Get("Create a brand new user and add them to this site.")}}</strong>
+
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="FirstName">{{locale.Get("First Name")}}</label>
+                                        <input class="form-control {{err.FirstName_valid}}" id="FirstName"
+                                               name="FirstName" type="text" value="{{data.FirstName}}">
+                                        {% if err.FirstName_error %}
+                                        <div class="invalid-feedback" style="display:block">{{err.FirstName}}</div>
+                                        {% endif %}
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="col-md-6">
+
+
+
+                                    <div class="form-group">
+                                        <label for="LastName">  {{locale.Get("Lastname")}}</label>
+                                        <input class="form-control {{err.LastName_valid}}" id="LastName" name="LastName"
+                                               type="text" value="{{data.LastName}}">
+                                        {% if err.LastName_error %}
+                                        <div class="invalid-feedback" style="display:block">{{err.LastName}}</div>
+                                        {% endif %}
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Email">  {{locale.Get("Email")}} </label>
+                                        <small class="red-color">*</small>
+                                        <input class="form-control {{err.Email_valid}}" id="Email" name="Email" type="text" value="{{data.Email}}">
+
+                                        {% if err.Email_error %}
+                                        <div class="invalid-feedback" style="display:block">{{err.Email}}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="Username">  {{locale.Get("Username")}}</label>
+                                        <input class="form-control {{err.Username_valid}}" id="Username"
+                                               name="Username"
+                                               type="text" value="{{data.Username}}">
+                                        {% if err.Username_error %}
+                                        <div class="invalid-feedback" style="display:block">{{err.Username}}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Phone">{{locale.Get("Phone")}}</label>
+                                        <input class="form-control {{err.Phone_valid}}" id="Phone" name="Phone"
+                                               type="text" value="{{data.Phone}}">
+                                        {% if err.Phone_error %}
+                                        <div class="invalid-feedback" style="display:block">{{err.Phone}}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label> {{locale.Get("Password")}}</label>
+                                <button class="btn btn-primary btn-xs" onclick='NewPasswordModalBox( {{data.ID}})'
+                                        type="button">
+                                        {{locale.Get("Set New Password ")}}
+                                </button>
+
+                            </div>
+
+
+                            <div class="form-group m-t-15 custom-radio-ml">
+                                <label>{{locale.Get("Roles")}}</label>
+                                {% for role in roles %}
+                                <div class="radio radio-primary">
+                                    <input id="radio{{role.ID }}"  {%if role.ID== data.RoleID %} checked {% endif %} name="RoleID" type="radio" value="{{role.ID }}">
+                                    <label for="radio{{role.ID }}"><span class="digits"> {{role.Title }}</span></label>
+                                </div>
+                                {% endfor %}
+
+                                {% if err.RoleID_error %}
+                                <div class="invalid-feedback" style="display:block">{{err.RoleID}}</div>
+                                {% endif %}
+
+                                <a target="_blank" href="/admin/roles/"> {{locale.Get("More information")}}</a>
+
+                            </div>
+
+
+                            <div class="form-group m-t-15 custom-radio-ml">
+                                <label>{{locale.Get("Region")}}</label>
+
+                                <select class="form-select" id="regionID" name="regionID" >
+                                    <option selected>Open this select menu</option>
+                                    {% for region in regions %}
+                                    <option  id="radio{{region.ID }}"    {% if region.ID == regionID %}  selected {% endif %} value="{{region.ID }}">{{region.Name }}</option>
+                                    {% endfor %}
+                                </select>
+
+
+                                {% if err.RoleID_error %}
+                                <div class="invalid-feedback" style="display:block">{{err.RoleID}}</div>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="form-group m-t-15 custom-radio-ml">
+                                <label>{{locale.Get("Branch")}}</label>
+
+                                <select class="form-select" id="branchID" name="branchID" >
+
+                                </select>
+
+
+
+                                {% if err.RoleID_error %}
+                                <div class="invalid-feedback" style="display:block">{{err.RoleID}}</div>
+                                {% endif %}
+
+                            </div>
+
+
+
+
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-primary" type="submit"> {{locale.Get("Save")}}</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %} {% block jsInline %}
+
+{% include "userPassword.html"%}
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#regionID').change(function () {
+            // alert(this.value);
+            $("#branchID").attr("disabled", false);
+            getBranchListForRegion(this.value,0)
+        });
+    });
+
+
+    setTimeout(function(){
+        getBranchListForRegion({% autoescape off %}{{regionID}}{% endautoescape %}, {% autoescape off %}{{branchID}}{% endautoescape %})
+    }, 1000);
+
+
+    function getBranchListForRegion(id,regionID) {
+
+        fetch("/admin/common/branch/getBranchListForRegion/" + id, {
+            method: 'GET',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    console.log("error")
+                }
+            })
+            .then(data => {
+                jQuery('#branchID').empty();
+
+                if (data.jsonData.length <= 0) {
+
+                    $("#branchID").attr("disabled", true);
+
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-center",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    toastr["error"]("Bu seçimde branch bulunamadı")
+                }
+                $.each(data.jsonData, function (index, value) {
+                    let row = "";
+                    if (regionID==0){
+                        row += '<option value="' + value.id + '">' + value.title + '</option>';
+                    } else {
+                      let selectedOk=""
+                        if (value.id == regionID ){
+                            selectedOk="selected"
+                        }
+                        row += '<option  '+ selectedOk+ ' value="' + value.id + '">' + value.title + '</option>';
+                    }
+                    $("#branchID").append(row);
+                });
+            })
+            .catch((error) => {
+                console.log("error")
+            });
+    }
+</script>
+
+{% endblock %}

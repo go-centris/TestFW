@@ -1,0 +1,64 @@
+{% extends "appSingle.html" %}
+{% block content %}
+
+<style>
+     .landing-footer .footer-contain {
+        text-align: center;
+    }
+</style>
+<!-- Loader starts-->
+<div class="loader-wrapper">
+    <div class="theme-loader">
+        <div class="loader-p"></div>
+    </div>
+</div>
+<!-- Loader ends-->
+<!-- error page start //-->
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper ">
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- header start-->
+            <header class="landing-header">
+                <div class="custom-container">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav class="navbar navbar-light p-0" id="navbar-example2"><a class="navbar-brand" href="javascript:void(0)">
+                                <img class="img-fluid" src="../assets/images/logo/logo.png" alt=""></a>
+
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- header end-->
+
+            <!--footer start-->
+            <section class="landing-footer section-py-space light-bg">
+                <div class="custom-container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="footer-contain">
+
+                                <h2>UA CRM</h2>
+                                <p>NEXT GENERATION CRM</p>
+                                <code>lutfen kullanmak istediginiz modulu seciniz</code>
+
+                                <div class="btn-footer">
+                                    <a class="btn btn-lg btn-primary"  href="/admin/sacrifece/dashboard-sacrifece" data-bs-original-title="" title="">Kurban Modulu</a>
+                                    <a class="btn btn-lg btn-secondary"  href="/admin/fundraising/dashboard-fundraising" >Bagis (Foundraising) Modulu</a>
+<!--                                    <a class="btn btn-lg btn-warning" target="_blank" href="https://themeforest.net/downloads" data-bs-original-title="" title="">Rate Us</a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--footer end-->
+        </div>
+    </div>
+
+<!-- error page end //-->
+
+{% endblock %}

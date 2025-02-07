@@ -1,0 +1,107 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: go-cms\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Selman Tunc <selmantunc@gmail.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Login"
+msgstr ""
+
+msgid "Welcome back! Log in to your account."
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Email"
+msgstr "Mail Adresi"
+
+msgid "Forgot password?"
+msgstr ""
+
+msgid "Create Account"
+msgstr ""
+
+msgid "Remember password"
+msgstr ""
+
+msgid "Sign in with"
+msgstr ""
+
+msgid "Sign in"
+msgstr ""
+
+msgid "Don't have account?"
+msgstr ""
+
+msgid "Username or password is incorrect"
+msgstr ""
+
+msgid "Create a brand new user and add them to this site."
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Lastname"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Roles"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "More information"
+msgstr ""
+
+msgid "Set New Password "
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Last"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Name Surname"
+msgstr ""

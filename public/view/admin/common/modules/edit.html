@@ -1,0 +1,52 @@
+{% extends "../../app.html" %} 
+{% block content %} 
+{% set RootName = 'admin-modules' %}
+{% set routerName = 'admin/'+modulNameUrl+'/modules' %}
+
+{% include "../../../viewComponentsAdmin/alertMsg.html"%}
+
+<form method="POST" action="/{{routerName}}/update" accept-charset="UTF-8"   enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+    <input class="form-control {{err.ID}}" id="ID" name="ID" value="{{post.ID}}" type="hidden">
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="ModulName">{{locale.Get("ModulName")}}</label>
+                        <input class="form-control {{err.Name_valid}}" id="ModulName" name="ModulName" value="{{post.ModulName}}" type="text">
+                        {% if err.ModulName_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.ModulName}}</div>
+                        {% endif %}
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="card-body">
+
+
+                    <button class="btn btn-sm btn-success" type="submit"> Kaydet</button>
+
+                    <a class="btn btn-sm btn-warning" href="/admin/region/"> Bolgeler Listesine Dön</a>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+
+{% endblock %}
+{% block jsInline %}
+
+{% endblock %}

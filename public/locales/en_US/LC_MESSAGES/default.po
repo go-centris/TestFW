@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: go-cms\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Selman Tunc <selmantunc@gmail.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Person List"
+msgstr ""
+
+msgid "Name Lastname"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Adress"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Confirmation"
+msgstr ""
+
+msgid "Do You Confirm the Deletion?"
+msgstr ""
+
+msgid "Yes I accept"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Sacrifice List"
+msgstr ""
+
+msgid "Add New Sacrifice"
+msgstr ""
+
+msgid "Add New Person"
+msgstr ""
+
+
+msgid "Target Money"
+msgstr ""
+
+
+msgid "Explanation"
+msgstr ""

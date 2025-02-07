@@ -1,0 +1,62 @@
+{% extends "../../app.html" %} {% block content %}
+{% set RootName = 'admin-modules' %}
+{% set routerName = 'admin/'+modulNameUrl+'/modules' %}
+{% include "../../../viewComponentsAdmin/alertMsg.html"%}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><i class="fa fa-align-justify"></i>  Modul Listesi </div>
+            <div class="card-body">
+                <table class="table table-responsive-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Modul Adi</th>
+                            <th>Olay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for list in posts %}
+                        <tr>
+                            <td><a style="color: #0c5460" href="/{{routerName}}/edit/{{list.ID}}">{{list.ModulName}}</a> </td>
+                            <td><a style="color: #0c5460" href="/{{routerName}}/edit/{{list.ID}}">Duzenle</a> </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <nav>
+
+                   {% if paginator.HasPages() %}
+                    <ul class="pagination">
+                        {%if paginator.HasPrev() %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{paginator.PageLinkFirst()}}">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="{{paginator.PageLinkPrev()}}">&lt;</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled"><a class="page-link"> First</a></li>
+                        <li class="page-item disabled"><a class="page-link">&lt;</a></li>
+                        {% endif %} {% for page in paginator.Pages%}
+
+                        <li {% if paginator.IsActive(page) %} class="active page-item" {% endif %}>
+                            <a class="page-link" href="{{ paginator.PageLink(page) }} ">{{page}}</a>
+                        </li>
+
+                        {% endfor %} {% if paginator.HasNext %}
+                        <li class="page-item"><a class="page-link" href="{{paginator.PageLinkNext()}}">&gt; </a></li>
+                        <li class="page-item"><a class="page-link" href="{{paginator.PageLinkLast()}}">Last </a></li>
+                        {% else %}
+                        <li class="disabled page-item"><a class="page-link">&gt;</a></li>
+                        <li class="disabled page-item"><a class="page-link">Last</a></li>
+                        {%endif%}
+                    </ul>
+                    {%endif%}
+                </nav>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %} {% block jsInline %} {% endblock %}
