@@ -1,0 +1,179 @@
+{% extends "../../app.html" %} {% block content %} 
+{% set RootName = 'admin-kisiler'%}
+ {% set routerName = 'admin/'+modulNameUrl+'/kisiler'%}
+  {% include "../../../viewComponentsAdmin/alertMsg.html"%}
+<div class="row">
+    <div class="col-xl-12 col-50 box-col-12 des-xl-50">
+        <div class="card">
+            <div class="card-header">
+                <div class="header-top d-sm-flex align-items-center">
+                    <h5>{{locale.Get("Person List")}} Kişi ekle</h5>
+                    <div class="center-content">
+                        <p class="d-flex align-items-center">
+                            <i class="toprightarrow-primary fa fa-arrow-up
+                                me-2"></i>80% Growth
+                        </p>
+                    </div>
+                    <div class="setting-list">
+                        <ul>
+                            <li>
+                                <a class="btn btn-block btn-primary" href="/{{routerName}}/create">
+                                    {{locale.Get("Add New Person")}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="POST" action="/{{routerName}}/store" accept-charset="UTF-8" class="form-control1" id="{{RootName}}-store"
+    enctype="multipart/form-data">
+    <input name="_csrf" type="hidden" value="{{ csrf }}">
+    <input name="_method" type="hidden" value="PUT">
+    <input type="hidden" id="adSoyadControl">
+    <input type="hidden" value="empty" id="dataControl" name="dataControl">
+    <div class="row">
+        <div class="col-sm-12 col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="AdSoyad">
+                            Ad Soyad
+                            {% if err.AdSoyad_error %}
+                            <div class="invalid-feedback" style="display:block">{{err.AdSoyad}}</div>
+                            {% endif %}
+                        </label>
+                        <select class="form-control form-select form-select-lg
+                            mb-3 {{err.AdSoyad_valid}}" id="AdSoyadSelect" name="AdSoyad">
+                            {% if kisiAdSoyad %}
+                            <option selected value="{{post.AdSoyad}}">
+                                {{post.AdSoyad}}</option>
+                            {% endif %}
+                        </select>
+                        <span class="text-muted" style="color:
+                            green!important;"> Eğer kişi arama listesinde yok
+                            ise ismini yazarsanız kayıt yapar
+                            <br> buradaki amaç daha önce kayıtlı kişiyi tekrar
+                            kayıt etmemeniz içindir
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Telefon">Telefon</label>
+                        <input class="form-control {{err.Telefon_valid}}" id="Telefon" name="Telefon"
+                            value="{{post.Telefon}}" type="text"> {% if err.Telefon_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.Telefon}}</div>
+                        {% endif %}
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="AffinityType"> Tip</label>
+                        <select class="form-control form-select {{err.AffinityType_valid}}" name="AffinityType" id="AffinityType">
+                            <option {%if post.AffinityType==0 %} selected {% endif %} value="0">Henüz Belli Değil
+                            </option>
+                            <option {%if post.AffinityType==1 %} selected {% endif %} value="1">İhvan/Ahavat
+                            </option>
+                            <option {%if post.AffinityType==2 %} selected {% endif %} value="2">Muhibban
+                            </option>
+                            <option {%if post.AffinityType==3 %} selected {% endif %} value="3">Velî
+                            </option>
+                            <option {%if post.AffinityType==4 %} selected {% endif %} value="4">Muhtelif Kominiteler
+                            </option>
+                            <option {%if post.AffinityType==5 %} selected {% endif %} value="5">Personel
+                            </option>
+                        </select>
+
+                        {% if err.AffinityType_error %}
+                            <div class="invalid-feedback" style="display:block">{{err.AffinityType}}</div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Origins"> Koken</label>
+                        <select class="form-control form-select {{err.Origins_valid}}" name="Origins" id="Origins">
+                            <option {%if post.Origins==0 %} selected {% endif %} value="0">Atanmamis
+                            </option>
+                            <option {%if post.Origins==1 %} selected {% endif %} value="1">Turk
+                            </option>
+                            <option {%if post.Origins==2 %} selected {% endif %} value="2">Gayri Turk
+                            </option>
+
+                        </select>
+                        {% if err.Origins_error %}
+                          <div class="invalid-feedback" style="display:block">{{err.Origins}}</div>
+                        {% endif %}
+                    </div>
+
+
+
+
+                    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn btn-sm btn-primary" type="submit"> Kaydet</button>
+                    <button class="btn btn-sm btn-danger" type="reset"> VAZGEÇ</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="gr-Kisi2" class="form-group gr-Kisi2">
+                        <label for="ReferansKisi1">Referans Kisi
+                            {{referansData1.AdSoyad}}</label>
+                        <select class="form-select {{err.ReferansKisi1_valid}}" id="ReferansKisi1" name="ReferansKisi1"
+                            value="{{post.ReferansKisi1}}" data-live-search="true">
+                            <option value="0"> Referans Kisi (zorunlu degildir)</option>
+                            {% if referansData1 %}
+                            <option selected value="{{referansData1.ID}}">
+                                {{referansData1.AdSoyad}}</option>
+                            {% endif %}
+                        </select> {% if err.Kisi1_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.ReferansKisi1}}</div>
+                        {% endif %}
+                        <button type="button" data-id="2" class="btn btn-sm
+                            btn-primary kisiKaldir">Seçili Kişiyi Kaldır</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email Adresi</label>
+                        <input class="form-control {{err.Email_valid}}" id="Email" name="Email" value="{{post.Email}}"
+                            type="text"> {% if err.Email_error %}
+                        <div class="invalid-feedback" style="display:block">{{err.Agirlik}}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="Adresi">
+                            Adresi
+                        </label>
+                        <textarea class="form-control {{err.Adresi_valid}}" id="Adresi" name="Adresi"
+                            rows="5">{{ post.Adresi }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="Aciklama">
+                            Aciklama
+                        </label>
+                        <textarea class="form-control {{err.Aciklama_valid}}" id="Aciklama" name="Aciklama" rows="3">
+                            {{  post.Aciklama }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %} 
+
+{% block jsInline %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- <script src="/assets/admin//js/select2/select2-custom.js"></script> -->
+<script src="/assets/admin/js/stnc/jquery.mask.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+<script src="/assets/admin/js/stnc/jquery.validate.min.js"></script>
+{% include "kisiJS.html"%} 
+{% endblock %}

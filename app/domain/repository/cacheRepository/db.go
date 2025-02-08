@@ -7,7 +7,7 @@ import (
 	Iauth "stncCms/app/services/authServices_mod"
 	Icms "stncCms/app/services/cmsServices_mod"
 	Icommon "stncCms/app/services/commonServices_mod"
-	Ifundraising "stncCms/app/services/fundraisingServices_mod"
+
 	Iregion "stncCms/app/services/regionServices_mod"
 	Ireport "stncCms/app/services/reportSacrifeServices_mod"
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
@@ -29,13 +29,11 @@ type Repositories struct {
 	Role               Iauth.RoleAppInterface
 	Permission         Iauth.PermissionAppInterface
 	RolePermission     Iauth.RolePermissionAppInterface
-	Kurban             Isacrife.KurbanAppInterface
+
 	Dashboard          Isacrife.DashboardAppInterface
-	Kodemeler          Isacrife.OdemelerAppInterface
-	Gruplar            Isacrife.GruplarAppInterface
+
 	Kisiler            Isacrife.KisilerAppInterface
-	HayvanSatisYerleri Isacrife.HayvanSatisYerleriAppInterface
-	HayvanBilgisi      Isacrife.HayvanBilgisiAppInterface
+
 	Region             Iregion.RegionAppInterface
 	Branch             Iregion.BranchAppInterface
 	Modules            Icommon.ModulesAppInterface
@@ -48,14 +46,12 @@ type Repositories struct {
 
 	Lang              Icommon.LanguageAppInterface
 	Options           Isacrife.OptionsAppInterface
-	FundraisingType   Ifundraising.FundraisingTypeAppInterface
-	FundraisingDonors Ifundraising.FundraisingDonorsAppInterface
+
 
 	DB *gorm.DB
 }
 
-//DbConnect initial
-/*TODO: burada db verisi pointer olarak işaretlenecek oyle gidecek veri*/
+
 func DbConnect() *gorm.DB {
 	dbdriver := os.Getenv("DB_DRIVER")
 	dbHost := os.Getenv("DB_HOST")
@@ -126,12 +122,9 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Role:               RoleRepositoryInit(db),
 		RolePermission:     RolePermissionRepositoryInit(db),
 		Dashboard:          DashboardRepositoryInit(db),
-		Kurban:             KurbanRepositoryInit(db),
-		Kodemeler:          OdemelerRepositoryInit(db),
-		Gruplar:            GruplarRepositoryInit(db),
+
 		Kisiler:            KisilerRepositoryInit(db),
-		HayvanSatisYerleri: HayvanSatisYerleriRepositoryInit(db),
-		HayvanBilgisi:      HayvanBilgisiRepositoryInit(db),
+
 		Modules:            ModulesRepositoryInit(db),
 
 		Region: RegionRepositoryInit(db),
@@ -146,8 +139,7 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 		Lang:              LanguageRepositoryInit(db),
 		Options:           OptionRepositoryInit(db),
-		FundraisingType:   FundraisingTypeRepositoryInit(db),
-		FundraisingDonors: FundraisingDonorsRepositoryInit(db),
+
 		DB:                db,
 	}, nil
 }

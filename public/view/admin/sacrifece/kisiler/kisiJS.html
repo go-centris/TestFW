@@ -1,0 +1,264 @@
+<script type="text/javascript">
+    function toastrCall(status, msg) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr[status](msg);
+    }
+
+
+    $("#AdSoyadSelect").select2({
+        tags: true,
+        placeholder: 'Select an option',
+        allowClear: true,
+        maximumInputLength: 20,
+        minimumInputLength: 3,
+        //kapatilma nedeni referanslarda cikacak bir data oldugu icindir 
+        // language: {
+        //     noResults: function(e) {
+
+        //         metin = $(".select2-search__field").val();
+
+        //         return $(' <button class="btn btn-sm btn-danger" id="NewAdd">Yeni Kişi Oluşturmak İçin Tıklayınız : ' + metin + '</button>');
+        //     }
+        // },
+        //TODO: bu kısım fonksiyona verilebilir 
+        ajax: {
+            url: '/admin/kisiler/kisiAra',
+            dataType: 'json',
+            type: 'POST',
+            delay: 250,
+            data: function(dataSend) {
+                return {
+                    q: dataSend.term,
+                    _csrf: '{{ csrf }}',
+                };
+            },
+            processResults(data) {
+                if (data == null) {
+                    $("#adSoyadControl").val("null");
+                } else {
+                    $("#adSoyadControl").val("");
+                }
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.adSoyad,
+                            id: item.id,
+                        }
+                    }),
+                }
+            }
+        }
+    });
+
+    $('#ReferansKisi1').select2({
+        language: {
+            noResults: function(e) {
+                metin = $(".select2-search__field").val();
+                return $(' <button class="btn btn-sm btn-danger" id="NewAdd">Yeni Kişi Oluşturmak İçin Tıklayınız : ' + metin + '</button>');
+            }
+        },
+        maximumInputLength: 20,
+        minimumInputLength: 3,
+        ajax: {
+            url: '/admin/kisiler/kisiAra',
+            dataType: 'json',
+            type: 'POST',
+            delay: 250,
+            data: function(data) {
+                return {
+                    q: data.term,
+                    _csrf: '{{ csrf }}',
+                };
+            },
+            processResults(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.adSoyad,
+                            id: item.id,
+                        }
+                    }),
+                }
+            }
+        }
+    });
+
+
+
+
+
+    //  // select seçim --kullanimda degil sanirim ornek olmasi  icin koymus olabilirim 
+    $('#AdSoyad').on('select2:select', function(e) {
+        var data = e.params.data;
+        // alert(data.text)
+        // alert(data.id)
+        // console.log(data)
+        $("#dataControl").val("empty");
+        $("#Telefon").val("");
+        $("#Email").val("");
+        $("#Adresi").val("");
+        $("#Adresi").val("");
+        $("#Aciklama").val("");
+        if ($("#adSoyadControl").val() == "") {
+            $.magnificPopup.open({
+                items: {
+                    src: '/admin/kisiler/kisiBilgileriModalBox/' + data.id
+                },
+                type: 'ajax'
+            })
+        }
+    })
+
+
+    //  $('#AdSoyad').on("select2:selecting", function(e) {
+    //     //        var data = e.params.data;
+    //     // alert(data.text)
+    //     console.log(e)
+    // });
+
+
+
+    $(function() { //shorthand document.ready function
+
+        //kisiBilgileriModalBox.html ile ilgili ama nasil calisiyor bakmak laazim ekleme amacim neydi v1 de olabilir belki bir bilgi  ??
+        $("body").on("click", "#dataSendModal", function(e) {
+            e = e || window.event;
+            e.preventDefault();
+
+            // adSoyad = $("#AdSoyad-modalb").val();
+            telefon = $("#Telefon-modalb").val();
+            email = $("#Email-modalb").val();
+            adres = $("#Adres-modalb").val();
+            aciklama = $("#Aciklama-modalb").val();
+            $("#Telefon").val(telefon);
+            $("#Email").val(email);
+            $("#Adresi").val(adres);
+            $("#Adresi").val(adres);
+            $("#Aciklama").val(aciklama);
+            $("#dataControl").val("ok");
+            toastrCall("success", "Bir alt forma veriler eklendi");
+            $.magnificPopup.proto.close.call(this);
+        });
+
+//referans veya kişi ekle de yeni kisi ekleme bilgisini getirmek icindir 
+        $("body").on("click", "#NewAdd", function(e) {
+            e = e || window.event;
+            e.preventDefault();
+            metin = $(".select2-search__field").val();
+            $.magnificPopup.open({
+                items: {
+                    src: '/admin/kisiler/referansCreateModalBox/' + 2 + "?metin=" + metin
+                },
+                type: 'ajax'
+            })
+        });
+        //hızlı ekle için açılan modal box ı tetiklemesi içindir
+        $(document).on('submit', 'form#personAdd', function(e) {
+            // $("body").on("click", "#RefDataSave", function(e) {
+            e.preventDefault();
+
+                var form = $(this);
+                var url = form.attr('action');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == "ok") {
+                            $.magnificPopup.proto.close.call(this);
+                            toastrCall("success", "Referans Kişi Kaydı ile Eklendi");
+                            // var newState = new Option( data.username,data.lastID, true, true);
+                            // $("#ReferansKisi1").append(newState).trigger('change');
+
+                            //   // Set the value, creating a new option if necessary
+                            if ($("#ReferansKisi1").find("option[value='" + data.lastID + "']").length) {
+                                $("#ReferansKisi1").val(data.username).trigger("change");
+                            } else {
+                                var newState = new Option(data.username, data.lastID, true, true);
+                                $("#ReferansKisi1").append(newState).trigger('change');
+                            }
+                        } else {
+                            // console.log(data.err)
+                            // alert ("validata hatasi var konsolu kontrol ediniz")
+
+                            $.each(data.err, function(fieldName, fieldErrors) { 
+                                $('#'+fieldName+'Valid').removeClass("addShow")
+                            });
+
+
+                            $.each(data.err, function(fieldName, fieldErrors) { 
+                                // var fieldSelector = selector + " [name='"+fieldName+"']";
+                                $('#'+fieldName+'Valid').addClass("addShow")
+                                $('#'+fieldName+'Valid').html("Burası zorunlu bir alandır yada geçersiz veri tipi")
+                            });
+                        }
+                    },
+                });
+            
+            e.preventDefault();
+            return false;
+        });
+
+
+
+        // $('#Telefon').mask("0000 000 0000", {
+        //         placeholder: "____ ___-____"
+        //     }) //    $('.phone_with_ddd').mask('(00) 0000-0000');
+
+
+
+        // $('.odemelerList').mask('###0.00', {
+        //     reverse: true
+        // });
+
+        // $('.formatlaDecimal').mask('###0.00', {
+        //     reverse: true
+        // });
+
+        // //modal sayfası için 
+        // $('#VerilenUcret').mask('###0.00', {
+        //     reverse: true
+        // }); //#.##0.00 eskisi 
+
+
+
+        $(document).on('click', '.popClose', function(e) {
+            $.magnificPopup.proto.close.call(this);
+        });
+
+        $(document).on('click', '.pop2Close', function(e) {
+            window.location.href = "/admin/{{modulNameUrl}}/kisiler/";
+            $.magnificPopup.proto.close.call(this);
+        });
+    });
+
+
+    // $('.kisiKaldir').click(function() {
+    //     $('#ReferansKisi1').val(null).trigger('change');
+    // });
+
+    function Telefon() {
+        setTimeout(function() {
+            $('.Telefon').mask("0000 000 0000", {
+                placeholder: "____ ___-____"
+            }).change()
+        }, 500);
+    }
+</script>

@@ -1,0 +1,141 @@
+{% extends "../../app.html" %}
+{% block content %}
+{% set RootName = 'admin-kisiler' %}
+{% set routerName = 'admin/'+modulNameUrl+'/kisiler' %}
+{% include "../../../viewComponentsAdmin/alertMsg.html"%}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-12 col-50 box-col-12 des-xl-50">
+            <div class="card">
+                <div class="card-header">
+                    <div class="header-top d-sm-flex align-items-center">
+                        <h5>{{locale.Get("Person List")}} </h5>
+
+                        <div class="center-content">
+                            <p class="d-flex align-items-center"><i class="toprightarrow-primary fa fa-arrow-up me-2"></i>80% Growth</p>
+                        </div>
+                        <div class="setting-list">
+                            <ul>
+                                <li> <a class="btn btn-block btn-primary" href="/{{routerName}}/create"> {{locale.Get("Add New Person")}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Zero Configuration  Starts-->
+        <div class="col-sm-12">
+            <div class="card">
+                <!-- <div class="card-header">
+                    <h5>{{title}} Listesi</h5>
+
+                    <span>ble, as shown in this example.</span>
+                </div> -->
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <table class="go-datatable table table-striped table-bordered display">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>{{locale.Get("Name Lastname")}}</th>
+                                    <th>{{locale.Get("Phone")}}</th>
+                                    <th>{{locale.Get("Adress")}}</th>
+                                    <th>{{locale.Get("Edit")}}</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="kisiModal" tabindex="-1" role="dialog" aria-labelledby="kisiModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="kisiModalLabel"> {{locale.Get("Confirmation")}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Silme İşlemini Onaylıyor musunuz? {{locale.Get("Do You Confirm the Deletion?")}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{locale.Get("Close")}}</button>
+                <a href="" class="btn btn-primary">{{locale.Get("Yes I accept")}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} {% block jsInline %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/r-2.2.9/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.5/r-2.2.9/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var table = $('.go-datatable').DataTable({
+            language: {
+                url: '/assets/admin/js/jquery.dataTablesTr.json'
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/{{routerName}}/listDataTable",
+            },
+            columns: [
+
+                {
+                    data: "ID"
+                }, {
+                    data: "AdSoyad"
+                }, {
+                    data: "Telefon"
+                }, {
+                    data: "Adres"
+                }, {
+                    data: 'ID',
+                    render: function(data, type, row, meta) {
+                        return type === 'display' ?
+                            '<a class="btn btn-sm btn-primary" href="/{{routerName}}/edit/' + data + '" >{{locale.Get("Edit")}}</a>  <button data-id="' + data + '" class="btn btn-sm btn-warning kisiModal">{{locale.Get("Delete")}}</button> ' :
+                            data;
+                    }
+                },
+
+            ],
+            pageLength: 40,
+            responsive: true,
+        });
+
+
+
+        //Sİlme onayı 
+        $(document).on("click", ".kisiModal", function(e) {
+            e.preventDefault();
+            let idAdres = $(this).data('id');
+            $('#kisiModal .modal-footer a').attr('href', '/{{routerName}}/delete/' + idAdres);
+            $('#kisiModal').modal('show');
+        });
+
+    });
+</script>
+{% endblock %}

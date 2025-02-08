@@ -1,0 +1,28 @@
+<div class="col-xl-4 box-col-4 top-sell-sec">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="header-top d-sm-flex justify-content-between align-items-center">
+                <strong>En cok kurban ekleyen hocamiz</strong>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="media" style="padding: 0">
+                <div class="media-body">
+                    <strong>
+                        <a href="/admin/{{modulNameUrl}}/user/edit/{{usersWhoAddedMostSacrifeAndUser.SacrifeUserID}}">{{usersWhoAddedMostSacrifeAndUser.FirstName}} {{usersWhoAddedMostSacrifeAndUser.LastName}}</a></strong>
+                    <br>
+                    <p>{{usersWhoAddedMostSacrifeAndUser.Counts}} adet</p>
+                    <ul class="rating-star">
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                        <li><i class="fa fa-star"></i></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <a class="btn btn-light" href="/admin/report/getAllUsersWhoAddedMostUser">Analiz Et </a>
+    </div>
+</div>
