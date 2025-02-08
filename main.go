@@ -109,9 +109,9 @@ func main() {
 
 	branchHandle := region.InitBranch(services.Branch, services.Region)
 
-	// fundraisingypeHandle := fundraising.InitFundraisingType(services.FundraisingType, services.Region)
+	fundraisingypeHandle := fundraising.InitFundraisingType(services.FundraisingType, services.Region)
 
-	// fundraisingDonorsHandle := fundraising.InitFundraisingDonors(services.FundraisingDonors, services.FundraisingType)
+	fundraisingDonorsHandle := fundraising.InitFundraisingDonors(services.FundraisingDonors, services.FundraisingType)
 
 	regionHandle := region.InitRegion(services.Region)
 
