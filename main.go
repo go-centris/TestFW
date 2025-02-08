@@ -28,7 +28,7 @@ import (
 	//modSacrife "stncCms/app/web.api/controller/modSacrife"
 	auth "stncCms/app/web/controller/auth_mod"
 	common "stncCms/app/web/controller/common_mod"
-	fundraising "stncCms/app/web/controller/fundraising_mod"
+
 	region "stncCms/app/web/controller/region_mod"
 	reportSacrife "stncCms/app/web/controller/reportSacrife_mod"
 	sacrifice "stncCms/app/web/controller/sacrifice_mod"
@@ -119,9 +119,6 @@ func main() {
 
 	branchHandle := region.InitBranch(services.Branch, services.Region)
 
-	fundraisingypeHandle := fundraising.InitFundraisingType(services.FundraisingType, services.Region)
-
-	fundraisingDonorsHandle := fundraising.InitFundraisingDonors(services.FundraisingDonors, services.FundraisingType)
 
 	regionHandle := region.InitRegion(services.Region)
 
