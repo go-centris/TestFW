@@ -62,37 +62,7 @@ func (access *Dashboard) SacrifeceIndex(c *gin.Context) {
 	)
 }
 func (access *Dashboard) Index(c *gin.Context) {
-	stncsession.IsLoggedInRedirect(c)
-	permissionList := rbac.RbacCheckForComponent(c, "dashboard")
-	flashMsg := stncsession.GetFlashMessage(c)
-	locale, menuLanguage := lang.LoadLanguages("dashboard")
-	res := Dashboard{IDashboard: access.IDashboard}
-	grandTotalsComponentValue := res.GrandTotalsComponent()
-	shareHoldersComponentValue := res.ShareHoldersComponent()
-	charitableWhoAddedMostSacrife, _ := access.IDashboard.CharitableWhoAddedMostSacrife()         //En cok kurban kestiren hayirsever
-	usersWhoAddedMostSacrifeAndBranch, _ := access.IDashboard.UsersWhoAddedMostSacrifeAndBranch() //En cok kurban ekleyen  subemiz
-	usersWhoAddedMostSacrifeAndUser, _ := access.IDashboard.UsersWhoAddedMostSacrifeAndUser()     //En cok kurban ekleyen  hocamiz
 
-	viewData := pongo2.Context{
-		"title":                             locale.Get("Dashboard"),
-		"flashMsg":                          flashMsg,
-		"csrf":                              csrf.GetToken(c),
-		"locale":                            locale,
-		"grandTotalsComponentValue":         grandTotalsComponentValue,
-		"shareHoldersComponentValue":        shareHoldersComponentValue,
-		"charitableWhoAddedMostSacrife":     charitableWhoAddedMostSacrife,
-		"usersWhoAddedMostSacrifeAndBranch": usersWhoAddedMostSacrifeAndBranch,
-		"usersWhoAddedMostSacrifeAndUser":   usersWhoAddedMostSacrifeAndUser,
-		"localeMenus":                       menuLanguage,
-		"permissionList":                    permissionList,
-		"modulNameUrl":                      "fundraising",
-	}
-	c.HTML(
-		http.StatusOK,
-
-		"/admin/fundraising/dashboard/dashboard.html",
-		viewData,
-	)
 }
 
 // grandTotalsComponent structure
@@ -247,38 +217,6 @@ func OptionsDefault(c *gin.Context) {
 	user := entity.Users{FirstName: "Sel", LastName: "t", Email: "hk@gmail.com", Password: "4544bcb2ce39fe656c64f0860895bdaccff7b8c0"} //mutluerF9E
 	db.Debug().Create(&user)
 
-	hayvansatisyeri := entity.SacrificeHayvanSatisYerleri{UserID: stncsession.GetUserID2(c), YerAdi: "Bu ilk kurulum için oluşturulmuştur, hayvanlar henüz belli değilse bunu seçiniz", Durum: 0, Slug: "bosVeri"}
-	db.Debug().Create(&hayvansatisyeri)
-
-	//TODO:KurbanBayramiYili optiondan gelecek
-
-	//TODO: delete yapılcak
-	adak := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Adak Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "adak"}
-	db.Debug().Create(&adak)
-
-	akika := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Akika Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "akika"}
-	db.Debug().Create(&akika)
-
-	sukur := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Şükür Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "sukur"}
-	db.Debug().Create(&sukur)
-
-	sahibNi := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "SAHİBİNİN NİYETİNE Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "sahibi-niyetine"}
-	db.Debug().Create(&sahibNi)
-
-	bagis := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "BAĞIŞ Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "hayir"}
-	db.Debug().Create(&bagis)
-
-	naf := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "NAFİLE Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "nafile"}
-	db.Debug().Create(&naf)
-
-	sifa := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Şifa Olarak Kesilecek Hayvanların Üst Grubudur, değişikliğe kapalıdır", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "sifa"}
-	db.Debug().Create(&sifa)
-
-	krubanBayrami := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Kurban Bayramı Kesilecek Büyük Baş Hayvan Atanmamış Değer", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "kurbanBayramiBuyukbas"}
-	db.Debug().Create(&krubanBayrami)
-
-	krubanBayramiKucukbas := entity.SacrificeGruplar{KesimSiraNo: 0, Aciklama: "Kurban Bayramı Kesilecek Büyük Baş Hayvan Atanmamış Değer", HissedarAdet: 1, Durum: 1, KurbanBayramiYili: 2022, HayvanBilgisiID: 0, Slug: "kurbanBayramiKucukBas"}
-	db.Debug().Create(&krubanBayramiKucukbas)
 
 	ModulKurban := entity.Modules{ModulName: "kurban", Status: 1, UserID: 1}
 	db.Debug().Create(&ModulKurban)
@@ -307,10 +245,7 @@ func OptionsDefault(c *gin.Context) {
 	Modulkullanici := entity.Modules{ModulName: "kullanici", Status: 1, UserID: 1}
 	db.Debug().Create(&Modulkullanici)
 
-	Kisiler1 := entity.Kisiler{AdSoyad: "Boş GRUP, Kişi kaydı için tıklayınız ", Aciklama: "Boş olarak oluşacak grupların buraya kaydedilmesi içindir"}
-	db.Debug().Create(&Kisiler1)
 
-	// db.Debug().Delete(&entity.Kisiler{}, 1)
 
 	c.JSON(http.StatusOK, "yapıldı")
 }

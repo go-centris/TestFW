@@ -28,7 +28,6 @@ import (
 	//modSacrife "stncCms/app/web.api/controller/modSacrife"
 	auth "stncCms/app/web/controller/auth_mod"
 	common "stncCms/app/web/controller/common_mod"
-	fundraising "stncCms/app/web/controller/fundraising_mod"
 	region "stncCms/app/web/controller/region_mod"
 
 	sacrifice "stncCms/app/web/controller/sacrifice_mod"
@@ -36,7 +35,6 @@ import (
 
 var cacheControlSelman = false
 
-// https://github.com/stnc-go/gobyexample/blob/master/pongo2render/render.go
 func init() {
 	//To load our environmental variables.
 
@@ -44,24 +42,11 @@ func init() {
 		log.Println("no env gotten")
 	}
 
-	/* //bu sunucuda çalışıyor
-		    dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	        if err != nil {
-	            log.Fatal(err)
-	        }
-	        environmentPath := filepath.Join(dir, ".env")
-	        err = godotenv.Load(environmentPath)
-	        fatal(err)
-	*/
+
 
 }
 
 func main() {
-	//redis details
-	// redisService, err := cache.RedisDBInit(redisHost, redisPort, redisPassword)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
 
 	debugMode := os.Getenv("MODE")
 
@@ -71,10 +56,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//defer services.Close()
+
 	services.Automigrate()
 
-	//@uses ./main -autoRelation
+
 	autoRelation := flag.Bool("autoRelation", false, "db relation ")
 	flag.Parse()
 
@@ -88,17 +73,8 @@ func main() {
 	indexHandle := sacrifice.InitDashboard(services.Dashboard)
 	posts := cms.InitPost(services.Post, services.Cat, services.CatPost, services.Lang, services.User)
 
-	// kurbanHandle := sacrifice.InitGsacrifice(services.Kurban, services.Kisiler, services.Media)
 
-	// odemelerHandle := sacrifice.InitOdemeler(services.Kodemeler, services.Kurban)
 
-	kisilerHandle := sacrifice.InitGKisiler(services.Kisiler)
-
-	// GroupslarHandle := sacrifice.InitGruplar(services.HayvanBilgisi, services.Kurban, services.Gruplar, services.Options, services.Kodemeler, services.Kisiler)
-
-	// hayvanSatisYerleriHandle := sacrifice.InitHayvanSatisYerleri(services.HayvanSatisYerleri)
-
-	// hayvanBilgisiHandle := sacrifice.InitHayvanBilgisi(services.HayvanBilgisi, services.Media)
 
 	loginHandle := auth.InitLogin(services.User)
 
@@ -109,19 +85,15 @@ func main() {
 
 	branchHandle := region.InitBranch(services.Branch, services.Region)
 
-	fundraisingypeHandle := fundraising.InitFundraisingType(services.FundraisingType, services.Region)
 
-	fundraisingDonorsHandle := fundraising.InitFundraisingDonors(services.FundraisingDonors, services.FundraisingType)
 
 	regionHandle := region.InitRegion(services.Region)
 
-	// reportHandle := reportSacrife.InitReport(services.Report)
+
 
 	modulesHandle := common.InitModules(services.Modules)
 
-	// region := controller.InitRegion(services.Region, services.Branch, services.Role, services.RolePermission)
 
-	//authenticate := apiController.NewAuthenticate(services.User, redisService.Auth, token)
 
 	switch debugMode {
 	case "RELEASE":
@@ -243,26 +215,7 @@ func main() {
 
 
 
-	kisilerGroup := r.Group("/admin/:ModulName/kisiler")
-	{
-		kisilerGroup.GET("/", kisilerHandle.Index)
-		kisilerGroup.GET("index", kisilerHandle.Index)
-		kisilerGroup.GET("IndexV1", kisilerHandle.IndexV1)
-		kisilerGroup.GET("create", kisilerHandle.Create)
-		kisilerGroup.POST("store", kisilerHandle.Store)
-		kisilerGroup.GET("edit/:ID", kisilerHandle.Edit)
-		kisilerGroup.GET("delete/:ID", kisilerHandle.Delete)
-		kisilerGroup.POST("update", kisilerHandle.Update)
-		kisilerGroup.POST("kisiAra", kisilerHandle.KisiAraAjax)
 
-		kisilerGroup.GET("listDataTable", kisilerHandle.ListDataTable)
-		kisilerGroup.GET("kisiAciklama/:ID", kisilerHandle.PersonComment)
-		kisilerGroup.GET("kisiAciklamaEdit/:ID", kisilerHandle.PersonCommentEdit)
-		//ajax methods
-		kisilerGroup.GET("kisiBilgileriModalBox/:ID", kisilerHandle.KisiGosterModalBox)
-		kisilerGroup.GET("referansCreateModalBox/:viewID", kisilerHandle.ReferansCreateModalBox)
-		kisilerGroup.POST("kisiEkleAjax", kisilerHandle.KisiEkleAjax)
-	}
 
 	branchGroup := r.Group("/admin/:ModulName/branch")
 	{
