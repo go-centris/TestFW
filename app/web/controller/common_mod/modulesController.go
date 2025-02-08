@@ -20,7 +20,7 @@ type Modules struct {
 	Iregion Icommon.ModulesAppInterface
 }
 
-const viewPathModules = "admin/modules/"
+const viewPathModules = "admin/common/modules/"
 
 func InitModules(iregion Icommon.ModulesAppInterface) *Modules {
 	return &Modules{
@@ -96,7 +96,7 @@ func (access *Modules) Store(c *gin.Context) {
 		lastID := strconv.FormatUint(uint64(saveData.ID), 10)
 		modulName := stnchelper.ModulNameUrlCheck(c.Param("ModulName"))
 		stncsession.SetFlashMessage("Kayıt başarı ile eklendi", "success", c)
-		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/modules/edit/"+lastID)
+		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/common/modules/edit/"+lastID)
 		return
 	} else {
 		stncsession.SetFlashMessage("Zorunlu alanları lütfen doldurunuz", "danger", c)

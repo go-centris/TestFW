@@ -24,7 +24,6 @@ import (
 	myPongoGinRender "github.com/stnc/myPongoGinRender/v5"
 	csrf "github.com/utrack/gin-csrf"
 
-	ctrl "stncCms/app/web/controller"
 	//modSacrife "stncCms/app/web.api/controller/modSacrife"
 	auth "stncCms/app/web/controller/auth_mod"
 	common "stncCms/app/web/controller/common_mod"
@@ -42,8 +41,6 @@ func init() {
 		log.Println("no env gotten")
 	}
 
-
-
 }
 
 func main() {
@@ -59,22 +56,18 @@ func main() {
 
 	services.Automigrate()
 
-
 	autoRelation := flag.Bool("autoRelation", false, "db relation ")
 	flag.Parse()
 
 	if *autoRelation {
-		fmt.Printf("\033[1;34m%s\033[0m", "-----------iliskiler kuruluyor-------------")
+		fmt.Printf("\033[1;34m%s\033[0m", "-----------setup relations-------------")
 		services.AutoRelation()
-		fmt.Printf("\033[1;34m%s\033[0m", "-----------iliskiler kuruldu-------------")
+		fmt.Printf("\033[1;34m%s\033[0m", "-----------done relations-------------")
 		return
 	}
 
 	indexHandle := sacrifice.InitDashboard(services.Dashboard)
 	posts := cms.InitPost(services.Post, services.Cat, services.CatPost, services.Lang, services.User)
-
-
-
 
 	loginHandle := auth.InitLogin(services.User)
 
@@ -85,15 +78,9 @@ func main() {
 
 	branchHandle := region.InitBranch(services.Branch, services.Region)
 
-
-
 	regionHandle := region.InitRegion(services.Region)
 
-
-
 	modulesHandle := common.InitModules(services.Modules)
-
-
 
 	switch debugMode {
 	case "RELEASE":
@@ -163,14 +150,8 @@ func main() {
 
 	//default router --- for direct admin dashboard
 	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/admin/")
+		c.Redirect(http.StatusMovedPermanently, "sacrifece/post/")
 	})
-
-	dashboardGroup := r.Group("/admin/")
-	{
-		dashboardGroup.GET("/", ctrl.Index)
-
-	}
 
 	r.GET("optionsDefault", sacrifice.OptionsDefault)
 	r.GET("cacheReset", sacrifice.CacheReset)
@@ -212,10 +193,6 @@ func main() {
 		adminPost.POST("update", posts.Update)
 		adminPost.POST("upload", posts.Upload)
 	}
-
-
-
-
 
 	branchGroup := r.Group("/admin/:ModulName/branch")
 	{
