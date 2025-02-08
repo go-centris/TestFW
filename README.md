@@ -2,7 +2,7 @@
 summer note 
 
 
-
+https://adazzle.github.io/react-data-grid/#/MasterDetail
 
 # 
 https://davicotico.github.io/jQuery-Menu-Editor/

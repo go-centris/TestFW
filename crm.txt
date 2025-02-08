@@ -1,1 +1,0 @@
-https://adazzle.github.io/react-data-grid/#/MasterDetail
