@@ -150,13 +150,13 @@ func main() {
 
 	//default router --- for direct admin dashboard
 	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "sacrifece/post/")
+		c.Redirect(http.StatusMovedPermanently, "admin/sacrifece/post/")
 	})
 
 	r.GET("optionsDefault", sacrifice.OptionsDefault)
 	r.GET("cacheReset", sacrifice.CacheReset)
 
-	r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //ajax ortak kullanim icin
+	r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //for ajax 
 
 	r.GET("/admin/:ModulName/dashboard-fundraising", indexHandle.Index)
 	r.GET("/admin/:ModulName/dashboard-sacrifece", indexHandle.SacrifeceIndex)
