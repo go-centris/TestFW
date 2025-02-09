@@ -7,7 +7,7 @@ import (
 	Iauth "stncCms/app/services/authServices_mod"
 	Icms "stncCms/app/services/cmsServices_mod"
 	Icommon "stncCms/app/services/commonServices_mod"
-
+	Ifundraising "stncCms/app/services/fundraisingServices_mod"
 	Iregion "stncCms/app/services/regionServices_mod"
 	Ireport "stncCms/app/services/reportSacrifeServices_mod"
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
@@ -29,11 +29,13 @@ type Repositories struct {
 	Role               Iauth.RoleAppInterface
 	Permission         Iauth.PermissionAppInterface
 	RolePermission     Iauth.RolePermissionAppInterface
-
+	Kurban             Isacrife.KurbanAppInterface
 	Dashboard          Isacrife.DashboardAppInterface
-
-
-
+	Kodemeler          Isacrife.OdemelerAppInterface
+	Gruplar            Isacrife.GruplarAppInterface
+	Kisiler            Isacrife.KisilerAppInterface
+	HayvanSatisYerleri Isacrife.HayvanSatisYerleriAppInterface
+	HayvanBilgisi      Isacrife.HayvanBilgisiAppInterface
 	Region             Iregion.RegionAppInterface
 	Branch             Iregion.BranchAppInterface
 	Modules            Icommon.ModulesAppInterface
@@ -46,12 +48,14 @@ type Repositories struct {
 
 	Lang              Icommon.LanguageAppInterface
 	Options           Isacrife.OptionsAppInterface
-
+	FundraisingType   Ifundraising.FundraisingTypeAppInterface
+	FundraisingDonors Ifundraising.FundraisingDonorsAppInterface
 
 	DB *gorm.DB
 }
 
-
+//DbConnect initial
+/*TODO: burada db verisi pointer olarak işaretlenecek oyle gidecek veri*/
 func DbConnect() *gorm.DB {
 	dbdriver := os.Getenv("DB_DRIVER")
 	dbHost := os.Getenv("DB_HOST")
@@ -121,14 +125,19 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Permission:         PermissionRepositoryInit(db),
 		Role:               RoleRepositoryInit(db),
 		RolePermission:     RolePermissionRepositoryInit(db),
-
-
+		Dashboard:          DashboardRepositoryInit(db),
+		Kurban:             KurbanRepositoryInit(db),
+		Kodemeler:          OdemelerRepositoryInit(db),
+		Gruplar:            GruplarRepositoryInit(db),
+		Kisiler:            KisilerRepositoryInit(db),
+		HayvanSatisYerleri: HayvanSatisYerleriRepositoryInit(db),
+		HayvanBilgisi:      HayvanBilgisiRepositoryInit(db),
 		Modules:            ModulesRepositoryInit(db),
 
 		Region: RegionRepositoryInit(db),
 		Branch: BranchRepositoryInit(db),
 
-
+		Report: ReportRepositoryInit(db),
 
 		Post:    PostRepositoryInit(db),
 		Cat:     CatRepositoryInit(db),
@@ -137,7 +146,8 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 		Lang:              LanguageRepositoryInit(db),
 		Options:           OptionRepositoryInit(db),
-
+		FundraisingType:   FundraisingTypeRepositoryInit(db),
+		FundraisingDonors: FundraisingDonorsRepositoryInit(db),
 		DB:                db,
 	}, nil
 }
@@ -153,27 +163,31 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 func (s *Repositories) AutoRelation() error {
 	s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
 		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
-&entity.Users{},
-
-	 &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
-		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{})
+		&entity.SacrificeKurbanlar{},
+		&entity.SacrificeOdemeler{}, &entity.SacrificeGruplar{}, &entity.Kisiler{}, &entity.Users{},
+		&entity.SacrificeHayvanSatisYerleri{},
+		&entity.SacrificeHayvanBilgisi{}, &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{}, &entity.FundraisingDonors{}, &entity.FundraisingType{})
 
 	s.DB.Model(&entity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
 	s.DB.Model(&entity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
-	
+	s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE")    // one to many (one=region) (many=branches)
 
-                           
-	return s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error       // one to many (one=region) (many=branches)            
+	s.DB.Model(&entity.SacrificeHayvanBilgisi{}).AddForeignKey("hayvan_satis_yerleri_id", "sacrifice_hayvan_satis_yerleri(id)", "CASCADE", "CASCADE") // one to one (one=hayvan_satis_yerleri) (one=HayvanBilgisi)
+	s.DB.Model(&entity.SacrificeOdemeler{}).AddForeignKey("kurban_id", "sacrifice_kurbanlar(id)", "CASCADE", "CASCADE")                               // one to many (one=kurbanlar) (many=odemeler)
+	s.DB.Model(&entity.SacrificeKurbanlar{}).AddForeignKey("grup_id", "sacrifice_gruplar(id)", "CASCADE", "CASCADE")                                  // one to many (one=gruplar) (many=kurbanlar)
+	return s.DB.Model(&entity.SacrificeKurbanlar{}).AddForeignKey("kisi_id", "sacrifice_kisiler(id)", "CASCADE", "CASCADE").Error                     // one to many (one=kisiler) (many=kurbanlar)
 
 }
 
 func (s *Repositories) Automigrate() error {
 	return s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
 		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
-
-&entity.Users{},
- &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
-		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{}).Error
+		&entity.SacrificeKurbanlar{},
+		&entity.SacrificeOdemeler{}, &entity.SacrificeGruplar{}, &entity.Kisiler{}, &entity.Users{},
+		&entity.SacrificeHayvanSatisYerleri{},
+		&entity.SacrificeHayvanBilgisi{}, &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{}, &entity.FundraisingDonors{}, &entity.FundraisingType{}).Error
 }
 
 /*func GetAllStatusFindAndAgirlikTipiGroup(db *gorm.DB, durum int, agirlikTipi int) ([]entity.SacrificeGruplar, error) {
