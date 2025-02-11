@@ -3,10 +3,10 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/cache"
+	"stncCms/pkg/cache"
 	"stncCms/app/domain/dto"
 	"stncCms/app/domain/entity"
-	"stncCms/app/domain/helpers/stnccollection"
+	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
 	"time"
 

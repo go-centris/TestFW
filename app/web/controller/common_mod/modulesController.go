@@ -8,8 +8,8 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
 	"stncCms/app/domain/entity"
-	"stncCms/app/domain/helpers/stnchelper"
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/stnchelper"
+	"stncCms/pkg/helpers/stncsession"
 
 	Icommon "stncCms/app/services/commonServices_mod"
 	"strconv"

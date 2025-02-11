@@ -2,10 +2,10 @@ package sacrifice_mod
 
 import (
 	"net/http"
-	"stncCms/app/domain/helpers/lang"
-	"stncCms/app/domain/helpers/stnccollection"
-	"stncCms/app/domain/helpers/stnchelper"
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/lang"
+	"stncCms/pkg/helpers/stnccollection"
+	"stncCms/pkg/helpers/stnchelper"
+	"stncCms/pkg/helpers/stncsession"
 
 	"github.com/astaxie/beego/utils/pagination"
 	"github.com/flosch/pongo2/v5"

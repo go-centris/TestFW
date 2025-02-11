@@ -2,7 +2,7 @@ package cms
 
 import (
 	"net/http"
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/stncsession"
 
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-gonic/gin"

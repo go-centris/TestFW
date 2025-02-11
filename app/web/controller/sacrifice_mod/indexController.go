@@ -2,12 +2,12 @@ package sacrifice_mod
 
 import (
 	"net/http"
-	"stncCms/app/domain/cache"
+	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/app/domain/helpers/lang"
-	"stncCms/app/domain/helpers/rbac"
-	"stncCms/app/domain/helpers/stnchelper"
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/lang"
+	"stncCms/pkg/helpers/rbac"
+	"stncCms/pkg/helpers/stnchelper"
+	"stncCms/pkg/helpers/stncsession"
 	repository "stncCms/app/domain/repository/cacheRepository"
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
 

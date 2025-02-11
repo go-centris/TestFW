@@ -8,9 +8,9 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
 	"stncCms/app/domain/entity"
-	"stncCms/app/domain/helpers/stnccollection"
-	"stncCms/app/domain/helpers/stnchelper"
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/stnccollection"
+	"stncCms/pkg/helpers/stnchelper"
+	"stncCms/pkg/helpers/stncsession"
 	Iregion "stncCms/app/services/regionServices_mod"
 
 	"strconv"

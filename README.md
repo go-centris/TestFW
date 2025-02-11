@@ -1,5 +1,30 @@
 ## Clean Architecture on Golang
 
+# independent microservice for managing 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # This application was developed with the Domain-Driven Design pattern.
 
 https://programmingpercy.tech/blog/how-to-structure-ddd-in-go/
@@ -28,3 +53,5 @@ https://github.com/PerimeterX/ok-lets-go/tree/master/3-independent-packages
 https://github.com/PerimeterX/go-project-structure/tree/main/cmd
 
 ------
+
+https://medium.com/@avivcarmis/ok-lets-go-three-approaches-to-structuring-go-code-42e2370c3ae5#92df

@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"stncCms/app/domain/dto"
 	"stncCms/app/domain/entity"
-	"stncCms/app/domain/helpers/lang"
-	"stncCms/app/domain/helpers/stnccollection"
-	"stncCms/app/domain/helpers/stncdatetime"
-	"stncCms/app/domain/helpers/stnchelper"
+	"stncCms/pkg/helpers/lang"
+	"stncCms/pkg/helpers/stnccollection"
+	"stncCms/pkg/helpers/stncdatetime"
+	"stncCms/pkg/helpers/stnchelper"
 	"strconv"
 
-	"stncCms/app/domain/helpers/stncsession"
+	"stncCms/pkg/helpers/stncsession"
 
 	"github.com/astaxie/beego/utils/pagination"
 	"github.com/flosch/pongo2/v5"

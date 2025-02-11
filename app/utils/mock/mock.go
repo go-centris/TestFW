@@ -4,7 +4,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"stncCms/app/domain/entity"
-	"stncCms/app/infrastructure/auth"
+	"stncCms/pkg/infrastructureauth"
 )
 
 //UserAppInterface is a mock user app interface
