@@ -3,21 +3,21 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 	"time"
 
 	"github.com/jinzhu/gorm"
 )
 
-//MediaRepo struct
+// MediaRepo struct
 type MediaRepo struct {
 	db *gorm.DB
 }
 
-//MediaRepositoryInit initial
+// MediaRepositoryInit initial
 func MediaRepositoryInit(db *gorm.DB) *MediaRepo {
 	return &MediaRepo{db}
 }
@@ -25,7 +25,7 @@ func MediaRepositoryInit(db *gorm.DB) *MediaRepo {
 //MediaRepo implements the repository.MediaRepository interface
 // var _ interfaces.MediaAppInterface = &MediaRepo{}
 
-//GetByID get data
+// GetByID get data
 func (r *MediaRepo) GetByID(id uint64) (*entity.Media, error) {
 	var data *entity.Media
 	access := repository.OptionRepositoryInit(r.db)
@@ -40,13 +40,13 @@ func (r *MediaRepo) GetByID(id uint64) (*entity.Media, error) {
 			data, _ = getByIDMedia(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -58,7 +58,7 @@ func getByIDMedia(db *gorm.DB, id uint64) (*entity.Media, error) {
 	return data, nil
 }
 
-//GetAll all data
+// GetAll all data
 func (r *MediaRepo) GetAll(modulID int, contentID int) ([]entity.Media, error) {
 	var data []entity.Media
 	access := repository.OptionRepositoryInit(r.db)
@@ -73,13 +73,13 @@ func (r *MediaRepo) GetAll(modulID int, contentID int) ([]entity.Media, error) {
 			data, _ = getAllMedia(r.db, modulID, contentID)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -90,7 +90,7 @@ func getAllMedia(db *gorm.DB, modulID int, contentID int) ([]entity.Media, error
 	return data, nil
 }
 
-//GetAllforModul all data
+// GetAllforModul all data
 func (r *MediaRepo) GetAllforModul(modulID int, contentID int) ([]entity.Media, error) {
 	var data []entity.Media
 	access := repository.OptionRepositoryInit(r.db)
@@ -105,33 +105,33 @@ func (r *MediaRepo) GetAllforModul(modulID int, contentID int) ([]entity.Media, 
 			data, _ = getAllforModulMedia(r.db, modulID, contentID)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
 }
 
-//GetAllforModul all data
+// GetAllforModul all data
 func getAllforModulMedia(db *gorm.DB, modulID int, contentID int) ([]entity.Media, error) {
 	repo := repository.MediaRepositoryInit(db)
 	data, _ := repo.GetAllforModul(modulID, contentID)
 	return data, nil
 }
 
-//GetAllPagination pagination all data
+// GetAllPagination pagination all data
 func GetAllPaginationMedia(db *gorm.DB, perPage int, offset int) ([]entity.Media, error) {
 	repo := repository.MediaRepositoryInit(db)
 	data, _ := repo.GetAllPagination(perPage, offset)
 	return data, nil
 }
 
-//GetAllPagination pagination all data
+// GetAllPagination pagination all data
 func (r *MediaRepo) GetAllPagination(perPage int, offset int) ([]entity.Media, error) {
 	var data []entity.Media
 	access := repository.OptionRepositoryInit(r.db)
@@ -146,13 +146,13 @@ func (r *MediaRepo) GetAllPagination(perPage int, offset int) ([]entity.Media, e
 			data, _ = GetAllPaginationMedia(r.db, perPage, offset)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

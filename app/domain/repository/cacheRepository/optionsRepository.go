@@ -3,9 +3,9 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -13,12 +13,12 @@ import (
 
 var optionTableName string = "options"
 
-//OptionRepositoryRepo struct
+// OptionRepositoryRepo struct
 type OptionRepositoryRepo struct {
 	db *gorm.DB
 }
 
-//OptionRepositoryInit initial
+// OptionRepositoryInit initial
 func OptionRepositoryInit(db *gorm.DB) *OptionRepositoryRepo {
 	return &OptionRepositoryRepo{db}
 }
@@ -29,7 +29,7 @@ func getAllOptions(db *gorm.DB) ([]entity.Options, error) {
 	return data, nil
 }
 
-//GetAll all data
+// GetAll all data
 func (r *OptionRepositoryRepo) GetAll() ([]entity.Options, error) {
 	var data []entity.Options
 	access := repository.OptionRepositoryInit(r.db)
@@ -44,13 +44,13 @@ func (r *OptionRepositoryRepo) GetAll() ([]entity.Options, error) {
 			data, _ = getAllOptions(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

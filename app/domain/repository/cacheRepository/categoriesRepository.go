@@ -3,26 +3,26 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 	"time"
 
 	"github.com/jinzhu/gorm"
 )
 
-//CatRepo struct
+// CatRepo struct
 type CatRepo struct {
 	db *gorm.DB
 }
 
-//CatRepositoryInit initial
+// CatRepositoryInit initial
 func CatRepositoryInit(db *gorm.DB) *CatRepo {
 	return &CatRepo{db}
 }
 
-//PostRepo implements the repository.PostRepository interface
+// PostRepo implements the repository.PostRepository interface
 // var _ interfaces.CatAppInterface = &CatRepo{}
 func getByIDCategories(db *gorm.DB, id uint64) (*entity.Categories, error) {
 	repo := repository.CatRepositoryInit(db)
@@ -30,7 +30,7 @@ func getByIDCategories(db *gorm.DB, id uint64) (*entity.Categories, error) {
 	return datas, nil
 }
 
-//GetByID get data
+// GetByID get data
 func (r *CatRepo) GetByID(id uint64) (*entity.Categories, error) {
 	var data *entity.Categories
 	access := repository.OptionRepositoryInit(r.db)
@@ -48,21 +48,21 @@ func (r *CatRepo) GetByID(id uint64) (*entity.Categories, error) {
 		if err != nil {
 			data, _ = getByIDCategories(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
-			fmt.Println("key olustur")
+			fmt.Println("Create Key")
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
 }
 
-//GetAll all data
+// GetAll all data
 func (r *CatRepo) GetAll() ([]entity.Categories, error) {
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
@@ -76,15 +76,15 @@ func (r *CatRepo) GetAll() ([]entity.Categories, error) {
 		if err != nil {
 			data, _ = getAllCategories(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
-			fmt.Println("key olustur")
+			fmt.Println("Create Key")
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

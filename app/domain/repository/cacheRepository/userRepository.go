@@ -3,10 +3,10 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -43,13 +43,13 @@ func (r *UserRepo) GetUser(id uint64) (*entity.Users, error) {
 			data, _ = getUser(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -75,13 +75,13 @@ func (r *UserRepo) GetUsers() ([]entity.Users, error) {
 			data, _ = getUsers(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -104,13 +104,13 @@ func (r *UserRepo) GetByID(id uint64) (*entity.Users, error) {
 			data, _ = getByIDuser(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -137,13 +137,13 @@ func (r *UserRepo) GetAll() ([]entity.Users, error) {
 			data, _ = getAlluser(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -169,13 +169,13 @@ func (r *UserRepo) GetAllPagination(perPage int, offset int) ([]entity.Users, er
 			data, _ = GetAllPaginationuser(r.db, perPage, offset)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

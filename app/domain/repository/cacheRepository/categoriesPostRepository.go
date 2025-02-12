@@ -3,21 +3,21 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 	"time"
 
 	"github.com/jinzhu/gorm"
 )
 
-//CatPostRepo struct
+// CatPostRepo struct
 type CatPostRepo struct {
 	db *gorm.DB
 }
 
-//CatPostRepositoryInit initial
+// CatPostRepositoryInit initial
 func CatPostRepositoryInit(db *gorm.DB) *CatPostRepo {
 	return &CatPostRepo{db}
 }
@@ -25,7 +25,7 @@ func CatPostRepositoryInit(db *gorm.DB) *CatPostRepo {
 //PostRepo implements the repository.PostRepository interface
 // var _ interfaces.CatPostAppInterface = &CatPostRepo{}
 
-//GetByID get data
+// GetByID get data
 func (r *CatPostRepo) GetByID(id uint64) (*entity.CategoryPosts, error) {
 	var data *entity.CategoryPosts
 	access := repository.OptionRepositoryInit(r.db)
@@ -43,15 +43,15 @@ func (r *CatPostRepo) GetByID(id uint64) (*entity.CategoryPosts, error) {
 		if err != nil {
 			data, _ = getByIDCatPost(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
-			fmt.Println("key olustur")
+			fmt.Println("Create Key")
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -63,7 +63,7 @@ func getByIDCatPost(db *gorm.DB, id uint64) (*entity.CategoryPosts, error) {
 	return datas, nil
 }
 
-//GetAllforCatID get data
+// GetAllforCatID get data
 func (r *CatPostRepo) GetAllforCatID(catid uint64) ([]entity.CategoryPosts, error) {
 	var cat []entity.CategoryPosts
 	err := r.db.Debug().Limit(100).Where("category_id = ?", catid).Order("created_at desc").Find(&cat).Error
@@ -77,7 +77,7 @@ func (r *CatPostRepo) GetAllforCatID(catid uint64) ([]entity.CategoryPosts, erro
 	return cat, nil
 }
 
-//GetAllforPostID all data
+// GetAllforPostID all data
 func (r *CatPostRepo) GetAllforPostID(postid uint64) ([]entity.CategoryPosts, error) {
 	var cat []entity.CategoryPosts
 	err := r.db.Debug().Limit(100).Where("post_id = ?", postid).Order("created_at desc").Find(&cat).Error
@@ -90,7 +90,7 @@ func (r *CatPostRepo) GetAllforPostID(postid uint64) ([]entity.CategoryPosts, er
 	return cat, nil
 }
 
-//GetAll all data
+// GetAll all data
 func (r *CatPostRepo) GetAll() ([]entity.CategoryPosts, error) {
 	var cat []entity.CategoryPosts
 	err := r.db.Debug().Limit(100).Order("created_at desc").Find(&cat).Error

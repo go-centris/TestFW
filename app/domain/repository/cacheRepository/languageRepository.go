@@ -3,21 +3,21 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 	"time"
 
 	"github.com/jinzhu/gorm"
 )
 
-//LanguageRepo struct
+// LanguageRepo struct
 type LanguageRepo struct {
 	db *gorm.DB
 }
 
-//LanguageRepositoryInit initial
+// LanguageRepositoryInit initial
 func LanguageRepositoryInit(db *gorm.DB) *LanguageRepo {
 	return &LanguageRepo{db}
 }
@@ -25,7 +25,7 @@ func LanguageRepositoryInit(db *gorm.DB) *LanguageRepo {
 //languageRepo implements the repository.languageRepository interface
 // var _ interfaces.languageAppInterface = &languageRepo{}
 
-//GetByID get data
+// GetByID get data
 func (r *LanguageRepo) GetByID(id uint64) (*entity.Languages, error) {
 	var data *entity.Languages
 	access := repository.OptionRepositoryInit(r.db)
@@ -40,13 +40,13 @@ func (r *LanguageRepo) GetByID(id uint64) (*entity.Languages, error) {
 			data, _ = getByIDLanguages(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -57,7 +57,7 @@ func getByIDLanguages(db *gorm.DB, id uint64) (*entity.Languages, error) {
 	return data, nil
 }
 
-//GetAll all data
+// GetAll all data
 func getAllLanguages(db *gorm.DB) ([]entity.Languages, error) {
 	repo := repository.LanguageRepositoryInit(db)
 	data, _ := repo.GetAll()
@@ -77,13 +77,13 @@ func (r *LanguageRepo) GetAll() ([]entity.Languages, error) {
 			data, _ = getAllLanguages(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

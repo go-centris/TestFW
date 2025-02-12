@@ -3,10 +3,10 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/pkg/cache"
 	"stncCms/app/domain/entity"
-	"stncCms/pkg/helpers/stnccollection"
 	repository "stncCms/app/domain/repository/dbRepository"
+	"stncCms/pkg/cache"
+	"stncCms/pkg/helpers/stnccollection"
 
 	"time"
 
@@ -44,7 +44,7 @@ func (r *ModulesRepo) GetAll() ([]entity.Modules, error) {
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -76,7 +76,7 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, er
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -108,7 +108,7 @@ func (r *ModulesRepo) GetAllModulesMergePermission() ([]entity.ModulesAndPermiss
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -146,7 +146,7 @@ func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
 		if err != nil {
 			data, _ = getByIDRegionModules(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
-			fmt.Println("key olustur")
+			fmt.Println("Create Key")
 			if err != nil {
 				fmt.Println("hata baş")
 			}
@@ -154,7 +154,7 @@ func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
@@ -181,7 +181,7 @@ func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Mod
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil

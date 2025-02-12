@@ -25,18 +25,16 @@ var DB *gorm.DB
 
 // Repositories strcut
 type Repositories struct {
-	User               Iauth.UserAppInterface
-	Role               Iauth.RoleAppInterface
-	Permission         Iauth.PermissionAppInterface
-	RolePermission     Iauth.RolePermissionAppInterface
+	User           Iauth.UserAppInterface
+	Role           Iauth.RoleAppInterface
+	Permission     Iauth.PermissionAppInterface
+	RolePermission Iauth.RolePermissionAppInterface
 
-	Dashboard          Isacrife.DashboardAppInterface
+	Dashboard Isacrife.DashboardAppInterface
 
-
-
-	Region             Iregion.RegionAppInterface
-	Branch             Iregion.BranchAppInterface
-	Modules            Icommon.ModulesAppInterface
+	Region  Iregion.RegionAppInterface
+	Branch  Iregion.BranchAppInterface
+	Modules Icommon.ModulesAppInterface
 
 	Post    Icms.PostAppInterface
 	Cat     Icms.CatAppInterface
@@ -44,13 +42,11 @@ type Repositories struct {
 	Media   Isacrife.MediaAppInterface
 	Report  Ireport.ReportAppInterface
 
-	Lang              Icommon.LanguageAppInterface
-	Options           Isacrife.OptionsAppInterface
-
+	Lang    Icommon.LanguageAppInterface
+	Options Isacrife.OptionsAppInterface
 
 	DB *gorm.DB
 }
-
 
 func DbConnect() *gorm.DB {
 	dbdriver := os.Getenv("DB_DRIVER")
@@ -117,28 +113,25 @@ func DbConnect() *gorm.DB {
 func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 	return &Repositories{
-		User:               UserRepositoryInit(db),
-		Permission:         PermissionRepositoryInit(db),
-		Role:               RoleRepositoryInit(db),
-		RolePermission:     RolePermissionRepositoryInit(db),
+		User:           UserRepositoryInit(db),
+		Permission:     PermissionRepositoryInit(db),
+		Role:           RoleRepositoryInit(db),
+		RolePermission: RolePermissionRepositoryInit(db),
 
-
-		Modules:            ModulesRepositoryInit(db),
+		Modules: ModulesRepositoryInit(db),
 
 		Region: RegionRepositoryInit(db),
 		Branch: BranchRepositoryInit(db),
-
-
 
 		Post:    PostRepositoryInit(db),
 		Cat:     CatRepositoryInit(db),
 		CatPost: CatPostRepositoryInit(db),
 		Media:   MediaRepositoryInit(db),
 
-		Lang:              LanguageRepositoryInit(db),
-		Options:           OptionRepositoryInit(db),
+		Lang:    LanguageRepositoryInit(db),
+		Options: OptionRepositoryInit(db),
 
-		DB:                db,
+		DB: db,
 	}, nil
 }
 
@@ -153,17 +146,15 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 func (s *Repositories) AutoRelation() error {
 	s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
 		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
-&entity.Users{},
+		&entity.Users{},
 
-	 &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{})
 
 	s.DB.Model(&entity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
 	s.DB.Model(&entity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
-	
 
-                           
-	return s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error       // one to many (one=region) (many=branches)            
+	return s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error // one to many (one=region) (many=branches)
 
 }
 
@@ -171,8 +162,8 @@ func (s *Repositories) Automigrate() error {
 	return s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
 		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
 
-&entity.Users{},
- &entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Users{},
+		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{}).Error
 }
 
@@ -200,15 +191,15 @@ func (r *GruplarRepo) GetAllStatusFindAndAgirlikTipi(durum int, agirlikTipi int)
 		if err != nil {
 			data, _ = GetAllStatusFindAndAgirlikTipiGroup(r.db, durum, agirlikTipi)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
-			fmt.Println("key olustur")
+			fmt.Println("Create Key")
 			if err != nil {
-				fmt.Println("hata baş")
+				fmt.Println("Create Key Error")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("hata son")
+			fmt.Println("Redis Error")
 		}
 	}
 	return data, nil
