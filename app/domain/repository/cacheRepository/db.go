@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"os"
 	"stncCms/app/domain/entity"
+	postEntity "stncCms/app/post/entity"
+	Icms "stncCms/app/post/services"
 	Iauth "stncCms/app/services/authServices_mod"
-	Icms "stncCms/app/services/cmsServices_mod"
 	Icommon "stncCms/app/services/commonServices_mod"
 
 	Iregion "stncCms/app/services/regionServices_mod"
 	Ireport "stncCms/app/services/reportSacrifeServices_mod"
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
+	PostRepo "stncCms/app/post/repository/cacheRepository"
 
 	"github.com/hypnoglow/gormzap"
 	"github.com/jinzhu/gorm"
@@ -30,7 +32,7 @@ type Repositories struct {
 	Permission     Iauth.PermissionAppInterface
 	RolePermission Iauth.RolePermissionAppInterface
 
-	Dashboard Isacrife.DashboardAppInterface
+	// Dashboard Isacrife.DashboardAppInterface
 
 	Region  Iregion.RegionAppInterface
 	Branch  Iregion.BranchAppInterface
@@ -123,7 +125,7 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Region: RegionRepositoryInit(db),
 		Branch: BranchRepositoryInit(db),
 
-		Post:    PostRepositoryInit(db),
+		Post:    PostRepo.PostRepositoryInit(db),
 		Cat:     CatRepositoryInit(db),
 		CatPost: CatPostRepositoryInit(db),
 		Media:   MediaRepositoryInit(db),
@@ -149,7 +151,7 @@ func (s *Repositories) AutoRelation() error {
 		&entity.Users{},
 
 		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
-		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{})
+		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{})
 
 	s.DB.Model(&entity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
 	s.DB.Model(&entity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
@@ -164,7 +166,7 @@ func (s *Repositories) Automigrate() error {
 
 		&entity.Users{},
 		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
-		&entity.Post{}, &entity.Categories{}, &entity.CategoryPosts{}, &entity.Media{}).Error
+		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{}).Error
 }
 
 /*func GetAllStatusFindAndAgirlikTipiGroup(db *gorm.DB, durum int, agirlikTipi int) ([]entity.SacrificeGruplar, error) {

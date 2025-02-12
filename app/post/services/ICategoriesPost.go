@@ -1,7 +1,7 @@
 package cmsServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/post/entity"
 )
 
 // CatPostAppInterface service

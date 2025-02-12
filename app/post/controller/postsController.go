@@ -8,13 +8,14 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"stncCms/app/domain/entity"
+	"stncCms/app/post/entity"
+	LngEntity "stncCms/app/domain/entity"
 	"stncCms/pkg/helpers/lang"
 	"stncCms/pkg/helpers/stnc2upload"
 	stnccollection "stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stncdatetime"
 	Iauth "stncCms/app/services/authServices_mod"
-	Icms "stncCms/app/services/cmsServices_mod"
+	Icms "stncCms/app/post/services"
 	Icommon "stncCms/app/services/commonServices_mod"
 
 	"stncCms/pkg/helpers/stnchelper"
@@ -192,7 +193,7 @@ func (access *Post) Store(c *gin.Context) {
 			catPost.ID = saveCat.ID + 1
 		}
 		lang := c.PostForm("languageSelect")
-		var language = entity.Languages{}
+		var language = LngEntity.Languages{}
 		language.PostID = saveData.ID
 		language.Language = lang
 		access.ILanguage.Save(&language)

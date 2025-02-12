@@ -3,7 +3,8 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
+	"stncCms/app/post/entity"
+	PostRepository "stncCms/app/post/repository/dbRepository"
 	repository "stncCms/app/domain/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
@@ -53,7 +54,7 @@ func (r *PostRepo) GetByID(id uint64) (*entity.Post, error) {
 }
 
 func getByIDPost(db *gorm.DB, id uint64) (*entity.Post, error) {
-	repo := repository.PostRepositoryInit(db)
+	repo := PostRepository.PostRepositoryInit(db)
 	data, _ := repo.GetByID(id)
 	return data, nil
 }
@@ -87,14 +88,14 @@ func (r *PostRepo) GetAll() ([]entity.Post, error) {
 
 // GetAll all data
 func GetAllPaginationost(db *gorm.DB) ([]entity.Post, error) {
-	repo := repository.PostRepositoryInit(db)
+	repo := PostRepository.PostRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // GetAllPagination pagination all data
 func GetAllPaginationPost(db *gorm.DB, perPage int, offset int) ([]entity.Post, error) {
-	repo := repository.PostRepositoryInit(db)
+	repo := PostRepository.PostRepositoryInit(db)
 	data, _ := repo.GetAllPagination(perPage, offset)
 	return data, nil
 }

@@ -13,7 +13,7 @@ import (
 	"os"
 	repository "stncCms/app/domain/repository/cacheRepository"
 
-	cms "stncCms/app/web/controller/cms_mod"
+	cms "stncCms/app/post/controller"
 
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-contrib/sessions"
@@ -66,7 +66,7 @@ func main() {
 		return
 	}
 
-	indexHandle := sacrifice.InitDashboard(services.Dashboard)
+	// indexHandle := sacrifice.InitDashboard(services.Dashboard)
 	posts := cms.InitPost(services.Post, services.Cat, services.CatPost, services.Lang, services.User)
 
 	loginHandle := auth.InitLogin(services.User)
@@ -153,13 +153,13 @@ func main() {
 		c.Redirect(http.StatusMovedPermanently, "admin/sacrifece/post/")
 	})
 
-	r.GET("optionsDefault", sacrifice.OptionsDefault)
-	r.GET("cacheReset", sacrifice.CacheReset)
+	// r.GET("optionsDefault", sacrifice.OptionsDefault)
+	// r.GET("cacheReset", sacrifice.CacheReset)
 
-	r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //for ajax 
+	r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //for ajax
 
-	r.GET("/admin/:ModulName/dashboard-fundraising", indexHandle.Index)
-	r.GET("/admin/:ModulName/dashboard-sacrifece", indexHandle.SacrifeceIndex)
+	// r.GET("/admin/:ModulName/dashboard-fundraising", indexHandle.Index)
+	// r.GET("/admin/:ModulName/dashboard-sacrifece", indexHandle.SacrifeceIndex)
 
 	userGroup := r.Group("/admin/:ModulName/user")
 	{

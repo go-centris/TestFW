@@ -3,7 +3,7 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
+	"stncCms/app/post/entity"
 	repository "stncCms/app/domain/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
