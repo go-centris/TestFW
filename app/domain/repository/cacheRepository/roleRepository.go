@@ -3,14 +3,16 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+
+
+	authRepo "stncCms/app/auth/repository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
-
+	repository "stncCms/app/domain/repository/dbRepository"
 	"github.com/jinzhu/gorm"
+		authEntity "stncCms/app/auth/entity"
+		authDto "stncCms/app/auth/dto"
 )
 
 type RoleRepo struct {
@@ -21,12 +23,12 @@ func RoleRepositoryInit(db *gorm.DB) *RoleRepo {
 	return &RoleRepo{db}
 }
 
-// RoleRepo implements the repository.RoleRepository interface
+// RoleRepo implements the authRepo.RoleRepository interface
 //var _ services.RoleAppInterface = &RoleRepo{}
 
 // GetAll all data
-func (r *RoleRepo) GetAll() ([]entity.Role, error) {
-	var data []entity.Role
+func (r *RoleRepo) GetAll() ([]authEntity.Role, error) {
+	var data []authEntity.Role
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -50,21 +52,21 @@ func (r *RoleRepo) GetAll() ([]entity.Role, error) {
 	}
 	return data, nil
 }
-func getAllRole(db *gorm.DB) ([]entity.Role, error) {
-	repo := repository.RoleRepositoryInit(db)
+func getAllRole(db *gorm.DB) ([]authEntity.Role, error) {
+	repo := authRepo.RoleRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // Save data
-func (r *RoleRepo) Save(data *entity.Role) (*entity.Role, map[string]string) {
-	repo := repository.RoleRepositoryInit(r.db)
+func (r *RoleRepo) Save(data *authEntity.Role) (*authEntity.Role, map[string]string) {
+	repo := authRepo.RoleRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
-func (r *RoleRepo) EditList(modulID int, roleID int) ([]dto.RoleEditList, error) {
-	repo := repository.RoleRepositoryInit(r.db)
+func (r *RoleRepo) EditList(modulID int, roleID int) ([]authDto.RoleEditList, error) {
+	repo := authRepo.RoleRepositoryInit(r.db)
 	datas, err := repo.EditList(modulID, roleID)
 	return datas, err
 }
@@ -72,28 +74,28 @@ func (r *RoleRepo) EditList(modulID int, roleID int) ([]dto.RoleEditList, error)
 // Count
 func (r *RoleRepo) Count(totalCount *int64) {
 	var count int64
-	repo := repository.RoleRepositoryInit(r.db)
+	repo := authRepo.RoleRepositoryInit(r.db)
 	repo.Count(&count)
 	*totalCount = count
 }
 
 // Delete data
 func (r *RoleRepo) Delete(id uint64) error {
-	repo := repository.RoleRepositoryInit(r.db)
+	repo := authRepo.RoleRepositoryInit(r.db)
 	err := repo.Delete(id)
 	return err
 }
 
 // GetAllPagination pagination all data
-func GetAllPaginationrole(db *gorm.DB, perPage int, offset int) ([]entity.Role, error) {
-	repo := repository.RoleRepositoryInit(db)
+func GetAllPaginationrole(db *gorm.DB, perPage int, offset int) ([]authEntity.Role, error) {
+	repo := authRepo.RoleRepositoryInit(db)
 	data, _ := repo.GetAllPagination(perPage, offset)
 	return data, nil
 }
 
 // GetAllPagination pagination all data
-func (r *RoleRepo) GetAllPagination(perPage int, offset int) ([]entity.Role, error) {
-	var data []entity.Role
+func (r *RoleRepo) GetAllPagination(perPage int, offset int) ([]authEntity.Role, error) {
+	var data []authEntity.Role
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -119,8 +121,8 @@ func (r *RoleRepo) GetAllPagination(perPage int, offset int) ([]entity.Role, err
 }
 
 // GetByID get data
-func (r *RoleRepo) GetByID(id int) (*entity.Role, error) {
-	var data *entity.Role
+func (r *RoleRepo) GetByID(id int) (*authEntity.Role, error) {
+	var data *authEntity.Role
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -145,19 +147,19 @@ func (r *RoleRepo) GetByID(id int) (*entity.Role, error) {
 	return data, nil
 }
 
-func getByIDRole(db *gorm.DB, id int) (*entity.Role, error) {
-	repo := repository.RoleRepositoryInit(db)
+func getByIDRole(db *gorm.DB, id int) (*authEntity.Role, error) {
+	repo := authRepo.RoleRepositoryInit(db)
 	data, _ := repo.GetByID(id)
 	return data, nil
 }
 
-func (r *RoleRepo) Update(data *entity.Role) (*entity.Role, map[string]string) {
-	repo := repository.RoleRepositoryInit(r.db)
+func (r *RoleRepo) Update(data *authEntity.Role) (*authEntity.Role, map[string]string) {
+	repo := authRepo.RoleRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 func (r *RoleRepo) UpdateTitle(id int, title string) {
-	repo := repository.RoleRepositoryInit(r.db)
+	repo := authRepo.RoleRepositoryInit(r.db)
 	repo.UpdateTitle(id, title)
 }

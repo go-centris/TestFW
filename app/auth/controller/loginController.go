@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/utils/pagination"
 	"net/http"
-	"stncCms/app/domain/entity"
+	userEntity "stncCms/app/auth/entity"
 	"stncCms/pkg/helpers/lang"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 	"stncCms/pkg/infrastructure/security"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-gonic/gin"
@@ -70,7 +70,7 @@ func (login *Login) Login(c *gin.Context) {
 // sing in past data
 func (login *Login) LoginPost(c *gin.Context) {
 	locale, _ := lang.LoadLanguages("user")
-	var user = entity.Users{}
+	var user = userEntity.Users{}
 	flashMsg := stncsession.GetFlashMessage(c)
 	var savePostError = make(map[string]string)
 
@@ -123,7 +123,7 @@ func (login *Login) LoginPost(c *gin.Context) {
 
 // sign in api implament
 func (login *Login) LoginAPI(c *gin.Context) {
-	var user = entity.Users{}
+	var user = userEntity.Users{}
 	email := "selmantunc@gmail.com"
 	pass := "111111-6"
 	user.Email = email

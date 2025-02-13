@@ -2,11 +2,13 @@ package dbRepository
 
 import (
 	"errors"
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
+	
+
+	modulesDTO "stncCms/app/modules/dto"
+	authEntity "stncCms/app/auth/entity"
 
 	"github.com/jinzhu/gorm"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 )
 
 type PermissionRepo struct {
@@ -21,8 +23,8 @@ func PermissionRepositoryInit(db *gorm.DB) *PermissionRepo {
 var _ Iauth.PermissionAppInterface = &PermissionRepo{}
 
 // GetAll all data
-func (r *PermissionRepo) GetAll() ([]entity.Permission, error) {
-	var datas []entity.Permission
+func (r *PermissionRepo) GetAll() ([]authEntity.Permission, error) {
+	var datas []authEntity.Permission
 	var err error
 	err = r.db.Debug().Order("created_at desc").Find(&datas).Error
 	if err != nil {
@@ -34,8 +36,8 @@ func (r *PermissionRepo) GetAll() ([]entity.Permission, error) {
 	return datas, nil
 }
 
-func (r *PermissionRepo) GetAllPaginationermissionForModulID(modulId int) ([]entity.Permission, error) {
-	var datas []entity.Permission
+func (r *PermissionRepo) GetAllPaginationermissionForModulID(modulId int) ([]authEntity.Permission, error) {
+	var datas []authEntity.Permission
 	var err error
 	err = r.db.Debug().Where("modul_id = ?", modulId).Order("id desc").Find(&datas).Error
 	if err != nil {
@@ -47,10 +49,10 @@ func (r *PermissionRepo) GetAllPaginationermissionForModulID(modulId int) ([]ent
 	return datas, nil
 }
 
-func (r *PermissionRepo) GetUserPermission(roleID int) ([]dto.RbcaCheck, error) {
-	var data []dto.RbcaCheck
+func (r *PermissionRepo) GetUserPermission(roleID int) ([]modulesDTO.RbcaCheck, error) {
+	var data []modulesDTO.RbcaCheck
 	var err error
-	query := r.db.Table(entity.RolePermissonTableName + " AS role_permission")
+	query := r.db.Table(authEntity.RolePermissonTableName + " AS role_permission")
 	query = query.Select(`permission.modul_id AS modul_id,
 	         role_permission.role_id,role_permission.permission_id,
 		     role_permission.active AS role_permission_active ,
@@ -71,10 +73,10 @@ func (r *PermissionRepo) GetUserPermission(roleID int) ([]dto.RbcaCheck, error) 
 	return data, nil
 }
 
-func (r *PermissionRepo) GetUserPermissionForComponent(roleID int, componentBaseName string) ([]dto.RbcaCheck, error) {
-	var data []dto.RbcaCheck
+func (r *PermissionRepo) GetUserPermissionForComponent(roleID int, componentBaseName string) ([]modulesDTO.RbcaCheck, error) {
+	var data []modulesDTO.RbcaCheck
 	var err error
-	query := r.db.Table(entity.RolePermissonTableName + " AS role_permission")
+	query := r.db.Table(authEntity.RolePermissonTableName + " AS role_permission")
 	query = query.Select(`permission.modul_id AS modul_id,
 	         role_permission.role_id,role_permission.permission_id,
 		     role_permission.active AS role_permission_active ,

@@ -3,13 +3,15 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
+
 	repository "stncCms/app/domain/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
-
+	modulesEntity "stncCms/app/modules/entity"
+	modulesDto "stncCms/app/modules/dto"
 	"time"
 
+	
 	"github.com/jinzhu/gorm"
 )
 
@@ -24,8 +26,8 @@ func ModulesRepositoryInit(db *gorm.DB) *ModulesRepo {
 //var _ services.ModulesAppInterface = &ModulesRepo{}
 
 // GetAll all data
-func (r *ModulesRepo) GetAll() ([]entity.Modules, error) {
-	var data []entity.Modules
+func (r *ModulesRepo) GetAll() ([]modulesEntity.Modules, error) {
+	var data []modulesEntity.Modules
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -49,15 +51,15 @@ func (r *ModulesRepo) GetAll() ([]entity.Modules, error) {
 	}
 	return data, nil
 }
-func getAllModules(db *gorm.DB) ([]entity.Modules, error) {
+func getAllModules(db *gorm.DB) ([]modulesEntity.Modules, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, error) {
-	var data []entity.ModulesAndPermissionDTO
+func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDto.ModulesAndPermissionDTO, error) {
+	var data []modulesDto.ModulesAndPermissionDTO
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -81,15 +83,15 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, er
 	}
 	return data, nil
 }
-func getAllModulesMergeModules(db *gorm.DB) ([]entity.ModulesAndPermissionDTO, error) {
+func getAllModulesMergeModules(db *gorm.DB) ([]modulesDto.ModulesAndPermissionDTO, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMerge()
 	return data, nil
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMergePermission() ([]entity.ModulesAndPermissionRoleDTO, error) {
-	var data []entity.ModulesAndPermissionRoleDTO
+func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDto.ModulesAndPermissionRoleDTO, error) {
+	var data []modulesDto.ModulesAndPermissionRoleDTO
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -113,7 +115,7 @@ func (r *ModulesRepo) GetAllModulesMergePermission() ([]entity.ModulesAndPermiss
 	}
 	return data, nil
 }
-func getAllModulesMergePermission(db *gorm.DB) ([]entity.ModulesAndPermissionRoleDTO, error) {
+func getAllModulesMergePermission(db *gorm.DB) ([]modulesDto.ModulesAndPermissionRoleDTO, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMergePermission()
 	return data, nil
@@ -121,16 +123,16 @@ func getAllModulesMergePermission(db *gorm.DB) ([]entity.ModulesAndPermissionRol
 
 //*****///
 
-func getByIDRegionModules(db *gorm.DB, id uint64) (*entity.Modules, error) {
+func getByIDRegionModules(db *gorm.DB, id uint64) (*modulesEntity.Modules, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	datas, _ := repo.GetByID(id)
 	return datas, nil
 }
 
 // GetByID get data
-func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
+func (r *ModulesRepo) GetByID(id uint64) (*modulesEntity.Modules, error) {
 
-	var data *entity.Modules
+	var data *modulesEntity.Modules
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
@@ -161,10 +163,10 @@ func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
 }
 
 // GetAllPaginate pagination
-func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Modules, error) {
+func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
-	var data []entity.Modules
+	var data []modulesEntity.Modules
 	if cacheControl == "false" {
 		data, _ = getAllPaginateForModules(r.db, postsPerPage, offset)
 	} else {
@@ -188,7 +190,7 @@ func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Mod
 }
 
 // getAllPaginate
-func getAllPaginateForModules(db *gorm.DB, postsPerPage int, offset int) ([]entity.Modules, error) {
+func getAllPaginateForModules(db *gorm.DB, postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllPaginate(postsPerPage, offset)
 	return data, nil
@@ -203,14 +205,14 @@ func (r *ModulesRepo) GetAllPaginateCount(returnValue *int64) {
 }
 
 // Save data
-func (r *ModulesRepo) Save(data *entity.Modules) (*entity.Modules, map[string]string) {
+func (r *ModulesRepo) Save(data *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	repo := repository.ModulesRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 // Update upate data
-func (r *ModulesRepo) Update(data *entity.Modules) (*entity.Modules, map[string]string) {
+func (r *ModulesRepo) Update(data *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	repo := repository.ModulesRepositoryInit(r.db)
 	datas, err := repo.Update(data)
 	return datas, err

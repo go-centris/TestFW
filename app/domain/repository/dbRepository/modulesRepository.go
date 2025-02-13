@@ -2,7 +2,7 @@ package dbRepository
 
 import (
 	"errors"
-	"stncCms/app/domain/entity"
+	modulesEntity "stncCms/app/modules/entity"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -20,8 +20,8 @@ func ModulesRepositoryInit(db *gorm.DB) *ModulesRepo {
 // var _ services.ModulesAppInterface = &ModulesRepo{}
 
 // GetAll all data
-func (r *ModulesRepo) GetAll() ([]entity.Modules, error) {
-	var datas []entity.Modules
+func (r *ModulesRepo) GetAll() ([]modulesEntity.Modules, error) {
+	var datas []modulesEntity.Modules
 	var err error
 	err = r.db.Debug().Order("created_at desc").Find(&datas).Error
 	if err != nil {
@@ -34,9 +34,9 @@ func (r *ModulesRepo) GetAll() ([]entity.Modules, error) {
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, error) {
+func (r *ModulesRepo) GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error) {
 	var err error
-	var datas []entity.ModulesAndPermissionDTO
+	var datas []modulesEntity.ModulesAndPermissionDTO
 	err = r.db.Debug().Table("modules").Order("created_at desc").Find(&datas).Error
 
 	//TODO: nasil preload yapilir bakilacak
@@ -53,9 +53,9 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, er
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMergePermission() ([]entity.ModulesAndPermissionRoleDTO, error) {
+func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesEntity.ModulesAndPermissionRoleDTO, error) {
 	var err error
-	var datas []entity.ModulesAndPermissionRoleDTO
+	var datas []modulesEntity.ModulesAndPermissionRoleDTO
 	err = r.db.Debug().Table("modules").Order("created_at desc").Find(&datas).Error
 
 	//TODO: nasil preload yapilir bakilacak
@@ -72,7 +72,7 @@ func (r *ModulesRepo) GetAllModulesMergePermission() ([]entity.ModulesAndPermiss
 }
 
 // Save data
-func (r *ModulesRepo) Save(cat *entity.Modules) (*entity.Modules, map[string]string) {
+func (r *ModulesRepo) Save(cat *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	dbErr := map[string]string{}
 	err := r.db.Debug().Create(&cat).Error
 	if err != nil {
@@ -89,7 +89,7 @@ func (r *ModulesRepo) Save(cat *entity.Modules) (*entity.Modules, map[string]str
 }
 
 // Update upate data
-func (r *ModulesRepo) Update(cat *entity.Modules) (*entity.Modules, map[string]string) {
+func (r *ModulesRepo) Update(cat *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	dbErr := map[string]string{}
 	err := r.db.Debug().Save(&cat).Error
 	if err != nil {
@@ -106,8 +106,8 @@ func (r *ModulesRepo) Update(cat *entity.Modules) (*entity.Modules, map[string]s
 }
 
 // GetByID get data
-func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
-	var cat entity.Modules
+func (r *ModulesRepo) GetByID(id uint64) (*modulesEntity.Modules, error) {
+	var cat modulesEntity.Modules
 	err := r.db.Debug().Where("id = ?", id).Take(&cat).Error
 	if err != nil {
 		return nil, errors.New("database error, please try again")
@@ -120,8 +120,8 @@ func (r *ModulesRepo) GetByID(id uint64) (*entity.Modules, error) {
 }
 
 // GetAllPaginate paginatin list
-func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Modules, error) {
-	var regionList []entity.Modules
+func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
+	var regionList []modulesEntity.Modules
 	err := r.db.Debug().Order("id asc").Limit(postsPerPage).Offset(offset).Find(&regionList).Error
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Mod
 
 // GetAllPaginateCount
 func (r *ModulesRepo) GetAllPaginateCount(returnValue *int64) {
-	var table entity.Modules
+	var table modulesEntity.Modules
 	var count int64
 	r.db.Debug().Model(table).Count(&count)
 	*returnValue = count
@@ -142,7 +142,7 @@ func (r *ModulesRepo) GetAllPaginateCount(returnValue *int64) {
 
 // Delete delete data
 func (r *ModulesRepo) Delete(id uint64) error {
-	var cat entity.Modules
+	var cat modulesEntity.Modules
 	err := r.db.Debug().Where("id = ?", id).Delete(&cat).Error
 	if err != nil {
 		return errors.New("database error, please try again")

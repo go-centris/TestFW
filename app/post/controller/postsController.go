@@ -14,7 +14,7 @@ import (
 	"stncCms/pkg/helpers/stnc2upload"
 	stnccollection "stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stncdatetime"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 	Icms "stncCms/app/post/services"
 	Icommon "stncCms/app/services/commonServices_mod"
 

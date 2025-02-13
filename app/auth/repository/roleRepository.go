@@ -3,9 +3,9 @@ package dbRepository
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
-	Iauth "stncCms/app/services/authServices_mod"
+	"stncCms/app/auth/dto"
+	"stncCms/app/auth/entity"
+	Iauth "stncCms/app/auth/services"
 	"strings"
 )
 

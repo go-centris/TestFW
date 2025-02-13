@@ -1,7 +1,7 @@
 package authServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/auth/entity"
 )
 
 // PermissionAppInterface interface

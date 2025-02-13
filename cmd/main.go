@@ -25,7 +25,7 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 
 	//modSacrife "stncCms/app/web.api/controller/modSacrife"
-	auth "stncCms/app/web/controller/auth_mod"
+	auth "stncCms/app/auth/controller"
 	common "stncCms/app/web/controller/common_mod"
 	region "stncCms/app/web/controller/region_mod"
 
@@ -34,6 +34,7 @@ import (
 
 var cacheControlSelman = false
 
+// hk@gmail.com  mutluerF9E
 func init() {
 	//To load our environmental variables.
 

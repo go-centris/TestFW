@@ -2,9 +2,10 @@ package dbRepository
 
 import (
 	"errors"
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
-	Iauth "stncCms/app/services/authServices_mod"
+	
+	"stncCms/app/auth/dto"
+	"stncCms/app/auth/entity"
+	Iauth "stncCms/app/auth/services"
 	"stncCms/pkg/infrastructure/security"
 	"strings"
 

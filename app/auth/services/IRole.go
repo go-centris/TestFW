@@ -1,8 +1,8 @@
 package authServices_mod
 
 import (
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
+	"stncCms/app/auth/dto"
+	"stncCms/app/auth/entity"
 )
 
 // UserAppInterface interface

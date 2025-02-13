@@ -3,12 +3,14 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	authRepo "stncCms/app/auth/repository"
+
 	"stncCms/pkg/cache"
 	"time"
-
+	repository "stncCms/app/domain/repository/dbRepository"
 	"github.com/jinzhu/gorm"
+	
+	authEntity "stncCms/app/auth/entity"
 )
 
 type RolePermissionRepo struct {
@@ -19,12 +21,12 @@ func RolePermissionRepositoryInit(db *gorm.DB) *RolePermissionRepo {
 	return &RolePermissionRepo{db}
 }
 
-// PermissionRepo implements the repository.PermissionRepository interface
+// PermissionRepo implements the authRepo.PermissionRepository interface
 //var _ services.RolePermissionAppInterface = &RolePermissionRepo{}
 
 // GetAll all data
-func (r *RolePermissionRepo) GetAll() ([]entity.RolePermisson, error) {
-	var data []entity.RolePermisson
+func (r *RolePermissionRepo) GetAll() ([]authEntity.RolePermisson, error) {
+	var data []authEntity.RolePermisson
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -48,27 +50,27 @@ func (r *RolePermissionRepo) GetAll() ([]entity.RolePermisson, error) {
 	}
 	return data, nil
 }
-func getAllRolePermission(db *gorm.DB) ([]entity.RolePermisson, error) {
-	repo := repository.RolePermissionRepositoryInit(db)
+func getAllRolePermission(db *gorm.DB) ([]authEntity.RolePermisson, error) {
+	repo := authRepo.RolePermissionRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // Save data
-func (r *RolePermissionRepo) Save(data *entity.RolePermisson) (*entity.RolePermisson, map[string]string) {
-	repo := repository.RolePermissionRepositoryInit(r.db)
+func (r *RolePermissionRepo) Save(data *authEntity.RolePermisson) (*authEntity.RolePermisson, map[string]string) {
+	repo := authRepo.RolePermissionRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 // Update upate data
-func (r *RolePermissionRepo) Update(data *entity.RolePermisson) (*entity.RolePermisson, map[string]string) {
-	repo := repository.RolePermissionRepositoryInit(r.db)
+func (r *RolePermissionRepo) Update(data *authEntity.RolePermisson) (*authEntity.RolePermisson, map[string]string) {
+	repo := authRepo.RolePermissionRepositoryInit(r.db)
 	datas, err := repo.Update(data)
 	return datas, err
 }
 
 func (r *RolePermissionRepo) UpdateActiveStatus(roleId int, permissionId int, active int) {
-	repo := repository.RolePermissionRepositoryInit(r.db)
+	repo := authRepo.RolePermissionRepositoryInit(r.db)
 	repo.UpdateActiveStatus(roleId, permissionId, active)
 }

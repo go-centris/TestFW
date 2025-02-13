@@ -1,14 +1,12 @@
 package dto
 
-//type ModulesAndPermission struct {
-//	entity.Modules
-//	Permissions []entity.Permission
-//}
-//
-//type ModulesAndPermissionRole struct {
-//	entity.Modules
-//	RoleEditList []RoleEditList
-//}
+import (
+	authDto "stncCms/app/auth/dto"
+	authEntity "stncCms/app/auth/entity"
+	modulesEntity "stncCms/app/modules/entity"
+)
+
+
 
 type RbcaCheck struct {
 	ModulID              int    ` json:"modulID"`
@@ -19,4 +17,14 @@ type RbcaCheck struct {
 	Controller           string ` json:"controller"`
 	Function             string ` json:"funcName"`
 	PermissionName       string ` json:"PermissionName"`
+}
+
+type ModulesAndPermissionDTO struct {
+	modulesEntity.Modules
+	Permissions []authEntity.Permission
+}
+
+type ModulesAndPermissionRoleDTO struct {
+	modulesEntity.Modules
+	RoleEditList []authDto.RoleEditList
 }

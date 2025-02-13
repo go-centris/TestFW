@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"stncCms/app/domain/dto"
-	"stncCms/app/domain/entity"
+
 	"stncCms/pkg/helpers/lang"
 	"stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stncdatetime"
@@ -19,8 +18,14 @@ import (
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 	Icommon "stncCms/app/services/commonServices_mod"
+		  dtoAuth "stncCms/app/auth/dto"
+			 modulesEntity "stncCms/app/modules/entity"
+			 modulesDTO "stncCms/app/modules/dto"
+			
+			 
+authEntity "stncCms/app/auth/entity"
 )
 
 // Permission constructor
@@ -82,10 +87,10 @@ func (access *Roles) Create(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 	locale, menuLanguage := lang.LoadLanguages("roles")
-	var data []entity.ModulesAndPermissionDTO
+	var data []modulesEntity.ModulesAndPermissionDTO
 	data, _ = access.IModules.GetAllModulesMerge()
 	for num, v := range data {
-		var list = []entity.Permission{}
+		var list = []authEntity.Permission{}
 		list, _ = access.IPermission.GetAllPaginationermissionForModulID(int(v.ID))
 		data[num].Permissions = list
 	}
@@ -123,24 +128,24 @@ func (access *Roles) Store(c *gin.Context) {
 	//once bi yere rolu kaydet
 	//sonra kaydeidlern id yi alman lazim
 
-	roleData := entity.Role{
+	roleData := authEntity.Role{
 		Title: c.PostForm("Title"),
 		Slug:  c.PostForm("Title"),
 	}
 
 	saveRoleData, _ := access.IRole.Save(&roleData)
 	roleID := saveRoleData.ID
-	var data []entity.ModulesAndPermissionDTO
+	var data []modulesEntity.ModulesAndPermissionDTO
 	data, _ = access.IModules.GetAllModulesMerge()
 	for num, v := range data {
-		var list = []entity.Permission{}
+		var list = []authEntity.Permission{}
 		list, _ = access.IPermission.GetAllPaginationermissionForModulID(int(v.ID))
 		data[num].Permissions = list
 	}
 
 	for _, v := range data {
 		for _, per := range v.Permissions {
-			rolePermissondata := entity.RolePermisson{
+			rolePermissondata := authEntity.RolePermisson{
 				RoleID:       roleID,
 				PermissionID: per.ID,
 				Active:       0,
@@ -186,12 +191,12 @@ func (access *Roles) Edit(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	locale, menuLanguage := lang.LoadLanguages("roles")
 	flashMsg := stncsession.GetFlashMessage(c)
-	var data []entity.ModulesAndPermissionRoleDTO
+	var data []modulesDTO.ModulesAndPermissionRoleDTO
 	if roleID, err := strconv.Atoi(c.Param("ID")); err == nil {
 		data, _ = access.IModules.GetAllModulesMergePermission()
 		roleData, _ := access.IRole.GetByID(roleID) //TODO: bu veri  access.IRole.EditList iicne de geliyor orada mi almak mantakli ??
 		for num, v := range data {
-			var list = []dto.RoleEditList{}
+			var list = []dtoAuth.RoleEditList{}
 			list, _ = access.IRole.EditList(v.ID, roleID)
 			// fmt.Println(v.ModulName)
 			data[num].RoleEditList = list
@@ -274,10 +279,10 @@ func (access *Roles) IndexKnockout(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	locale, menuLanguage := lang.LoadLanguages("roles")
 	var date stncdatetime.Inow
-	var data []entity.ModulesAndPermissionDTO
+	var data []modulesDTO.ModulesAndPermissionDTO
 	data, _ = access.IModules.GetAllModulesMerge()
 	for num, v := range data {
-		var list = []entity.Permission{}
+		var list = []authEntity.Permission{}
 		list, _ = access.IPermission.GetAllPaginationermissionForModulID(int(v.ID))
 		data[num].Permissions = list
 	}

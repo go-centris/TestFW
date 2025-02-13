@@ -7,12 +7,14 @@ import (
 	"github.com/leonelquinteros/gotext"
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
-	"stncCms/app/domain/entity"
+
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 
 	Icommon "stncCms/app/services/commonServices_mod"
 	"strconv"
+
+modulesEntity "stncCms/app/modules/entity"
 )
 
 // Modules constructor
@@ -182,7 +184,7 @@ func (access *Modules) Update(c *gin.Context) {
 }
 
 /***  modulesModel    ***/
-func modulesModel(c *gin.Context) (data entity.Modules, idString string, err error) {
+func modulesModel(c *gin.Context) (data modulesEntity.Modules, idString string, err error) {
 	id := c.PostForm("ID")
 	idInt, _ := strconv.Atoi(id)
 	data.ID = idInt

@@ -7,16 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
-	"stncCms/app/domain/entity"
+	// "stncCms/app/domain/entity"
 	"stncCms/pkg/helpers/lang"
 	"stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stncdatetime"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 	"stncCms/pkg/infrastructure/security"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 	Iregion "stncCms/app/services/regionServices_mod"
 	"strconv"
+		// modulesDto "stncCms/app/modules/dto"
+authEntity "stncCms/app/auth/entity"
 )
 
 // userControl constructor
@@ -383,7 +385,7 @@ func (access *UserControl) Delete(c *gin.Context) {
 }
 
 // form post model
-func userModel(c *gin.Context, form string, pass string) (user entity.Users) {
+func userModel(c *gin.Context, form string, pass string) (user authEntity.Users) {
 	//	var post = entit.Post{}
 	user.ID = stnccollection.StringtoUint64(c.PostForm("ID"))
 	user.Username = c.PostForm("Username")

@@ -1,20 +1,22 @@
 package commonServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	// "stncCms/app/domain/entity"
+		modulesEntity "stncCms/app/modules/entity"
+		modulesDTO "stncCms/app/modules/dto"
 )
 
 // ModuleAppInterface interface
 type ModulesAppInterface interface {
-	GetAll() ([]entity.Modules, error)
-	GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, error)
-	GetAllModulesMergePermission() ([]entity.ModulesAndPermissionRoleDTO, error)
+	GetAll() ([]modulesEntity.Modules, error)
+	GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error)
+	GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error)
 
-	Save(*entity.Modules) (*entity.Modules, map[string]string)
-	GetByID(uint64) (*entity.Modules, error)
-	Update(*entity.Modules) (*entity.Modules, map[string]string)
+	Save(*modulesEntity.Modules) (*modulesEntity.Modules, map[string]string)
+	GetByID(uint64) (*modulesEntity.Modules, error)
+	Update(*modulesEntity.Modules) (*modulesEntity.Modules, map[string]string)
 	Delete(uint64) error
-	GetAllPaginate(postsPerPage int, offset int) ([]entity.Modules, error)
+	GetAllPaginate(postsPerPage int, offset int) ([]modulesEntity.Modules, error)
 	GetAllPaginateCount(returnValue *int64)
 }
 
@@ -25,29 +27,29 @@ type ModuleApp struct {
 // UserApp implements the UserAppInterface
 var _ ModulesAppInterface = &ModuleApp{}
 
-func (f *ModuleApp) GetAll() ([]entity.Modules, error) {
+func (f *ModuleApp) GetAll() ([]modulesEntity.Modules, error) {
 	return f.request.GetAll()
 }
 
-func (f *ModuleApp) GetAllModulesMerge() ([]entity.ModulesAndPermissionDTO, error) {
+func (f *ModuleApp) GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error) {
 	return f.request.GetAllModulesMerge()
 }
-func (f *ModuleApp) GetAllModulesMergePermission() ([]entity.ModulesAndPermissionRoleDTO, error) {
+func (f *ModuleApp) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
 	return f.request.GetAllModulesMergePermission()
 }
 
 // Save service init
-func (f *ModuleApp) Save(Cat *entity.Modules) (*entity.Modules, map[string]string) {
+func (f *ModuleApp) Save(Cat *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	return f.request.Save(Cat)
 }
 
 // GetByID service init
-func (f *ModuleApp) GetByID(catID uint64) (*entity.Modules, error) {
+func (f *ModuleApp) GetByID(catID uint64) (*modulesEntity.Modules, error) {
 	return f.request.GetByID(catID)
 }
 
 // Update service init
-func (f *ModuleApp) Update(cat *entity.Modules) (*entity.Modules, map[string]string) {
+func (f *ModuleApp) Update(cat *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
 	return f.request.Update(cat)
 }
 
@@ -57,7 +59,7 @@ func (f *ModuleApp) Delete(catID uint64) error {
 }
 
 // GetAllPaginate list
-func (f *ModuleApp) GetAllPaginate(postsPerPage int, offset int) ([]entity.Modules, error) {
+func (f *ModuleApp) GetAllPaginate(postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
 	return f.request.GetAllPaginate(postsPerPage, offset)
 }
 

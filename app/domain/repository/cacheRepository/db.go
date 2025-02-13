@@ -6,7 +6,7 @@ import (
 	"stncCms/app/domain/entity"
 	postEntity "stncCms/app/post/entity"
 	Icms "stncCms/app/post/services"
-	Iauth "stncCms/app/services/authServices_mod"
+	Iauth "stncCms/app/auth/services"
 	Icommon "stncCms/app/services/commonServices_mod"
 
 	Iregion "stncCms/app/services/regionServices_mod"
@@ -14,6 +14,8 @@ import (
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
 	PostRepo "stncCms/app/post/repository/cacheRepository"
 
+authEntity "stncCms/app/auth/entity"
+modulesEntity "stncCms/app/modules/entity"
 	"github.com/hypnoglow/gormzap"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
@@ -146,25 +148,25 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 // AutoRelation This migrate all tables
 func (s *Repositories) AutoRelation() error {
-	s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
-		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
-		&entity.Users{},
+	s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
+		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
+		&authEntity.Users{},
 
 		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{})
 
-	s.DB.Model(&entity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
-	s.DB.Model(&entity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
+	s.DB.Model(&authEntity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
+	s.DB.Model(&authEntity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
 
 	return s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error // one to many (one=region) (many=branches)
 
 }
 
 func (s *Repositories) Automigrate() error {
-	return s.DB.AutoMigrate(&entity.Users{}, &entity.Role{}, &entity.Permission{}, &entity.RolePermisson{},
-		&entity.Languages{}, &entity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
+	return s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
+		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
 
-		&entity.Users{},
+		&authEntity.Users{},
 		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{}).Error
 }
