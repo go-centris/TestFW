@@ -20,7 +20,7 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 	dtoAuth "stncCms/app/auth/dto"
 	Iauth "stncCms/app/auth/services"
-	Icommon "stncCms/app/services/commonServices_mod"
+	Icommon "stncCms/app/modules/services"
 	modulesDTO "stncCms/app/modules/dto"
 	authEntity "stncCms/app/auth/entity"
 )

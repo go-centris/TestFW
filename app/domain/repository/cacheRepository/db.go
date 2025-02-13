@@ -7,7 +7,8 @@ import (
 	postEntity "stncCms/app/post/entity"
 	Icms "stncCms/app/post/services"
 	Iauth "stncCms/app/auth/services"
-	Icommon "stncCms/app/services/commonServices_mod"
+	ILanguage "stncCms/app/services/commonServices_mod"
+	Icommon "stncCms/app/modules/services"
 
 	Iregion "stncCms/app/services/regionServices_mod"
 	Ireport "stncCms/app/services/reportSacrifeServices_mod"
@@ -46,7 +47,7 @@ type Repositories struct {
 	Media   Isacrife.MediaAppInterface
 	Report  Ireport.ReportAppInterface
 
-	Lang    Icommon.LanguageAppInterface
+	Lang    ILanguage.LanguageAppInterface
 	Options Isacrife.OptionsAppInterface
 
 	DB *gorm.DB

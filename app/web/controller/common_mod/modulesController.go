@@ -11,7 +11,7 @@ import (
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 
-	Icommon "stncCms/app/services/commonServices_mod"
+	Icommon "stncCms/app/modules/services"
 	"strconv"
 
 modulesEntity "stncCms/app/modules/entity"

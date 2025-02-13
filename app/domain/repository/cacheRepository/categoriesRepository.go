@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"stncCms/app/post/entity"
 	repository "stncCms/app/domain/repository/dbRepository"
+		postRepository "stncCms/app/post/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -25,7 +26,7 @@ func CatRepositoryInit(db *gorm.DB) *CatRepo {
 // PostRepo implements the repository.PostRepository interface
 // var _ interfaces.CatAppInterface = &CatRepo{}
 func getByIDCategories(db *gorm.DB, id uint64) (*entity.Categories, error) {
-	repo := repository.CatRepositoryInit(db)
+	repo := postRepository.CatRepositoryInit(db)
 	datas, _ := repo.GetByID(id)
 	return datas, nil
 }
@@ -91,7 +92,7 @@ func (r *CatRepo) GetAll() ([]entity.Categories, error) {
 }
 
 func getAllCategories(db *gorm.DB) ([]entity.Categories, error) {
-	repo := repository.CatRepositoryInit(db)
+	repo := postRepository.CatRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }

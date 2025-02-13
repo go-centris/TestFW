@@ -11,7 +11,7 @@ import (
 	modulesDTO "stncCms/app/modules/dto"
 	"time"
 
-	
+		modulesRepository "stncCms/app/modules/repository/dbRepository"
 	"github.com/jinzhu/gorm"
 )
 
@@ -52,7 +52,7 @@ func (r *ModulesRepo) GetAll() ([]modulesEntity.Modules, error) {
 	return data, nil
 }
 func getAllModules(db *gorm.DB) ([]modulesEntity.Modules, error) {
-	repo := repository.ModulesRepositoryInit(db)
+	repo := modulesRepository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
@@ -84,7 +84,7 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO
 	return data, nil
 }
 func getAllModulesMergeModules(db *gorm.DB) ([]modulesDTO.ModulesAndPermissionDTO, error) {
-	repo := repository.ModulesRepositoryInit(db)
+	repo := modulesRepository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMerge()
 	return data, nil
 }
@@ -116,7 +116,7 @@ func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPer
 	return data, nil
 }
 func getAllModulesMergePermission(db *gorm.DB) ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
-	repo := repository.ModulesRepositoryInit(db)
+	repo := modulesRepository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMergePermission()
 	return data, nil
 }
@@ -124,7 +124,7 @@ func getAllModulesMergePermission(db *gorm.DB) ([]modulesDTO.ModulesAndPermissio
 //*****///
 
 func getByIDRegionModules(db *gorm.DB, id uint64) (*modulesEntity.Modules, error) {
-	repo := repository.ModulesRepositoryInit(db)
+	repo := modulesRepository.ModulesRepositoryInit(db)
 	datas, _ := repo.GetByID(id)
 	return datas, nil
 }
@@ -191,7 +191,7 @@ func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]modulesEnt
 
 // getAllPaginate
 func getAllPaginateForModules(db *gorm.DB, postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
-	repo := repository.ModulesRepositoryInit(db)
+	repo := modulesRepository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllPaginate(postsPerPage, offset)
 	return data, nil
 }
@@ -199,21 +199,21 @@ func getAllPaginateForModules(db *gorm.DB, postsPerPage int, offset int) ([]modu
 // GetAllPaginateCount
 func (r *ModulesRepo) GetAllPaginateCount(returnValue *int64) {
 	var count int64
-	repo := repository.ModulesRepositoryInit(r.db)
+	repo := modulesRepository.ModulesRepositoryInit(r.db)
 	repo.GetAllPaginateCount(&count)
 	*returnValue = count
 }
 
 // Save data
 func (r *ModulesRepo) Save(data *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
-	repo := repository.ModulesRepositoryInit(r.db)
+	repo := modulesRepository.ModulesRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 // Update upate data
 func (r *ModulesRepo) Update(data *modulesEntity.Modules) (*modulesEntity.Modules, map[string]string) {
-	repo := repository.ModulesRepositoryInit(r.db)
+	repo := modulesRepository.ModulesRepositoryInit(r.db)
 	datas, err := repo.Update(data)
 	return datas, err
 
@@ -221,7 +221,7 @@ func (r *ModulesRepo) Update(data *modulesEntity.Modules) (*modulesEntity.Module
 
 // Delete delete data
 func (r *ModulesRepo) Delete(id uint64) error {
-	repo := repository.ModulesRepositoryInit(r.db)
+	repo := modulesRepository.ModulesRepositoryInit(r.db)
 	err := repo.Delete(id)
 	return err
 }

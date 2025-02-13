@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"stncCms/app/post/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	 repository "stncCms/app/domain/repository/dbRepository"
+	postRepository "stncCms/app/post/repository/dbRepository"
+
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -58,7 +60,7 @@ func (r *CatPostRepo) GetByID(id uint64) (*entity.CategoryPosts, error) {
 }
 
 func getByIDCatPost(db *gorm.DB, id uint64) (*entity.CategoryPosts, error) {
-	repo := repository.CatPostRepositoryInit(db)
+	repo := postRepository.CatPostRepositoryInit(db)
 	datas, _ := repo.GetByID(id)
 	return datas, nil
 }
