@@ -3,13 +3,11 @@ package entity
 import (
 	"fmt"
 	"html"
-	// "stncCms/app/auth/dto"
+
 	"strings"
 	"time"
-// modulesDto "stncCms/app/modules/dto"
-authDto "stncCms/app/auth/dto"
-authEntity "stncCms/app/auth/entity"
-// authDto "stncCms/app/auth/dto"
+
+
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/go-playground/validator.v9"
@@ -77,12 +75,3 @@ func (f *Modules) Validate() map[string]string {
 	return errorLog
 }
 
-type ModulesAndPermissionDTO struct {
-	Modules
-	Permissions []authEntity.Permission
-}
-
-type ModulesAndPermissionRoleDTO struct {
-	Modules
-	RoleEditList []authDto.RoleEditList
-}

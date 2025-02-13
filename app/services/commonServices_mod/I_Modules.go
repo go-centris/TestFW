@@ -9,7 +9,7 @@ import (
 // ModuleAppInterface interface
 type ModulesAppInterface interface {
 	GetAll() ([]modulesEntity.Modules, error)
-	GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error)
+	GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO, error)
 	GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error)
 
 	Save(*modulesEntity.Modules) (*modulesEntity.Modules, map[string]string)
@@ -31,7 +31,7 @@ func (f *ModuleApp) GetAll() ([]modulesEntity.Modules, error) {
 	return f.request.GetAll()
 }
 
-func (f *ModuleApp) GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error) {
+func (f *ModuleApp) GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO, error) {
 	return f.request.GetAllModulesMerge()
 }
 func (f *ModuleApp) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {

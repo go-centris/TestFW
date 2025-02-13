@@ -18,14 +18,11 @@ import (
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
+	dtoAuth "stncCms/app/auth/dto"
 	Iauth "stncCms/app/auth/services"
 	Icommon "stncCms/app/services/commonServices_mod"
-		  dtoAuth "stncCms/app/auth/dto"
-			 modulesEntity "stncCms/app/modules/entity"
-			 modulesDTO "stncCms/app/modules/dto"
-			
-			 
-authEntity "stncCms/app/auth/entity"
+	modulesDTO "stncCms/app/modules/dto"
+	authEntity "stncCms/app/auth/entity"
 )
 
 // Permission constructor
@@ -87,7 +84,7 @@ func (access *Roles) Create(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 	locale, menuLanguage := lang.LoadLanguages("roles")
-	var data []modulesEntity.ModulesAndPermissionDTO
+	var data []modulesDTO.ModulesAndPermissionDTO
 	data, _ = access.IModules.GetAllModulesMerge()
 	for num, v := range data {
 		var list = []authEntity.Permission{}
@@ -135,7 +132,7 @@ func (access *Roles) Store(c *gin.Context) {
 
 	saveRoleData, _ := access.IRole.Save(&roleData)
 	roleID := saveRoleData.ID
-	var data []modulesEntity.ModulesAndPermissionDTO
+	var data []modulesDTO.ModulesAndPermissionDTO
 	data, _ = access.IModules.GetAllModulesMerge()
 	for num, v := range data {
 		var list = []authEntity.Permission{}

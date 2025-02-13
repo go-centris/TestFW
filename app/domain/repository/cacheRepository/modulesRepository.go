@@ -8,7 +8,7 @@ import (
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	modulesEntity "stncCms/app/modules/entity"
-	modulesDto "stncCms/app/modules/dto"
+	modulesDTO "stncCms/app/modules/dto"
 	"time"
 
 	
@@ -58,8 +58,8 @@ func getAllModules(db *gorm.DB) ([]modulesEntity.Modules, error) {
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDto.ModulesAndPermissionDTO, error) {
-	var data []modulesDto.ModulesAndPermissionDTO
+func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO, error) {
+	var data []modulesDTO.ModulesAndPermissionDTO
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -83,15 +83,15 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDto.ModulesAndPermissionDTO
 	}
 	return data, nil
 }
-func getAllModulesMergeModules(db *gorm.DB) ([]modulesDto.ModulesAndPermissionDTO, error) {
+func getAllModulesMergeModules(db *gorm.DB) ([]modulesDTO.ModulesAndPermissionDTO, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMerge()
 	return data, nil
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDto.ModulesAndPermissionRoleDTO, error) {
-	var data []modulesDto.ModulesAndPermissionRoleDTO
+func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
+	var data []modulesDTO.ModulesAndPermissionRoleDTO
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
@@ -115,7 +115,7 @@ func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDto.ModulesAndPer
 	}
 	return data, nil
 }
-func getAllModulesMergePermission(db *gorm.DB) ([]modulesDto.ModulesAndPermissionRoleDTO, error) {
+func getAllModulesMergePermission(db *gorm.DB) ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
 	repo := repository.ModulesRepositoryInit(db)
 	data, _ := repo.GetAllModulesMergePermission()
 	return data, nil

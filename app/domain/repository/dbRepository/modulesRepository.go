@@ -3,6 +3,7 @@ package dbRepository
 import (
 	"errors"
 	modulesEntity "stncCms/app/modules/entity"
+	modulesDTO "stncCms/app/modules/dto"
 	"strings"
 
 	"github.com/jinzhu/gorm"
@@ -34,9 +35,9 @@ func (r *ModulesRepo) GetAll() ([]modulesEntity.Modules, error) {
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMerge() ([]modulesEntity.ModulesAndPermissionDTO, error) {
+func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO, error) {
 	var err error
-	var datas []modulesEntity.ModulesAndPermissionDTO
+	var datas []modulesDTO.ModulesAndPermissionDTO
 	err = r.db.Debug().Table("modules").Order("created_at desc").Find(&datas).Error
 
 	//TODO: nasil preload yapilir bakilacak
@@ -53,9 +54,9 @@ func (r *ModulesRepo) GetAllModulesMerge() ([]modulesEntity.ModulesAndPermission
 }
 
 // GetAll all data
-func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesEntity.ModulesAndPermissionRoleDTO, error) {
+func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
 	var err error
-	var datas []modulesEntity.ModulesAndPermissionRoleDTO
+	var datas []modulesDTO.ModulesAndPermissionRoleDTO
 	err = r.db.Debug().Table("modules").Order("created_at desc").Find(&datas).Error
 
 	//TODO: nasil preload yapilir bakilacak
