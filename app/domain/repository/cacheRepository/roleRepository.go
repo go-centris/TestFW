@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 
-	authRepo "stncCms/app/auth/repository"
+	authRepository "stncCms/app/auth/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -23,7 +23,7 @@ func RoleRepositoryInit(db *gorm.DB) *RoleRepo {
 	return &RoleRepo{db}
 }
 
-// RoleRepo implements the authRepo.RoleRepository interface
+// RoleRepo implements the authRepository.RoleRepository interface
 //var _ services.RoleAppInterface = &RoleRepo{}
 
 // GetAll all data
@@ -53,20 +53,20 @@ func (r *RoleRepo) GetAll() ([]authEntity.Role, error) {
 	return data, nil
 }
 func getAllRole(db *gorm.DB) ([]authEntity.Role, error) {
-	repo := authRepo.RoleRepositoryInit(db)
+	repo := authRepository.RoleRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // Save data
 func (r *RoleRepo) Save(data *authEntity.Role) (*authEntity.Role, map[string]string) {
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 func (r *RoleRepo) EditList(modulID int, roleID int) ([]authDto.RoleEditList, error) {
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	datas, err := repo.EditList(modulID, roleID)
 	return datas, err
 }
@@ -74,21 +74,21 @@ func (r *RoleRepo) EditList(modulID int, roleID int) ([]authDto.RoleEditList, er
 // Count
 func (r *RoleRepo) Count(totalCount *int64) {
 	var count int64
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	repo.Count(&count)
 	*totalCount = count
 }
 
 // Delete data
 func (r *RoleRepo) Delete(id uint64) error {
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	err := repo.Delete(id)
 	return err
 }
 
 // GetAllPagination pagination all data
 func GetAllPaginationrole(db *gorm.DB, perPage int, offset int) ([]authEntity.Role, error) {
-	repo := authRepo.RoleRepositoryInit(db)
+	repo := authRepository.RoleRepositoryInit(db)
 	data, _ := repo.GetAllPagination(perPage, offset)
 	return data, nil
 }
@@ -148,18 +148,18 @@ func (r *RoleRepo) GetByID(id int) (*authEntity.Role, error) {
 }
 
 func getByIDRole(db *gorm.DB, id int) (*authEntity.Role, error) {
-	repo := authRepo.RoleRepositoryInit(db)
+	repo := authRepository.RoleRepositoryInit(db)
 	data, _ := repo.GetByID(id)
 	return data, nil
 }
 
 func (r *RoleRepo) Update(data *authEntity.Role) (*authEntity.Role, map[string]string) {
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 func (r *RoleRepo) UpdateTitle(id int, title string) {
-	repo := authRepo.RoleRepositoryInit(r.db)
+	repo := authRepository.RoleRepositoryInit(r.db)
 	repo.UpdateTitle(id, title)
 }

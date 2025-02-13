@@ -3,7 +3,7 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	authRepo "stncCms/app/auth/repository"
+	authRepository "stncCms/app/auth/repository/dbRepository"
 
 	"stncCms/pkg/cache"
 	"time"
@@ -51,26 +51,26 @@ func (r *RolePermissionRepo) GetAll() ([]authEntity.RolePermisson, error) {
 	return data, nil
 }
 func getAllRolePermission(db *gorm.DB) ([]authEntity.RolePermisson, error) {
-	repo := authRepo.RolePermissionRepositoryInit(db)
+	repo := authRepository.RolePermissionRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
 // Save data
 func (r *RolePermissionRepo) Save(data *authEntity.RolePermisson) (*authEntity.RolePermisson, map[string]string) {
-	repo := authRepo.RolePermissionRepositoryInit(r.db)
+	repo := authRepository.RolePermissionRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 // Update upate data
 func (r *RolePermissionRepo) Update(data *authEntity.RolePermisson) (*authEntity.RolePermisson, map[string]string) {
-	repo := authRepo.RolePermissionRepositoryInit(r.db)
+	repo := authRepository.RolePermissionRepositoryInit(r.db)
 	datas, err := repo.Update(data)
 	return datas, err
 }
 
 func (r *RolePermissionRepo) UpdateActiveStatus(roleId int, permissionId int, active int) {
-	repo := authRepo.RolePermissionRepositoryInit(r.db)
+	repo := authRepository.RolePermissionRepositoryInit(r.db)
 	repo.UpdateActiveStatus(roleId, permissionId, active)
 }

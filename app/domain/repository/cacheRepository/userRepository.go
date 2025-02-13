@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	repository "stncCms/app/domain/repository/dbRepository"
-		authRepo "stncCms/app/auth/repository"
+	authRepository "stncCms/app/auth/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -23,11 +23,11 @@ func UserRepositoryInit(db *gorm.DB) *UserRepo {
 	return &UserRepo{db}
 }
 
-// UserRepo implements the authRepo.UserRepository interface
+// UserRepo implements the authRepository.UserRepository interface
 //var _ services.UserAppInterface = &UserRepo{}
 
 func getUser(db *gorm.DB, id uint64) (*authEntity.Users, error) {
-	repo := authRepo.UserRepositoryInit(db)
+	repo := authRepository.UserRepositoryInit(db)
 	data, _ := repo.GetUser(id)
 	return data, nil
 }
@@ -59,7 +59,7 @@ func (r *UserRepo) GetUser(id uint64) (*authEntity.Users, error) {
 }
 
 func getUsers(db *gorm.DB) ([]authEntity.Users, error) {
-	repo := authRepo.UserRepositoryInit(db)
+	repo := authRepository.UserRepositoryInit(db)
 	data, _ := repo.GetUsers()
 	return data, nil
 }
@@ -120,7 +120,7 @@ func (r *UserRepo) GetByID(id uint64) (*authEntity.Users, error) {
 }
 
 func getByIDuser(db *gorm.DB, id uint64) (*authEntity.Users, error) {
-	repo := authRepo.UserRepositoryInit(db)
+	repo := authRepository.UserRepositoryInit(db)
 	data, _ := repo.GetByID(id)
 	return data, nil
 }
@@ -152,7 +152,7 @@ func (r *UserRepo) GetAll() ([]authEntity.Users, error) {
 	return data, nil
 }
 func getAlluser(db *gorm.DB) ([]authEntity.Users, error) {
-	repo := authRepo.UserRepositoryInit(db)
+	repo := authRepository.UserRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
@@ -184,7 +184,7 @@ func (r *UserRepo) GetAllPagination(perPage int, offset int) ([]authEntity.Users
 	return data, nil
 }
 func GetAllPaginationuser(db *gorm.DB, perPage int, offset int) ([]authEntity.Users, error) {
-	repo := authRepo.UserRepositoryInit(db)
+	repo := authRepository.UserRepositoryInit(db)
 	data, _ := repo.GetAllPagination(perPage, offset)
 	return data, nil
 }

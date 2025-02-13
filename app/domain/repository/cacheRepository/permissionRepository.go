@@ -5,7 +5,8 @@ import (
 	"fmt"
 	
 
-	repository "stncCms/app/domain/repository/dbRepository"
+		repository "stncCms/app/domain/repository/dbRepository"
+		authRepository "stncCms/app/auth/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -52,7 +53,7 @@ func (r *PermissionRepo) GetAll() ([]authEntity.Permission, error) {
 	return data, nil
 }
 func GetAllPaginationermission(db *gorm.DB) ([]authEntity.Permission, error) {
-	repo := repository.PermissionRepositoryInit(db)
+	repo := authRepository.PermissionRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
@@ -84,7 +85,7 @@ func (r *PermissionRepo) GetAllPaginationermissionForModulID(modulId int) ([]aut
 	return data, nil
 }
 func getAllPaginationermissionForModulID(modulId int, db *gorm.DB) ([]authEntity.Permission, error) {
-	repo := repository.PermissionRepositoryInit(db)
+	repo := authRepository.PermissionRepositoryInit(db)
 	data, _ := repo.GetAllPaginationermissionForModulID(modulId)
 	return data, nil
 }
@@ -116,7 +117,7 @@ func (r *PermissionRepo) GetUserPermission(roleID int) ([]modulesDto.RbcaCheck, 
 	return data, nil
 }
 func getUserPermission(roleID int, db *gorm.DB) ([]modulesDto.RbcaCheck, error) {
-	repo := repository.PermissionRepositoryInit(db)
+	repo := authRepository.PermissionRepositoryInit(db)
 	data, _ := repo.GetUserPermission(roleID)
 	return data, nil
 }
@@ -148,7 +149,7 @@ func (r *PermissionRepo) GetUserPermissionForComponent(roleID int, componentBase
 	return data, nil
 }
 func getUserPermissionForComponent(roleID int, componentBaseName string, db *gorm.DB) ([]modulesDto.RbcaCheck, error) {
-	repo := repository.PermissionRepositoryInit(db)
+	repo := authRepository.PermissionRepositoryInit(db)
 	data, _ := repo.GetUserPermissionForComponent(roleID, componentBaseName)
 	return data, nil
 }
