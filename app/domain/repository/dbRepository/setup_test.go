@@ -3,7 +3,8 @@ package dbRepository
 import (
 	"log"
 	"os"
-	"stncCms/app/domain/entity"
+	postEntity "stncCms/app/post/entity"
+	authEntity "stncCms/app/auth/entity"
 
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -69,13 +70,13 @@ func LocalDatabase() (*gorm.DB, error) {
 		log.Println("CONNECTED TO: ", dbdriver)
 	}
 
-	err = conn.DropTableIfExists(&entity.Users{}, &entity.Post{}).Error
+	err = conn.DropTableIfExists(&authEntity.Users{}, &postEntity.Post{}).Error
 	if err != nil {
 		return nil, err
 	}
 	err = conn.Debug().AutoMigrate(
-		entity.Users{},
-		entity.Post{},
+		authEntity.Users{},
+		postEntity.Post{},
 	).Error
 	if err != nil {
 		return nil, err
@@ -83,8 +84,8 @@ func LocalDatabase() (*gorm.DB, error) {
 	return conn, nil
 }
 
-func seedUser(db *gorm.DB) (*entity.Users, error) {
-	user := &entity.Users{
+func seedUser(db *gorm.DB) (*authEntity.Users, error) {
+	user := &authEntity.Users{
 		ID:        1,
 		FirstName: "vic",
 		LastName:  "stev",
@@ -99,8 +100,8 @@ func seedUser(db *gorm.DB) (*entity.Users, error) {
 	return user, nil
 }
 
-func seedUsers(db *gorm.DB) ([]entity.Users, error) {
-	users := []entity.Users{
+func seedUsers(db *gorm.DB) ([]authEntity.Users, error) {
+	users := []authEntity.Users{
 		{
 			ID:        1,
 			FirstName: "vic",
@@ -127,8 +128,8 @@ func seedUsers(db *gorm.DB) ([]entity.Users, error) {
 	return users, nil
 }
 
-func seedPost(db *gorm.DB) (*entity.Post, error) {
-	food := &entity.Post{
+func seedPost(db *gorm.DB) (*postEntity.Post, error) {
+	food := &postEntity.Post{
 		ID:          1,
 		PostTitle:   "post title",
 		PostContent: "post content",
@@ -141,8 +142,8 @@ func seedPost(db *gorm.DB) (*entity.Post, error) {
 	return food, nil
 }
 
-func seedPosts(db *gorm.DB) ([]entity.Post, error) {
-	posts := []entity.Post{
+func seedPosts(db *gorm.DB) ([]postEntity.Post, error) {
+	posts := []postEntity.Post{
 		{
 			ID:          1,
 			PostTitle:   "first post",
