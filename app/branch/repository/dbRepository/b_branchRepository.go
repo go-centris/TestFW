@@ -2,10 +2,13 @@ package dbRepository
 
 import (
 	"errors"
-	"stncCms/app/domain/entity"
+	// "stncCms/app/domain/entity"
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	// repository "stncCms/app/domain/repository/dbRepository"
+	// branchRepository "stncCms/app/branch/repository/dbRepository"
+	branchEntity "stncCms/app/branch/entity"
 )
 
 // BranchRepo struct
@@ -22,7 +25,7 @@ func BranchRepositoryInit(db *gorm.DB) *BranchRepo {
 // var _ interfaces.CatAppInterface = &BranchRepo{}
 
 // Save data
-func (r *BranchRepo) Save(cat *entity.Branches) (*entity.Branches, map[string]string) {
+func (r *BranchRepo) Save(cat *branchEntity.Branches) (*branchEntity.Branches, map[string]string) {
 	dbErr := map[string]string{}
 
 	err := r.db.Debug().Create(&cat).Error
@@ -40,7 +43,7 @@ func (r *BranchRepo) Save(cat *entity.Branches) (*entity.Branches, map[string]st
 }
 
 // Update update data
-func (r *BranchRepo) Update(cat *entity.Branches) (*entity.Branches, map[string]string) {
+func (r *BranchRepo) Update(cat *branchEntity.Branches) (*branchEntity.Branches, map[string]string) {
 	dbErr := map[string]string{}
 	err := r.db.Debug().Save(&cat).Error
 	if err != nil {
@@ -57,8 +60,8 @@ func (r *BranchRepo) Update(cat *entity.Branches) (*entity.Branches, map[string]
 }
 
 // GetByID get data for id
-func (r *BranchRepo) GetByID(id uint64) (*entity.Branches, error) {
-	var cat entity.Branches
+func (r *BranchRepo) GetByID(id uint64) (*branchEntity.Branches, error) {
+	var cat branchEntity.Branches
 	err := r.db.Debug().Where("id = ?", id).Take(&cat).Error
 	if err != nil {
 		return nil, errors.New("database error, please try again")
@@ -71,8 +74,8 @@ func (r *BranchRepo) GetByID(id uint64) (*entity.Branches, error) {
 }
 
 // GetByRegionID all data for id
-func (r *BranchRepo) GetByRegionID(regionID uint64) ([]entity.Branches, error) {
-	var cat []entity.Branches
+func (r *BranchRepo) GetByRegionID(regionID uint64) ([]branchEntity.Branches, error) {
+	var cat []branchEntity.Branches
 	err := r.db.Debug().Where("region_id = ?", regionID).Order("id asc").Find(&cat).Error
 	if err != nil {
 		return nil, err
@@ -84,8 +87,8 @@ func (r *BranchRepo) GetByRegionID(regionID uint64) ([]entity.Branches, error) {
 }
 
 // GetAll all data
-func (r *BranchRepo) GetAll() ([]entity.Branches, error) {
-	var cat []entity.Branches
+func (r *BranchRepo) GetAll() ([]branchEntity.Branches, error) {
+	var cat []branchEntity.Branches
 	err := r.db.Debug().Order("id desc").Find(&cat).Error
 	if err != nil {
 		return nil, err
@@ -98,7 +101,7 @@ func (r *BranchRepo) GetAll() ([]entity.Branches, error) {
 
 // Delete delete data
 func (r *BranchRepo) Delete(id uint64) error {
-	var cat entity.Branches
+	var cat branchEntity.Branches
 	err := r.db.Debug().Where("id = ?", id).Delete(&cat).Error
 	if err != nil {
 		return errors.New("database error, please try again")
@@ -107,8 +110,8 @@ func (r *BranchRepo) Delete(id uint64) error {
 }
 
 // GetAllPaginate pagination list
-func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Branches, error) {
-	var regionList []entity.Branches
+func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]branchEntity.Branches, error) {
+	var regionList []branchEntity.Branches
 	err := r.db.Debug().Order("id asc").Limit(postsPerPage).Offset(offset).Find(&regionList).Error
 	if err != nil {
 		return nil, err
@@ -121,7 +124,7 @@ func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Bran
 
 // GetAllPaginateCount
 func (r *BranchRepo) GetAllPaginateCount(returnValue *int64) {
-	var table entity.Branches
+	var table branchEntity.Branches
 	var count int64
 	r.db.Debug().Model(table).Count(&count)
 	*returnValue = count

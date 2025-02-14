@@ -3,8 +3,11 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
+	// "stncCms/app/domain/entity"
 	repository "stncCms/app/domain/repository/dbRepository"
+	branchRepository "stncCms/app/branch/repository/dbRepository"
+	// modulesDTO "stncCms/app/modules/dto"
+	branchEntity "stncCms/app/branch/entity"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -22,16 +25,16 @@ func BranchRepositoryInit(db *gorm.DB) *BranchRepo {
 	return &BranchRepo{db}
 }
 
-func getByIDBranch(db *gorm.DB, id uint64) (*entity.Branches, error) {
-	repo := repository.BranchRepositoryInit(db)
+func getByIDBranch(db *gorm.DB, id uint64) (*branchEntity.Branches, error) {
+	repo := branchRepository.BranchRepositoryInit(db)
 	datas, _ := repo.GetByID(id)
 	return datas, nil
 }
 
 // GetByID get data
-func (r *BranchRepo) GetByID(id uint64) (*entity.Branches, error) {
+func (r *BranchRepo) GetByID(id uint64) (*branchEntity.Branches, error) {
 
-	var data *entity.Branches
+	var data *branchEntity.Branches
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
@@ -62,10 +65,10 @@ func (r *BranchRepo) GetByID(id uint64) (*entity.Branches, error) {
 }
 
 // GetAll all data
-func (r *BranchRepo) GetAll() ([]entity.Branches, error) {
+func (r *BranchRepo) GetAll() ([]branchEntity.Branches, error) {
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
-	var data []entity.Branches
+	var data []branchEntity.Branches
 	if cacheControl == "false" {
 		data, _ = getAllbranch(r.db)
 	} else {
@@ -89,16 +92,16 @@ func (r *BranchRepo) GetAll() ([]entity.Branches, error) {
 	return data, nil
 }
 
-func getAllbranch(db *gorm.DB) ([]entity.Branches, error) {
-	repo := repository.BranchRepositoryInit(db)
+func getAllbranch(db *gorm.DB) ([]branchEntity.Branches, error) {
+	repo := branchRepository.BranchRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 
-func (r *BranchRepo) GetByRegionID(regionID uint64) ([]entity.Branches, error) {
+func (r *BranchRepo) GetByRegionID(regionID uint64) ([]branchEntity.Branches, error) {
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
-	var data []entity.Branches
+	var data []branchEntity.Branches
 	if cacheControl == "false" {
 		data, _ = getByRegionID(regionID, r.db)
 	} else {
@@ -122,17 +125,17 @@ func (r *BranchRepo) GetByRegionID(regionID uint64) ([]entity.Branches, error) {
 	return data, nil
 }
 
-func getByRegionID(regionID uint64, db *gorm.DB) ([]entity.Branches, error) {
-	repo := repository.BranchRepositoryInit(db)
+func getByRegionID(regionID uint64, db *gorm.DB) ([]branchEntity.Branches, error) {
+	repo := branchRepository.BranchRepositoryInit(db)
 	data, _ := repo.GetByRegionID(regionID)
 	return data, nil
 }
 
 // GetAllPaginate
-func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Branches, error) {
+func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]branchEntity.Branches, error) {
 	access := repository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
-	var data []entity.Branches
+	var data []branchEntity.Branches
 	if cacheControl == "false" {
 		data, _ = getAllPaginateRegion(r.db, postsPerPage, offset)
 	} else {
@@ -156,8 +159,8 @@ func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Bran
 }
 
 // getAllPaginateRegion
-func getAllPaginateRegion(db *gorm.DB, postsPerPage int, offset int) ([]entity.Branches, error) {
-	repo := repository.BranchRepositoryInit(db)
+func getAllPaginateRegion(db *gorm.DB, postsPerPage int, offset int) ([]branchEntity.Branches, error) {
+	repo := branchRepository.BranchRepositoryInit(db)
 	data, _ := repo.GetAllPaginate(postsPerPage, offset)
 	return data, nil
 }
@@ -165,7 +168,7 @@ func getAllPaginateRegion(db *gorm.DB, postsPerPage int, offset int) ([]entity.B
 // GetAllPaginateForRegionCount
 func (r *BranchRepo) GetAllPaginateCount(returnValue *int64) {
 	var count int64
-	repo := repository.BranchRepositoryInit(r.db)
+	repo := branchRepository.BranchRepositoryInit(r.db)
 	repo.GetAllPaginateCount(&count)
 	*returnValue = count
 }

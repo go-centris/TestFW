@@ -1,20 +1,23 @@
 package cacheRepository
 
 import (
-	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// "stncCms/app/domain/entity"
+	// repository "stncCms/app/domain/repository/dbRepository"
+		// repository "stncCms/app/domain/repository/dbRepository"
+	branchRepository "stncCms/app/branch/repository/dbRepository"
+	branchEntity "stncCms/app/branch/entity"
 )
 
 //Save data
-func (r *BranchRepo) Save(data *entity.Branches) (*entity.Branches, map[string]string) {
-	repo := repository.BranchRepositoryInit(r.db)
+func (r *BranchRepo) Save(data *branchEntity.Branches) (*branchEntity.Branches, map[string]string) {
+	repo := branchRepository.BranchRepositoryInit(r.db)
 	datas, err := repo.Save(data)
 	return datas, err
 }
 
 //Update upate data
-func (r *BranchRepo) Update(data *entity.Branches) (*entity.Branches, map[string]string) {
-	repo := repository.BranchRepositoryInit(r.db)
+func (r *BranchRepo) Update(data *branchEntity.Branches) (*branchEntity.Branches, map[string]string) {
+	repo := branchRepository.BranchRepositoryInit(r.db)
 	datas, err := repo.Update(data)
 	return datas, err
 
@@ -22,7 +25,7 @@ func (r *BranchRepo) Update(data *entity.Branches) (*entity.Branches, map[string
 
 //Delete delete data
 func (r *BranchRepo) Delete(id uint64) error {
-	repo := repository.BranchRepositoryInit(r.db)
+	repo := branchRepository.BranchRepositoryInit(r.db)
 	err := repo.Delete(id)
 	return err
 }

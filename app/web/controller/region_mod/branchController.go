@@ -7,13 +7,16 @@ import (
 	"github.com/leonelquinteros/gotext"
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
-	"stncCms/app/domain/entity"
+	// "stncCms/app/domain/entity"
 	"stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 	Iregion "stncCms/app/services/regionServices_mod"
 
 	"strconv"
+		// repository "stncCms/app/domain/repository/dbRepository"
+	// branchRepository "stncCms/app/branch/repository/dbRepository"
+	branchEntity "stncCms/app/branch/entity"
 )
 
 // Branch constructor
@@ -212,7 +215,7 @@ func (access *Branch) GetBranchListForRegion(c *gin.Context) {
 }
 
 /***  POST MODEL   ***/
-func BranchModel(c *gin.Context) (data entity.Branches, idString string, err error) {
+func BranchModel(c *gin.Context) (data branchEntity.Branches, idString string, err error) {
 	id := c.PostForm("ID")
 	idInt, _ := strconv.Atoi(id)
 	var idN uint64

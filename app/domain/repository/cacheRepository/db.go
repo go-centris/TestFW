@@ -23,6 +23,9 @@ modulesEntity "stncCms/app/modules/entity"
 	_ "github.com/lib/pq" // here
 	_ "gorm.io/driver/mysql"
 	_ "gorm.io/driver/postgres"
+			// repository "stncCms/app/domain/repository/dbRepository"
+	// branchRepository "stncCms/app/branch/repository/dbRepository"
+	branchEntity "stncCms/app/branch/entity"
 )
 
 var DB *gorm.DB
@@ -151,13 +154,13 @@ func (s *Repositories) AutoRelation() error {
 		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
 		&authEntity.Users{},
 
-		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Region{}, &branchEntity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{})
 
 	s.DB.Model(&authEntity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
 	s.DB.Model(&authEntity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
 
-	return s.DB.Model(&entity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error // one to many (one=region) (many=branches)
+	return s.DB.Model(&branchEntity.Branches{}).AddForeignKey("region_id", "br_region(id)", "CASCADE", "CASCADE").Error // one to many (one=region) (many=branches)
 
 }
 
@@ -166,7 +169,7 @@ func (s *Repositories) Automigrate() error {
 		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
 
 		&authEntity.Users{},
-		&entity.Region{}, &entity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
+		&entity.Region{}, &branchEntity.Branches{}, &entity.Notification{}, &entity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{}).Error
 }
 
