@@ -11,7 +11,6 @@ import (
 	Icommon "stncCms/app/modules/services"
 
 	Iregion "stncCms/app/services/regionServices_mod"
-	Ireport "stncCms/app/services/reportSacrifeServices_mod"
 	Isacrife "stncCms/app/services/sacrifeServices_mod"
 	PostRepo "stncCms/app/post/repository/cacheRepository"
 
@@ -45,7 +44,6 @@ type Repositories struct {
 	Cat     Icms.CatAppInterface
 	CatPost Icms.CatPostAppInterface
 	Media   Isacrife.MediaAppInterface
-	Report  Ireport.ReportAppInterface
 
 	Lang    ILanguage.LanguageAppInterface
 	Options Isacrife.OptionsAppInterface
