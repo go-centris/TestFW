@@ -2,7 +2,7 @@ package cacheRepository
 
 import (
 	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	repository "stncCms/app/language/repository/dbRepository"
 )
 
 //Save data

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	repository "stncCms/app/language/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"

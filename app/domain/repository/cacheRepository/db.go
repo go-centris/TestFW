@@ -3,33 +3,30 @@ package cacheRepository
 import (
 	"fmt"
 	"os"
-	"stncCms/app/domain/entity"
-	postEntity "stncCms/app/post/entity"
-	Icms "stncCms/app/post/services"
 	Iauth "stncCms/app/auth/services"
+	"stncCms/app/domain/entity"
 	ILanguage "stncCms/app/language/services"
 	Icommon "stncCms/app/modules/services"
+	postEntity "stncCms/app/post/entity"
+	Icms "stncCms/app/post/services"
 
-	Iregion "stncCms/app/region/services"
 	Imedia "stncCms/app/media/services"
 	PostRepo "stncCms/app/post/repository/cacheRepository"
+	Iregion "stncCms/app/region/services"
 
-authEntity "stncCms/app/auth/entity"
-modulesEntity "stncCms/app/modules/entity"
-notificationEntity "stncCms/app/notification/entity"
 	"github.com/hypnoglow/gormzap"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
+	authEntity "stncCms/app/auth/entity"
+	modulesEntity "stncCms/app/modules/entity"
+	notificationEntity "stncCms/app/notification/entity"
 
 	_ "github.com/lib/pq" // here
 	_ "gorm.io/driver/mysql"
 	_ "gorm.io/driver/postgres"
-			// repository "stncCms/app/domain/repository/dbRepository"
-	// branchRepository "stncCms/app/branch/repository/dbRepository"
 	branchEntity "stncCms/app/branch/entity"
 	Ibranch "stncCms/app/branch/services"
 	IOptions "stncCms/app/options/services"
-
 )
 
 var DB *gorm.DB
@@ -127,17 +124,13 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Permission:     PermissionRepositoryInit(db),
 		Role:           RoleRepositoryInit(db),
 		RolePermission: RolePermissionRepositoryInit(db),
-
 		Modules: ModulesRepositoryInit(db),
-
 		Region: RegionRepositoryInit(db),
 		Branch: BranchRepositoryInit(db),
-
 		Post:    PostRepo.PostRepositoryInit(db),
 		Cat:     CatRepositoryInit(db),
 		CatPost: CatPostRepositoryInit(db),
 		Media:   MediaRepositoryInit(db),
-
 		Lang:    LanguageRepositoryInit(db),
 		Options: OptionRepositoryInit(db),
 
