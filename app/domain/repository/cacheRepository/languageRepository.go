@@ -8,6 +8,8 @@ import (
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
+	optionRepository "stncCms/app/options/repository/dbRepository"
+	// languageRepository "stncCms/app/options/repository/dbRepository"
 
 	"github.com/jinzhu/gorm"
 )
@@ -28,7 +30,7 @@ func LanguageRepositoryInit(db *gorm.DB) *LanguageRepo {
 // GetByID get data
 func (r *LanguageRepo) GetByID(id uint64) (*entity.Languages, error) {
 	var data *entity.Languages
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDLanguages(r.db, id)
@@ -65,7 +67,7 @@ func getAllLanguages(db *gorm.DB) ([]entity.Languages, error) {
 }
 func (r *LanguageRepo) GetAll() ([]entity.Languages, error) {
 	var data []entity.Languages
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllLanguages(r.db)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"stncCms/app/post/entity"
 	PostRepository "stncCms/app/post/repository/dbRepository"
-	repository "stncCms/app/domain/repository/dbRepository"
+	OptionRepository "stncCms/app/options/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
@@ -29,7 +29,7 @@ func PostRepositoryInit(db *gorm.DB) *PostRepo {
 // GetByID get data
 func (r *PostRepo) GetByID(id uint64) (*entity.Post, error) {
 	var data *entity.Post
-	access := repository.OptionRepositoryInit(r.db)
+	access := OptionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDPost(r.db, id)
@@ -62,7 +62,7 @@ func getByIDPost(db *gorm.DB, id uint64) (*entity.Post, error) {
 // GetAll all data
 func (r *PostRepo) GetAll() ([]entity.Post, error) {
 	var data []entity.Post
-	access := repository.OptionRepositoryInit(r.db)
+	access := OptionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationost(r.db)
@@ -104,7 +104,7 @@ func GetAllPaginationPost(db *gorm.DB, perPage int, offset int) ([]entity.Post, 
 func (r *PostRepo) GetAllPagination(perPage int, offset int) ([]entity.Post, error) {
 
 	var data []entity.Post
-	access := repository.OptionRepositoryInit(r.db)
+	access := OptionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationPost(r.db, perPage, offset)

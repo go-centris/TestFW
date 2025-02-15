@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	// "stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 	branchRepository "stncCms/app/branch/repository/dbRepository"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 	// modulesDTO "stncCms/app/modules/dto"
 	branchEntity "stncCms/app/branch/entity"
 	"stncCms/pkg/cache"
@@ -35,7 +36,7 @@ func getByIDBranch(db *gorm.DB, id uint64) (*branchEntity.Branches, error) {
 func (r *BranchRepo) GetByID(id uint64) (*branchEntity.Branches, error) {
 
 	var data *branchEntity.Branches
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
 	if cacheControl == "false" {
@@ -66,7 +67,7 @@ func (r *BranchRepo) GetByID(id uint64) (*branchEntity.Branches, error) {
 
 // GetAll all data
 func (r *BranchRepo) GetAll() ([]branchEntity.Branches, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []branchEntity.Branches
 	if cacheControl == "false" {
@@ -99,7 +100,7 @@ func getAllbranch(db *gorm.DB) ([]branchEntity.Branches, error) {
 }
 
 func (r *BranchRepo) GetByRegionID(regionID uint64) ([]branchEntity.Branches, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []branchEntity.Branches
 	if cacheControl == "false" {
@@ -133,7 +134,7 @@ func getByRegionID(regionID uint64, db *gorm.DB) ([]branchEntity.Branches, error
 
 // GetAllPaginate
 func (r *BranchRepo) GetAllPaginate(postsPerPage int, offset int) ([]branchEntity.Branches, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []branchEntity.Branches
 	if cacheControl == "false" {

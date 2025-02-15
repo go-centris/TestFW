@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"stncCms/app/domain/entity"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"time"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"github.com/jinzhu/gorm"
 )
@@ -24,7 +25,7 @@ func OptionRepositoryInit(db *gorm.DB) *OptionRepositoryRepo {
 }
 
 func getAllOptions(db *gorm.DB) ([]entity.Options, error) {
-	repo := repository.OptionRepositoryInit(db)
+	repo := optionRepository.OptionRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
@@ -32,7 +33,7 @@ func getAllOptions(db *gorm.DB) ([]entity.Options, error) {
 // GetAll all data
 func (r *OptionRepositoryRepo) GetAll() ([]entity.Options, error) {
 	var data []entity.Options
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllOptions(r.db)

@@ -7,9 +7,10 @@ import (
 
 	"stncCms/pkg/cache"
 	"time"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 	"github.com/jinzhu/gorm"
-	
+	optionRepository "stncCms/app/options/repository/dbRepository"
+
 	authEntity "stncCms/app/auth/entity"
 )
 
@@ -27,7 +28,7 @@ func RolePermissionRepositoryInit(db *gorm.DB) *RolePermissionRepo {
 // GetAll all data
 func (r *RolePermissionRepo) GetAll() ([]authEntity.RolePermisson, error) {
 	var data []authEntity.RolePermisson
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllRolePermission(r.db)

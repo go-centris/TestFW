@@ -9,10 +9,12 @@ import (
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 	"github.com/jinzhu/gorm"
 		authEntity "stncCms/app/auth/entity"
 		authDto "stncCms/app/auth/dto"
+		optionRepository "stncCms/app/options/repository/dbRepository"
+
 )
 
 type RoleRepo struct {
@@ -29,7 +31,7 @@ func RoleRepositoryInit(db *gorm.DB) *RoleRepo {
 // GetAll all data
 func (r *RoleRepo) GetAll() ([]authEntity.Role, error) {
 	var data []authEntity.Role
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllRole(r.db)
@@ -96,7 +98,7 @@ func GetAllPaginationrole(db *gorm.DB, perPage int, offset int) ([]authEntity.Ro
 // GetAllPagination pagination all data
 func (r *RoleRepo) GetAllPagination(perPage int, offset int) ([]authEntity.Role, error) {
 	var data []authEntity.Role
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationrole(r.db, perPage, offset)
@@ -123,7 +125,7 @@ func (r *RoleRepo) GetAllPagination(perPage int, offset int) ([]authEntity.Role,
 // GetByID get data
 func (r *RoleRepo) GetByID(id int) (*authEntity.Role, error) {
 	var data *authEntity.Role
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDRole(r.db, id)

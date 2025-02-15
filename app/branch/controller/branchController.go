@@ -11,7 +11,8 @@ import (
 	"stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
-	Iregion "stncCms/app/services/regionServices_mod"
+	Ibranch "stncCms/app/branch/services"
+	Iregion "stncCms/app/region/services"
 
 	"strconv"
 		// repository "stncCms/app/domain/repository/dbRepository"
@@ -21,13 +22,13 @@ import (
 
 // Branch constructor
 type Branch struct {
-	IBranch Iregion.BranchAppInterface
+	IBranch Ibranch.BranchAppInterface
 	IRegion Iregion.RegionAppInterface
 }
 
 const viewPathBranch = "admin/region/branch/"
 
-func InitBranch(iBranchApp Iregion.BranchAppInterface, iRegionApp Iregion.RegionAppInterface) *Branch {
+func InitBranch(iBranchApp Ibranch.BranchAppInterface, iRegionApp Iregion.RegionAppInterface) *Branch {
 	return &Branch{
 		IBranch: iBranchApp,
 		IRegion: iRegionApp,

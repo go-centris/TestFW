@@ -15,7 +15,7 @@ import (
 	//Iauth "stncCms/app/services/authServices_mod"
 	//Icms "stncCms/app/services/cmsServices_mod"
 	//Icommon "stncCms/app/services/commonServices_mod"
-	Isacrife "stncCms/app/services/sacrifeServices_mod"
+	Isacrife "stncCms/app/options/services"
 ) //Iregion "stncCms/app/services/regionServices_mod"
 
 // Options constructor

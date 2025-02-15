@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"stncCms/app/post/entity"
-	 repository "stncCms/app/domain/repository/dbRepository"
+	//  repository "stncCms/app/domain/repository/dbRepository"
 	postRepository "stncCms/app/post/repository/dbRepository"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
@@ -30,7 +31,7 @@ func CatPostRepositoryInit(db *gorm.DB) *CatPostRepo {
 // GetByID get data
 func (r *CatPostRepo) GetByID(id uint64) (*entity.CategoryPosts, error) {
 	var data *entity.CategoryPosts
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
 	if cacheControl == "false" {

@@ -15,7 +15,7 @@ import (
 	"stncCms/pkg/helpers/stncsession"
 	"stncCms/pkg/infrastructure/security"
 	Iauth "stncCms/app/auth/services"
-	Iregion "stncCms/app/services/regionServices_mod"
+	Iregion "stncCms/app/region/services"
 	"strconv"
 		// modulesDto "stncCms/app/modules/dto"
 authEntity "stncCms/app/auth/entity"

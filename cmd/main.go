@@ -26,10 +26,11 @@ import (
 
 	//modSacrife "stncCms/app/web.api/controller/modSacrife"
 	auth "stncCms/app/auth/controller"
-	common "stncCms/app/web/controller/common_mod"
-	region "stncCms/app/web/controller/region_mod"
+	modules "stncCms/app/modules/controller"
+	region "stncCms/app/region/controller"
 
-	sacrifice "stncCms/app/web/controller/sacrifice_mod"
+	branch "stncCms/app/branch/controller"
+	options "stncCms/app/options/controller"
 )
 
 var cacheControlSelman = false
@@ -75,13 +76,13 @@ func main() {
 	userHandle := auth.InitUserControl(services.User, services.Region, services.Role)
 	roleHandle := auth.InitRoles(services.Permission, services.Modules, services.Role, services.RolePermission)
 
-	optionsHandle := sacrifice.InitOptions(services.Options)
+	optionsHandle := options.InitOptions(services.Options)
 
-	branchHandle := region.InitBranch(services.Branch, services.Region)
+	branchHandle := branch.InitBranch(services.Branch, services.Region)
 
 	regionHandle := region.InitRegion(services.Region)
 
-	modulesHandle := common.InitModules(services.Modules)
+	modulesHandle := modules.InitModules(services.Modules)
 
 	switch debugMode {
 	case "RELEASE":

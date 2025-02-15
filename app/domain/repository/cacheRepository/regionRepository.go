@@ -8,6 +8,7 @@ import (
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"github.com/jinzhu/gorm"
 )
@@ -32,7 +33,7 @@ func getByIDRegion(db *gorm.DB, id uint64) (*entity.Region, error) {
 func (r *RegionRepo) GetByID(id uint64) (*entity.Region, error) {
 
 	var data *entity.Region
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
 	if cacheControl == "false" {
@@ -63,7 +64,7 @@ func (r *RegionRepo) GetByID(id uint64) (*entity.Region, error) {
 
 // GetAll all data
 func (r *RegionRepo) GetAll() ([]entity.Region, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []entity.Region
 	if cacheControl == "false" {
@@ -97,7 +98,7 @@ func getAllRegion(db *gorm.DB) ([]entity.Region, error) {
 
 // GetAllPaginate
 func (r *RegionRepo) GetAllPaginate(postsPerPage int, offset int) ([]entity.Region, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []entity.Region
 	if cacheControl == "false" {

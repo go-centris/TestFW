@@ -8,6 +8,7 @@ import (
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"github.com/jinzhu/gorm"
 )
@@ -28,7 +29,7 @@ func MediaRepositoryInit(db *gorm.DB) *MediaRepo {
 // GetByID get data
 func (r *MediaRepo) GetByID(id uint64) (*entity.Media, error) {
 	var data *entity.Media
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDMedia(r.db, id)
@@ -61,7 +62,7 @@ func getByIDMedia(db *gorm.DB, id uint64) (*entity.Media, error) {
 // GetAll all data
 func (r *MediaRepo) GetAll(modulID int, contentID int) ([]entity.Media, error) {
 	var data []entity.Media
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllMedia(r.db, modulID, contentID)
@@ -93,7 +94,7 @@ func getAllMedia(db *gorm.DB, modulID int, contentID int) ([]entity.Media, error
 // GetAllforModul all data
 func (r *MediaRepo) GetAllforModul(modulID int, contentID int) ([]entity.Media, error) {
 	var data []entity.Media
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllforModulMedia(r.db, modulID, contentID)
@@ -134,7 +135,7 @@ func GetAllPaginationMedia(db *gorm.DB, perPage int, offset int) ([]entity.Media
 // GetAllPagination pagination all data
 func (r *MediaRepo) GetAllPagination(perPage int, offset int) ([]entity.Media, error) {
 	var data []entity.Media
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationMedia(r.db, perPage, offset)

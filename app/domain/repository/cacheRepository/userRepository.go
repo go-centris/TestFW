@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 	authRepository "stncCms/app/auth/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"github.com/jinzhu/gorm"
 		authEntity "stncCms/app/auth/entity"
@@ -34,7 +35,7 @@ func getUser(db *gorm.DB, id uint64) (*authEntity.Users, error) {
 
 func (r *UserRepo) GetUser(id uint64) (*authEntity.Users, error) {
 	var data *authEntity.Users
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getUser(r.db, id)
@@ -66,7 +67,7 @@ func getUsers(db *gorm.DB) ([]authEntity.Users, error) {
 
 func (r *UserRepo) GetUsers() ([]authEntity.Users, error) {
 	var data []authEntity.Users
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getUsers(r.db)
@@ -95,7 +96,7 @@ func (r *UserRepo) GetUsers() ([]authEntity.Users, error) {
 // GetByID get data
 func (r *UserRepo) GetByID(id uint64) (*authEntity.Users, error) {
 	var data *authEntity.Users
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDuser(r.db, id)
@@ -128,7 +129,7 @@ func getByIDuser(db *gorm.DB, id uint64) (*authEntity.Users, error) {
 // GetAll all data
 func (r *UserRepo) GetAll() ([]authEntity.Users, error) {
 	var data []authEntity.Users
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAlluser(r.db)
@@ -160,7 +161,7 @@ func getAlluser(db *gorm.DB) ([]authEntity.Users, error) {
 // GetAllPagination pagination all data
 func (r *UserRepo) GetAllPagination(perPage int, offset int) ([]authEntity.Users, error) {
 	var data []authEntity.Users
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationuser(r.db, perPage, offset)

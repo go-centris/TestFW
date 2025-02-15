@@ -3,10 +3,11 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	repository "stncCms/app/domain/repository/dbRepository"
+	// repository "stncCms/app/domain/repository/dbRepository"
 		modulesRepository "stncCms/app/modules/repository/dbRepository"
 	modulesDTO "stncCms/app/modules/dto"
 	modulesEntity "stncCms/app/modules/entity"
+	optionRepository "stncCms/app/options/repository/dbRepository"
 
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
@@ -28,7 +29,7 @@ func ModulesRepositoryInit(db *gorm.DB) *ModulesRepo {
 // GetAll all data
 func (r *ModulesRepo) GetAll() ([]modulesEntity.Modules, error) {
 	var data []modulesEntity.Modules
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllModules(r.db)
@@ -60,7 +61,7 @@ func getAllModules(db *gorm.DB) ([]modulesEntity.Modules, error) {
 // GetAll all data
 func (r *ModulesRepo) GetAllModulesMerge() ([]modulesDTO.ModulesAndPermissionDTO, error) {
 	var data []modulesDTO.ModulesAndPermissionDTO
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllModulesMergeModules(r.db)
@@ -92,7 +93,7 @@ func getAllModulesMergeModules(db *gorm.DB) ([]modulesDTO.ModulesAndPermissionDT
 // GetAll all data
 func (r *ModulesRepo) GetAllModulesMergePermission() ([]modulesDTO.ModulesAndPermissionRoleDTO, error) {
 	var data []modulesDTO.ModulesAndPermissionRoleDTO
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllModulesMergePermission(r.db)
@@ -133,7 +134,7 @@ func getByIDRegionModules(db *gorm.DB, id uint64) (*modulesEntity.Modules, error
 func (r *ModulesRepo) GetByID(id uint64) (*modulesEntity.Modules, error) {
 
 	var data *modulesEntity.Modules
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 
 	if cacheControl == "false" {
@@ -164,7 +165,7 @@ func (r *ModulesRepo) GetByID(id uint64) (*modulesEntity.Modules, error) {
 
 // GetAllPaginate pagination
 func (r *ModulesRepo) GetAllPaginate(postsPerPage int, offset int) ([]modulesEntity.Modules, error) {
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	var data []modulesEntity.Modules
 	if cacheControl == "false" {

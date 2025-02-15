@@ -16,7 +16,7 @@ import (
 	"stncCms/pkg/helpers/stncdatetime"
 	Iauth "stncCms/app/auth/services"
 	Icms "stncCms/app/post/services"
-	Icommon "stncCms/app/services/commonServices_mod"
+	ILanguage "stncCms/app/language/services"
 
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
@@ -42,7 +42,7 @@ type Post struct {
 	ICatPost  Icms.CatPostAppInterface
 	ICat      Icms.CatAppInterface
 	IUser     Iauth.UserAppInterface
-	ILanguage Icommon.LanguageAppInterface
+	ILanguage ILanguage.LanguageAppInterface
 }
 
 const viewPathPost = "admin/cms/post/"
@@ -53,7 +53,7 @@ func test(data string) string {
 
 // InitPost post controller constructor
 func InitPost(iPostApp Icms.PostAppInterface, ICatApp Icms.CatAppInterface, iCatPostApp Icms.CatPostAppInterface,
-	iLangApp Icommon.LanguageAppInterface, iUserApp Iauth.UserAppInterface) *Post {
+	iLangApp ILanguage.LanguageAppInterface, iUserApp Iauth.UserAppInterface) *Post {
 	return &Post{
 		IPost:     iPostApp,
 		ICat:      ICatApp,

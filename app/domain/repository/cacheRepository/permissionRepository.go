@@ -5,7 +5,7 @@ import (
 	"fmt"
 	
 
-		repository "stncCms/app/domain/repository/dbRepository"
+		// repository "stncCms/app/domain/repository/dbRepository"
 		authRepository "stncCms/app/auth/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
@@ -13,6 +13,8 @@ import (
 	authEntity "stncCms/app/auth/entity"
 	modulesDto "stncCms/app/modules/dto"
 	"github.com/jinzhu/gorm"
+	optionRepository "stncCms/app/options/repository/dbRepository"
+
 )
 
 type PermissionRepo struct {
@@ -29,7 +31,7 @@ func PermissionRepositoryInit(db *gorm.DB) *PermissionRepo {
 // GetAll all data
 func (r *PermissionRepo) GetAll() ([]authEntity.Permission, error) {
 	var data []authEntity.Permission
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = GetAllPaginationermission(r.db)
@@ -61,7 +63,7 @@ func GetAllPaginationermission(db *gorm.DB) ([]authEntity.Permission, error) {
 // getAllPaginationermissionForModulID all data
 func (r *PermissionRepo) GetAllPaginationermissionForModulID(modulId int) ([]authEntity.Permission, error) {
 	var data []authEntity.Permission
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllPaginationermissionForModulID(modulId, r.db)
@@ -93,7 +95,7 @@ func getAllPaginationermissionForModulID(modulId int, db *gorm.DB) ([]authEntity
 // GetUserPermission permissinon listesi
 func (r *PermissionRepo) GetUserPermission(roleID int) ([]modulesDto.RbcaCheck, error) {
 	var data []modulesDto.RbcaCheck
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getUserPermission(roleID, r.db)
@@ -125,7 +127,7 @@ func getUserPermission(roleID int, db *gorm.DB) ([]modulesDto.RbcaCheck, error) 
 // GetUserPermission permissinon listesi
 func (r *PermissionRepo) GetUserPermissionForComponent(roleID int, componentBaseName string) ([]modulesDto.RbcaCheck, error) {
 	var data []modulesDto.RbcaCheck
-	access := repository.OptionRepositoryInit(r.db)
+	access := optionRepository.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getUserPermissionForComponent(roleID, componentBaseName, r.db)

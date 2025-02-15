@@ -1,4 +1,4 @@
-package region_mod
+package common_mod
 
 import (
 	"github.com/astaxie/beego/utils/pagination"
@@ -7,28 +7,31 @@ import (
 	"github.com/leonelquinteros/gotext"
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
-	"stncCms/app/domain/entity"
+
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
-	Iregion "stncCms/app/services/regionServices_mod"
+
+	Icommon "stncCms/app/modules/services"
 	"strconv"
+
+	modulesEntity "stncCms/app/modules/entity"
 )
 
-// Region constructor
-type Region struct {
-	Iregion Iregion.RegionAppInterface
+// Modules constructor
+type Modules struct {
+	Iregion Icommon.ModulesAppInterface
 }
 
-const viewPathRegion = "admin/region/region/"
+const viewPathModules = "admin/common/modules/"
 
-func InitRegion(iregion Iregion.RegionAppInterface) *Region {
-	return &Region{
+func InitModules(iregion Icommon.ModulesAppInterface) *Modules {
+	return &Modules{
 		Iregion: iregion,
 	}
 }
 
 // Index  list
-func (access *Region) Index(c *gin.Context) {
+func (access *Modules) Index(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 	var total int64
@@ -49,13 +52,13 @@ func (access *Region) Index(c *gin.Context) {
 
 	c.HTML(
 		http.StatusOK,
-		viewPathRegion+"index.html",
+		viewPathModules+"index.html",
 		viewData,
 	)
 }
 
 // Create all list f
-func (access *Region) Create(c *gin.Context) {
+func (access *Modules) Create(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 
@@ -74,17 +77,17 @@ func (access *Region) Create(c *gin.Context) {
 	}
 	c.HTML(
 		http.StatusOK,
-		viewPathRegion+"create.html",
+		viewPathModules+"create.html",
 		viewData,
 	)
 }
 
 // Store save method
-func (access *Region) Store(c *gin.Context) {
+func (access *Modules) Store(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 
-	var data, _, _ = regionModel(c)
+	var data, _, _ = modulesModel(c)
 	var savePostError = make(map[string]string)
 	savePostError = data.Validate()
 	if len(savePostError) == 0 {
@@ -95,7 +98,7 @@ func (access *Region) Store(c *gin.Context) {
 		lastID := strconv.FormatUint(uint64(saveData.ID), 10)
 		modulName := stnchelper.ModulNameUrlCheck(c.Param("ModulName"))
 		stncsession.SetFlashMessage("Kayıt başarı ile eklendi", "success", c)
-		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/region/edit/"+lastID)
+		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/common/modules/edit/"+lastID)
 		return
 	} else {
 		stncsession.SetFlashMessage("Zorunlu alanları lütfen doldurunuz", "danger", c)
@@ -111,13 +114,13 @@ func (access *Region) Store(c *gin.Context) {
 	}
 	c.HTML(
 		http.StatusOK,
-		viewPathRegion+"create.html",
+		viewPathModules+"create.html",
 		viewData,
 	)
 }
 
 // Edit edit data
-func (access *Region) Edit(c *gin.Context) {
+func (access *Modules) Edit(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
 	flashMsg := stncsession.GetFlashMessage(c)
 	if ID, err := strconv.ParseUint(c.Param("ID"), 10, 64); err == nil {
@@ -132,7 +135,7 @@ func (access *Region) Edit(c *gin.Context) {
 			}
 			c.HTML(
 				http.StatusOK,
-				viewPathRegion+"edit.html",
+				viewPathModules+"edit.html",
 				viewData,
 			)
 
@@ -147,25 +150,24 @@ func (access *Region) Edit(c *gin.Context) {
 }
 
 // Update data
-func (access *Region) Update(c *gin.Context) {
+func (access *Modules) Update(c *gin.Context) {
 	stncsession.IsLoggedInRedirect(c)
+	modulName := stnchelper.ModulNameUrlCheck(c.Param("ModulName"))
 	var savePostError = make(map[string]string)
-	regionUpdate, id, _ := regionModel(c)
+	regionUpdate, id, _ := modulesModel(c)
 	savePostError = regionUpdate.Validate()
 	if len(savePostError) == 0 {
 		_, saveErr := access.Iregion.Update(&regionUpdate)
 		if saveErr != nil {
 			savePostError = saveErr
 		}
-		modulName := stnchelper.ModulNameUrlCheck(c.Param("ModulName"))
 		stncsession.SetFlashMessage("Kayıt başarı ile düzenlendi", "success", c)
-		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/region/edit/"+id)
+		c.Redirect(http.StatusMovedPermanently, "/admin/"+modulName+"/modules/edit/"+id)
 		return
 	} else {
 		stncsession.SetFlashMessage("Zorunlu alanları lütfen doldurunuz", "danger", c)
 	}
 	flashMsg := stncsession.GetFlashMessage(c)
-	modulName := stnchelper.ModulNameUrlCheck(c.Param("ModulName"))
 
 	viewData := pongo2.Context{
 		"err":          savePostError,
@@ -176,24 +178,17 @@ func (access *Region) Update(c *gin.Context) {
 	}
 	c.HTML(
 		http.StatusOK,
-		viewPathRegion+"edit.html",
+		viewPathModules+"edit.html",
 		viewData,
 	)
 }
 
-/***  POST MODEL   ***/
-func regionModel(c *gin.Context) (data entity.Region, idString string, err error) {
-
+/***  modulesModel    ***/
+func modulesModel(c *gin.Context) (data modulesEntity.Modules, idString string, err error) {
 	id := c.PostForm("ID")
-
 	idInt, _ := strconv.Atoi(id)
-
-	var idN uint64
-
-	idN = uint64(idInt)
-
-	data.ID = idN
+	data.ID = idInt
 	data.UserID = stncsession.GetUserID2(c)
-	data.Name = c.PostForm("Name")
+	data.ModulName = c.PostForm("ModulName")
 	return data, id, nil
 }
