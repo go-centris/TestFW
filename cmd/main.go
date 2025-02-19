@@ -48,7 +48,19 @@ func init() {
 func main() {
 
 	debugMode := os.Getenv("MODE")
+	switch debugMode {
+	case "RELEASE":
+		gin.SetMode(gin.ReleaseMode)
 
+	case "DEBUG":
+		gin.SetMode(gin.DebugMode)
+
+	case "TEST":
+		gin.SetMode(gin.TestMode)
+
+	default:
+		gin.SetMode(gin.ReleaseMode)
+	}
 	//
 	db := repository.DbConnect()
 	services, err := repository.RepositoriesInit(db)
@@ -84,20 +96,8 @@ func main() {
 
 	// modulesHandle := modules.InitModules(services.Modules)
 
-	switch debugMode {
-	case "RELEASE":
-		gin.SetMode(gin.ReleaseMode)
 
-	case "DEBUG":
-		gin.SetMode(gin.DebugMode)
-
-	case "TEST":
-		gin.SetMode(gin.TestMode)
-
-	default:
-		gin.SetMode(gin.ReleaseMode)
-	}
-
+/*
 	r := gin.Default()
 
 	r.Use(gin.Recovery())
@@ -145,7 +145,7 @@ func main() {
 
 	r.StaticFS("/upload", http.Dir("./public/upl"))
 	//r.StaticFile("/favicon.ico", "./resources/favicon.ico")
-
+*/
 	//r.GET("/", controller.Index)
 	//r.GET("admin", controller.Index)
 	//r.GET("admin/", controller.Index)

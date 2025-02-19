@@ -6,59 +6,61 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ynwd/awesome-blog/config"
-	"github.com/ynwd/awesome-blog/pkg/database"
-	"github.com/ynwd/awesome-blog/pkg/module"
-	"github.com/ynwd/awesome-blog/pkg/pubsub"
+	repository "stncCms/app/domain/repository/cacheRepository"
 )
 
 type App struct {
-	config      *config.Config
+	
 	router      *gin.Engine
-	firestoreDB *database.FirestoreDB
-	pubsub      pubsub.PubSubClient
+	DB *gorm.DB
+	
 	modules     []module.Module
 }
 
-func NewApp(cfg *config.Config) *App {
-	ctx := context.Background()
-	firestoreDB := database.NewFirestore(
-		cfg.GoogleCloud.ProjectID,
-		cfg.GoogleCloud.FirestoreDB,
-	)
+func NewApp() *App {
 
-	if err := firestoreDB.Connect(ctx); err != nil {
-		log.Fatalf("Failed to connect to Firestore: %v", err)
-	}
 
-	// Initialize PubSub
-	pubsubClient, err := pubsub.NewPubSubClient(
-		cfg.GoogleCloud.ProjectID,
-		os.Getenv("GOOGLE_CLOUD_PUBSUB_TOPIC"),
-	)
+
+	//
+	db := repository.DbConnect()
+	services, err := repository.RepositoriesInit(db)
 	if err != nil {
-		log.Fatalf("Failed to create pubsub client: %v", err)
+		panic(err)
 	}
+
+	services.Automigrate()
+
+	autoRelation := flag.Bool("autoRelation", false, "db relation ")
+	flag.Parse()
+
+	if *autoRelation {
+		fmt.Printf("\033[1;34m%s\033[0m", "-----------setup relations-------------")
+		services.AutoRelation()
+		fmt.Printf("\033[1;34m%s\033[0m", "-----------done relations-------------")
+		return
+	}
+
+
 
 	app := &App{
-		config:      cfg,
+
 		router:      gin.Default(),
 		firestoreDB: firestoreDB,
-		pubsub:      pubsubClient,
+
 	}
 
 	// Setup middleware
-	app.setupMiddleware()
+	//app.setupMiddleware()
 
 	// Setup modules
-	app.setupModules()
+	//app.setupModules()
 
-	// Subscribe to PubSub
-	app.pubSubSubsribe(ctx)
+
 	return app
 }
 
 func (a *App) Router() *gin.Engine {
+	
 	return a.router
 }
 
