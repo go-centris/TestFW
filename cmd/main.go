@@ -11,7 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	repository "stncCms/app/domain/repository/cacheRepository"
+	database "stncCms/pkg/database"
 
 	cms "stncCms/app/post/controller"
 
@@ -24,13 +24,13 @@ import (
 	myPongoGinRender "github.com/stnc/myPongoGinRender/v5"
 	csrf "github.com/utrack/gin-csrf"
 
+	//modSacrife "stncCms/app/web.api/controller/modSacrife"
+	auth "stncCms/app/auth/controller"
+	modules "stncCms/app/modules/controller"
+	region "stncCms/app/region/controller"
 
-	// auth "stncCms/app/auth/controller"
-	// modules "stncCms/app/modules/controller"
-	// region "stncCms/app/region/controller"
-
-	// branch "stncCms/app/branch/controller"
-	// options "stncCms/app/options/controller"
+	branch "stncCms/app/branch/controller"
+	options "stncCms/app/options/controller"
 )
 
 var cacheControlSelman = false
@@ -48,22 +48,10 @@ func init() {
 func main() {
 
 	debugMode := os.Getenv("MODE")
-	switch debugMode {
-	case "RELEASE":
-		gin.SetMode(gin.ReleaseMode)
 
-	case "DEBUG":
-		gin.SetMode(gin.DebugMode)
-
-	case "TEST":
-		gin.SetMode(gin.TestMode)
-
-	default:
-		gin.SetMode(gin.ReleaseMode)
-	}
 	//
-	db := repository.DbConnect()
-	services, err := repository.RepositoriesInit(db)
+	db := database.DbConnect()
+	services, err := database.RepositoriesInit(db)
 	if err != nil {
 		panic(err)
 	}
@@ -83,21 +71,33 @@ func main() {
 	// indexHandle := sacrifice.InitDashboard(services.Dashboard)
 	posts := cms.InitPost(services.Post, services.Cat, services.CatPost, services.Lang, services.User)
 
-	// loginHandle := auth.InitLogin(services.User)
+	loginHandle := auth.InitLogin(services.User)
 
-	// userHandle := auth.InitUserControl(services.User, services.Region, services.Role)
-	// roleHandle := auth.InitRoles(services.Permission, services.Modules, services.Role, services.RolePermission)
+	userHandle := auth.InitUserControl(services.User, services.Region, services.Role)
+	roleHandle := auth.InitRoles(services.Permission, services.Modules, services.Role, services.RolePermission)
 
-	// optionsHandle := options.InitOptions(services.Options)
+	optionsHandle := options.InitOptions(services.Options)
 
-	// branchHandle := branch.InitBranch(services.Branch, services.Region)
+	branchHandle := branch.InitBranch(services.Branch, services.Region)
 
-	// regionHandle := region.InitRegion(services.Region)
+	regionHandle := region.InitRegion(services.Region)
 
-	// modulesHandle := modules.InitModules(services.Modules)
+	modulesHandle := modules.InitModules(services.Modules)
 
+	switch debugMode {
+	case "RELEASE":
+		gin.SetMode(gin.ReleaseMode)
 
-/*
+	case "DEBUG":
+		gin.SetMode(gin.DebugMode)
+
+	case "TEST":
+		gin.SetMode(gin.TestMode)
+
+	default:
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.Default()
 
 	r.Use(gin.Recovery())
@@ -145,7 +145,7 @@ func main() {
 
 	r.StaticFS("/upload", http.Dir("./public/upl"))
 	//r.StaticFile("/favicon.ico", "./resources/favicon.ico")
-*/
+
 	//r.GET("/", controller.Index)
 	//r.GET("admin", controller.Index)
 	//r.GET("admin/", controller.Index)
@@ -158,31 +158,32 @@ func main() {
 	// r.GET("optionsDefault", sacrifice.OptionsDefault)
 	// r.GET("cacheReset", sacrifice.CacheReset)
 
-	// r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //for ajax
+	r.GET("/admin/common/branch/getBranchListForRegion/:regionID", branchHandle.GetBranchListForRegion) //for ajax
 
+	// r.GET("/admin/:ModulName/dashboard-fundraising", indexHandle.Index)
+	// r.GET("/admin/:ModulName/dashboard-sacrifece", indexHandle.SacrifeceIndex)
 
+	userGroup := r.Group("/admin/:ModulName/user")
+	{
+		userGroup.GET("/", userHandle.Index)
+		userGroup.GET("index", userHandle.Index)
+		userGroup.GET("create", userHandle.Create)
+		userGroup.POST("store", userHandle.Store)
+		userGroup.GET("edit/:UserID", userHandle.Edit)
+		userGroup.GET("delete/:ID", userHandle.Delete)
+		userGroup.POST("update", userHandle.Update)
+		userGroup.GET("NewPasswordModalBox", userHandle.NewPasswordModalBox)
+		userGroup.POST("NewPasswordAjax", userHandle.NewPasswordCreateModalBox)
+		userGroup.POST("passportchange", userHandle.PassportChange)
+	}
 
-	// userGroup := r.Group("/admin/:ModulName/user")
-	// {
-	// 	userGroup.GET("/", userHandle.Index)
-	// 	userGroup.GET("index", userHandle.Index)
-	// 	userGroup.GET("create", userHandle.Create)
-	// 	userGroup.POST("store", userHandle.Store)
-	// 	userGroup.GET("edit/:UserID", userHandle.Edit)
-	// 	userGroup.GET("delete/:ID", userHandle.Delete)
-	// 	userGroup.POST("update", userHandle.Update)
-	// 	userGroup.GET("NewPasswordModalBox", userHandle.NewPasswordModalBox)
-	// 	userGroup.POST("NewPasswordAjax", userHandle.NewPasswordCreateModalBox)
-	// 	userGroup.POST("passportchange", userHandle.PassportChange)
-	// }
-
-	// loginGroup := r.Group("/admin/login")
-	// {
-	// 	loginGroup.GET("/", loginHandle.Login)
-	// 	//loginGroup.GET("password", login.SifreVer)
-	// 	loginGroup.POST("loginpost", loginHandle.LoginPost)
-	// 	loginGroup.GET("logout", loginHandle.Logout)
-	// }
+	loginGroup := r.Group("/admin/login")
+	{
+		loginGroup.GET("/", loginHandle.Login)
+		//loginGroup.GET("password", login.SifreVer)
+		loginGroup.POST("loginpost", loginHandle.LoginPost)
+		loginGroup.GET("logout", loginHandle.Logout)
+	}
 
 	adminPost := r.Group("/admin/:ModulName/post")
 	{
@@ -195,55 +196,55 @@ func main() {
 		adminPost.POST("upload", posts.Upload)
 	}
 
-	// branchGroup := r.Group("/admin/:ModulName/branch")
-	// {
-	// 	branchGroup.GET("/", branchHandle.Index)
-	// 	branchGroup.GET("index", branchHandle.Index)
+	branchGroup := r.Group("/admin/:ModulName/branch")
+	{
+		branchGroup.GET("/", branchHandle.Index)
+		branchGroup.GET("index", branchHandle.Index)
 
-	// 	branchGroup.GET("/create", branchHandle.Create)
-	// 	branchGroup.POST("/store", branchHandle.Store)
-	// 	branchGroup.GET("/edit/:ID", branchHandle.Edit)
-	// 	branchGroup.POST("/update", branchHandle.Update)
+		branchGroup.GET("/create", branchHandle.Create)
+		branchGroup.POST("/store", branchHandle.Store)
+		branchGroup.GET("/edit/:ID", branchHandle.Edit)
+		branchGroup.POST("/update", branchHandle.Update)
 
-	// }
+	}
 
-	// roleGroup := r.Group("/admin/:ModulName/roles")
-	// {
-	// 	roleGroup.GET("/knockout", roleHandle.IndexKnockout)
-	// 	roleGroup.GET("/", roleHandle.Index)
-	// 	roleGroup.GET("/create", roleHandle.Create)
-	// 	roleGroup.POST("/store", roleHandle.Store)
-	// 	roleGroup.GET("/edit/:ID", roleHandle.Edit)
-	// 	roleGroup.POST("/update", roleHandle.Update)
-	// 	roleGroup.GET("delete/:ID", roleHandle.Delete)
-	// }
+	roleGroup := r.Group("/admin/:ModulName/roles")
+	{
+		roleGroup.GET("/knockout", roleHandle.IndexKnockout)
+		roleGroup.GET("/", roleHandle.Index)
+		roleGroup.GET("/create", roleHandle.Create)
+		roleGroup.POST("/store", roleHandle.Store)
+		roleGroup.GET("/edit/:ID", roleHandle.Edit)
+		roleGroup.POST("/update", roleHandle.Update)
+		roleGroup.GET("delete/:ID", roleHandle.Delete)
+	}
 
-	// regionGroup := r.Group("/admin/:ModulName/region")
-	// {
-	// 	regionGroup.GET("/", regionHandle.Index)
-	// 	regionGroup.GET("index", regionHandle.Index)
-	// 	regionGroup.GET("/create", regionHandle.Create)
-	// 	regionGroup.POST("/store", regionHandle.Store)
-	// 	regionGroup.GET("/edit/:ID", regionHandle.Edit)
-	// 	regionGroup.POST("/update", regionHandle.Update)
-	// }
+	regionGroup := r.Group("/admin/:ModulName/region")
+	{
+		regionGroup.GET("/", regionHandle.Index)
+		regionGroup.GET("index", regionHandle.Index)
+		regionGroup.GET("/create", regionHandle.Create)
+		regionGroup.POST("/store", regionHandle.Store)
+		regionGroup.GET("/edit/:ID", regionHandle.Edit)
+		regionGroup.POST("/update", regionHandle.Update)
+	}
 
-	// modulesGroup := r.Group("/admin/:ModulName/modules")
-	// {
-	// 	modulesGroup.GET("/", modulesHandle.Index)
-	// 	modulesGroup.GET("index", modulesHandle.Index)
-	// 	modulesGroup.GET("/create", modulesHandle.Create)
-	// 	modulesGroup.POST("/store", modulesHandle.Store)
-	// 	modulesGroup.GET("/edit/:ID", modulesHandle.Edit)
-	// 	modulesGroup.POST("/update", modulesHandle.Update)
-	// }
+	modulesGroup := r.Group("/admin/:ModulName/modules")
+	{
+		modulesGroup.GET("/", modulesHandle.Index)
+		modulesGroup.GET("index", modulesHandle.Index)
+		modulesGroup.GET("/create", modulesHandle.Create)
+		modulesGroup.POST("/store", modulesHandle.Store)
+		modulesGroup.GET("/edit/:ID", modulesHandle.Edit)
+		modulesGroup.POST("/update", modulesHandle.Update)
+	}
 
-	// optionsGroup := r.Group("/admin/:ModulName/options")
-	// {
-	// 	optionsGroup.GET("/", optionsHandle.Index)
-	// 	optionsGroup.POST("update", optionsHandle.Update)
-	// 	optionsGroup.GET("receiptNo", optionsHandle.ReceiptNo)
-	// }
+	optionsGroup := r.Group("/admin/:ModulName/options")
+	{
+		optionsGroup.GET("/", optionsHandle.Index)
+		optionsGroup.POST("update", optionsHandle.Update)
+		optionsGroup.GET("receiptNo", optionsHandle.ReceiptNo)
+	}
 
 	appPort := os.Getenv("PORT")
 	siteName := os.Getenv("SITENAME")

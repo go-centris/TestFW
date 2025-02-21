@@ -1,7 +1,7 @@
 package sacrifeServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/options/entity"
 )
 
 // OptionsAppInterface service

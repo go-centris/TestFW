@@ -1,7 +1,7 @@
 package cacheRepository
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/options/entity"
 	// repository "stncCms/app/domain/repository/dbRepository"
 	optionRepository "stncCms/app/options/repository/dbRepository"
 

@@ -1,7 +1,7 @@
 package regionServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/region/entity"
 )
 
 // RegionAppInterface service

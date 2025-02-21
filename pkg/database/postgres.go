@@ -3,30 +3,48 @@ package cacheRepository
 import (
 	"fmt"
 	"os"
+
 	Iauth "stncCms/app/auth/services"
-	"stncCms/app/domain/entity"
+
 	ILanguage "stncCms/app/language/services"
 	Icommon "stncCms/app/modules/services"
 	postEntity "stncCms/app/post/entity"
 	Icms "stncCms/app/post/services"
 
 	Imedia "stncCms/app/media/services"
-	PostRepo "stncCms/app/post/repository/cacheRepository"
+
 	Iregion "stncCms/app/region/services"
+
+	authEntity "stncCms/app/auth/entity"
+	branchEntity "stncCms/app/branch/entity"
+	modulesEntity "stncCms/app/modules/entity"
+	notificationEntity "stncCms/app/notification/entity"
+	entityOptions "stncCms/app/options/entity"
+	entityNotes "stncCms/app/notes/entity"
+	entityMedia "stncCms/app/media/entity"
+	entityCurrency "stncCms/app/currency/entity"
+	entityRegion "stncCms/app/region/entity"
+	entityLanguage "stncCms/app/language/entity"
 
 	"github.com/hypnoglow/gormzap"
 	"github.com/jinzhu/gorm"
 	"go.uber.org/zap"
-	authEntity "stncCms/app/auth/entity"
-	modulesEntity "stncCms/app/modules/entity"
-	notificationEntity "stncCms/app/notification/entity"
+
+	Ibranch "stncCms/app/branch/services"
+	IOptions "stncCms/app/options/services"
 
 	_ "github.com/lib/pq" // here
 	_ "gorm.io/driver/mysql"
 	_ "gorm.io/driver/postgres"
-	branchEntity "stncCms/app/branch/entity"
-	Ibranch "stncCms/app/branch/services"
-	IOptions "stncCms/app/options/services"
+
+	RepoAuth "stncCms/app/auth/repository/cacheRepository"
+	RepoBranch "stncCms/app/branch/repository/cacheRepository"
+	RepoLanguage "stncCms/app/language/repository/cacheRepository"
+	RepoMedia "stncCms/app/media/repository/cacheRepository"
+	RepoModules "stncCms/app/modules/repository/cacheRepository"
+	RepoOptions "stncCms/app/options/repository/cacheRepository"
+	RepoPost "stncCms/app/post/repository/cacheRepository"
+	RepoRegion "stncCms/app/region/repository/cacheRepository"
 )
 
 var DB *gorm.DB
@@ -120,19 +138,19 @@ func DbConnect() *gorm.DB {
 func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 
 	return &Repositories{
-		User:           UserRepositoryInit(db),
-		Permission:     PermissionRepositoryInit(db),
-		Role:           RoleRepositoryInit(db),
-		RolePermission: RolePermissionRepositoryInit(db),
-		Modules: ModulesRepositoryInit(db),
-		Region: RegionRepositoryInit(db),
-		Branch: BranchRepositoryInit(db),
-		Post:    PostRepo.PostRepositoryInit(db),
-		Cat:     CatRepositoryInit(db),
-		CatPost: CatPostRepositoryInit(db),
-		Media:   MediaRepositoryInit(db),
-		Lang:    LanguageRepositoryInit(db),
-		Options: OptionRepositoryInit(db),
+		User:           RepoAuth.UserRepositoryInit(db),
+		Permission:     RepoAuth.PermissionRepositoryInit(db),
+		Role:           RepoAuth.RoleRepositoryInit(db),
+		RolePermission: RepoAuth.RolePermissionRepositoryInit(db),
+		Modules:        RepoModules.ModulesRepositoryInit(db),
+		Region:         RepoRegion.RegionRepositoryInit(db),
+		Branch:         RepoBranch.BranchRepositoryInit(db),
+		Post:           RepoPost.PostRepositoryInit(db),
+		Cat:            RepoPost.CatRepositoryInit(db),
+		CatPost:        RepoPost.CatPostRepositoryInit(db),
+		Media:          RepoMedia.MediaRepositoryInit(db),
+		Lang:           RepoLanguage.LanguageRepositoryInit(db),
+		Options:        RepoOptions.OptionRepositoryInit(db),
 
 		DB: db,
 	}, nil
@@ -148,11 +166,11 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 // AutoRelation This migrate all tables
 func (s *Repositories) AutoRelation() error {
 	s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
-		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
+		&entityLanguage.Languages{}, &modulesEntity.Modules{}, &entityNotes.Notes{}, &entityOptions.Options{}, &entityCurrency.Currency{},
 		&authEntity.Users{},
 
-		&entity.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
-		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{})
+		&entityRegion.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
+		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entityMedia.Media{})
 
 	s.DB.Model(&authEntity.Permission{}).AddForeignKey("modul_id", "modules(id)", "CASCADE", "CASCADE")     // one to many (one=modules) (many=Permission)
 	s.DB.Model(&authEntity.RolePermisson{}).AddForeignKey("role_id", "rbca_role(id)", "CASCADE", "CASCADE") // one to many (one=rbca_role) (many=RolePermisson)
@@ -163,11 +181,11 @@ func (s *Repositories) AutoRelation() error {
 
 func (s *Repositories) Automigrate() error {
 	return s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
-		&entity.Languages{}, &modulesEntity.Modules{}, &entity.Notes{}, &entity.Options{}, &entity.Currency{},
+		&entityLanguage.Languages{}, &modulesEntity.Modules{}, &entityNotes.Notes{}, &entityOptions.Options{}, &entityCurrency.Currency{},
 
 		&authEntity.Users{},
-		&entity.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
-		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entity.Media{}).Error
+		&entityRegion.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
+		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entityMedia.Media{}).Error
 }
 
 /*func GetAllStatusFindAndAgirlikTipiGroup(db *gorm.DB, durum int, agirlikTipi int) ([]entity.SacrificeGruplar, error) {

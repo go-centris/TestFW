@@ -3,23 +3,24 @@ package cacheRepository
 import (
 	"encoding/json"
 	"fmt"
-	"stncCms/app/domain/entity"
-	repository "stncCms/app/language/repository/dbRepository"
+	"stncCms/app/language/entity"
+	RepoLanguage "stncCms/app/language/repository/dbRepository"
 	"stncCms/pkg/cache"
 	"stncCms/pkg/helpers/stnccollection"
 	"time"
-	optionRepository "stncCms/app/options/repository/dbRepository"
-	// languageRepository "stncCms/app/options/repository/dbRepository"
+	RepoOptions "stncCms/app/options/repository/dbRepository"
+
 
 	"github.com/jinzhu/gorm"
 )
 
-// LanguageRepo struct
+
+//LanguageRepo struct
 type LanguageRepo struct {
 	db *gorm.DB
 }
 
-// LanguageRepositoryInit initial
+//LanguageRepositoryInit initial
 func LanguageRepositoryInit(db *gorm.DB) *LanguageRepo {
 	return &LanguageRepo{db}
 }
@@ -27,10 +28,10 @@ func LanguageRepositoryInit(db *gorm.DB) *LanguageRepo {
 //languageRepo implements the repository.languageRepository interface
 // var _ interfaces.languageAppInterface = &languageRepo{}
 
-// GetByID get data
+//GetByID get data
 func (r *LanguageRepo) GetByID(id uint64) (*entity.Languages, error) {
 	var data *entity.Languages
-	access := optionRepository.OptionRepositoryInit(r.db)
+	access := RepoOptions.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getByIDLanguages(r.db, id)
@@ -42,32 +43,32 @@ func (r *LanguageRepo) GetByID(id uint64) (*entity.Languages, error) {
 			data, _ = getByIDLanguages(r.db, id)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("Create Key Error")
+				fmt.Println("hata baş")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("Redis Error")
+			fmt.Println("hata son")
 		}
 	}
 	return data, nil
 }
 func getByIDLanguages(db *gorm.DB, id uint64) (*entity.Languages, error) {
-	repo := repository.LanguageRepositoryInit(db)
+	repo := RepoLanguage.LanguageRepositoryInit(db)
 	data, _ := repo.GetByID(id)
 	return data, nil
 }
 
-// GetAll all data
+//GetAll all data
 func getAllLanguages(db *gorm.DB) ([]entity.Languages, error) {
-	repo := repository.LanguageRepositoryInit(db)
+	repo := RepoLanguage.LanguageRepositoryInit(db)
 	data, _ := repo.GetAll()
 	return data, nil
 }
 func (r *LanguageRepo) GetAll() ([]entity.Languages, error) {
 	var data []entity.Languages
-	access := optionRepository.OptionRepositoryInit(r.db)
+	access := RepoOptions.OptionRepositoryInit(r.db)
 	cacheControl := access.GetOption("cache_open_close")
 	if cacheControl == "false" {
 		data, _ = getAllLanguages(r.db)
@@ -79,13 +80,13 @@ func (r *LanguageRepo) GetAll() ([]entity.Languages, error) {
 			data, _ = getAllLanguages(r.db)
 			err = redisClient.SetKey(key, data, time.Minute*7200) //7200 5 gun eder
 			if err != nil {
-				fmt.Println("Create Key Error")
+				fmt.Println("hata baş")
 			}
 			return data, nil
 		}
 		err = json.Unmarshal(cachedProducts, &data)
 		if err != nil {
-			fmt.Println("Redis Error")
+			fmt.Println("hata son")
 		}
 	}
 	return data, nil

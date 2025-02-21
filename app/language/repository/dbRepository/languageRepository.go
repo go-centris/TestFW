@@ -2,7 +2,7 @@ package dbRepository
 
 import (
 	"errors"
-	"stncCms/app/domain/entity"
+	"stncCms/app/language/entity"
 	"strings"
 
 	"github.com/jinzhu/gorm"

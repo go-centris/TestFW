@@ -3,7 +3,7 @@ package dbRepository
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
-	"stncCms/app/domain/entity"
+	"stncCms/app/region/entity"
 	"strings"
 )
 

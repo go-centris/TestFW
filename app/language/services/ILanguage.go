@@ -1,7 +1,7 @@
 package commonServices_mod
 
 import (
-	"stncCms/app/domain/entity"
+	"stncCms/app/language/entity"
 )
 
 // LanguageAppInterface interface

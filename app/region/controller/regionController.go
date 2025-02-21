@@ -7,7 +7,7 @@ import (
 	"github.com/leonelquinteros/gotext"
 	csrf "github.com/utrack/gin-csrf"
 	"net/http"
-	"stncCms/app/domain/entity"
+	"stncCms/app/region/entity"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 	Iregion "stncCms/app/region/services"
