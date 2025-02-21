@@ -6,8 +6,14 @@ import (
 	"strings"
 )
 
-//https://golangcode.com/check-if-row-exists-in-slice/
-//FindSlice elemnt
+// TODO: Prepare an example
+// TODO: Prepare an example
+// TODO: Prepare an example
+// TODO: Prepare an example
+// TODO: Prepare an example
+
+// https://golangcode.com/check-if-row-exists-in-slice/
+// FindSlice elemnt
 func FindSlice(slice []string, val string) (int, bool) {
 	for i, item := range slice {
 		if item == val {
@@ -32,8 +38,8 @@ func round(num float64) int {
 	return int(num + math.Copysign(0.5, num))
 }
 
-//link https://stackoverflow.com/questions/18390266/how-can-we-truncate-float64-type-to-a-particular-precision
-//ToFixedDecimal decimal format
+// link https://stackoverflow.com/questions/18390266/how-can-we-truncate-float64-type-to-a-particular-precision
+// ToFixedDecimal decimal format
 func ToFixedDecimal(num float64, precision int) float64 {
 	output := math.Pow(10, float64(precision))
 	return float64(round(num*output)) / output

@@ -2,23 +2,26 @@ package auth_mod
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/astaxie/beego/utils/pagination"
 	"github.com/flosch/pongo2/v5"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
-	"net/http"
+
 	// "stncCms/app/domain/entity"
+	Iauth "stncCms/app/auth/services"
+	Iregion "stncCms/app/region/services"
 	"stncCms/pkg/helpers/lang"
 	"stncCms/pkg/helpers/stnccollection"
 	"stncCms/pkg/helpers/stncdatetime"
 	"stncCms/pkg/helpers/stnchelper"
 	"stncCms/pkg/helpers/stncsession"
 	"stncCms/pkg/infrastructure/security"
-	Iauth "stncCms/app/auth/services"
-	Iregion "stncCms/app/region/services"
 	"strconv"
-		// modulesDto "stncCms/app/modules/dto"
-authEntity "stncCms/app/auth/entity"
+
+	// modulesDto "stncCms/app/modules/dto"
+	authEntity "stncCms/app/auth/entity"
 )
 
 // userControl constructor
@@ -55,6 +58,7 @@ func (access *UserControl) Index(c *gin.Context) {
 	offset := paginator.Offset()
 	allData, _ := access.IUser.GetAllPagination(userControlsPerPage, offset)
 
+	// TODO: Prepare an example for date
 	// var tarih stncdatetime.Inow
 	// fmt.Println(tarih.TarihFullSQL("2020-05-21 05:08"))
 	// fmt.Println(tarih.AylarListe("May"))
