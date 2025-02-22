@@ -151,7 +151,6 @@ func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
 		Media:          RepoMedia.MediaRepositoryInit(db),
 		Lang:           RepoLanguage.LanguageRepositoryInit(db),
 		Options:        RepoOptions.OptionRepositoryInit(db),
-
 		DB: db,
 	}, nil
 }
@@ -168,7 +167,6 @@ func (s *Repositories) AutoRelation() error {
 	s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
 		&entityLanguage.Languages{}, &modulesEntity.Modules{}, &entityNotes.Notes{}, &entityOptions.Options{}, &entityCurrency.Currency{},
 		&authEntity.Users{},
-
 		&entityRegion.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entityMedia.Media{})
 
@@ -182,7 +180,6 @@ func (s *Repositories) AutoRelation() error {
 func (s *Repositories) Automigrate() error {
 	return s.DB.AutoMigrate(&authEntity.Users{}, &authEntity.Role{}, &authEntity.Permission{}, &authEntity.RolePermisson{},
 		&entityLanguage.Languages{}, &modulesEntity.Modules{}, &entityNotes.Notes{}, &entityOptions.Options{}, &entityCurrency.Currency{},
-
 		&authEntity.Users{},
 		&entityRegion.Region{}, &branchEntity.Branches{}, &notificationEntity.Notification{}, &notificationEntity.NotificationTemplate{},
 		&postEntity.Post{}, &postEntity.Categories{}, &postEntity.CategoryPosts{}, &entityMedia.Media{}).Error

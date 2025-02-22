@@ -1,11 +1,9 @@
 package cacheRepository
 
 import (
-
-
-		authRepository "stncCms/app/auth/repository/dbRepository"
-			authEntity "stncCms/app/auth/entity"
-		authDto "stncCms/app/auth/dto"
+	authDto "stncCms/app/auth/dto"
+	authEntity "stncCms/app/auth/entity"
+	authRepository "stncCms/app/auth/repository/dbRepository"
 )
 
 func (r *UserRepo) SaveUser(data *authEntity.Users) (*authEntity.Users, map[string]string) {
@@ -55,13 +53,13 @@ func (r *UserRepo) Delete(id uint64) error {
 	return err
 }
 
-// SetKioskSliderUpdate update data
+
 func (r *UserRepo) SetUserStatusUpdate(id uint64, status int) {
 	repo := authRepository.UserRepositoryInit(r.db)
 	repo.SetUserStatus(id, status)
 }
 
-// api kullanacak
+// for api 
 func (r *UserRepo) GetUserByEmailAndPassword(u *authEntity.Users) (*authEntity.Users, map[string]string) {
 	repo := authRepository.UserRepositoryInit(r.db)
 	data, _ := repo.GetUserByEmailAndPassword(u)

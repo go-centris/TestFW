@@ -10,17 +10,17 @@ import (
 
 var optionTableName string = "options"
 
-//OptionRepositoryRepo struct
+// OptionRepositoryRepo struct
 type OptionRepositoryRepo struct {
 	db *gorm.DB
 }
 
-//OptionRepositoryInit initial
+// OptionRepositoryInit initial
 func OptionRepositoryInit(db *gorm.DB) *OptionRepositoryRepo {
 	return &OptionRepositoryRepo{db}
 }
 
-//AddOption data (save)
+// AddOption data (save)
 func (r *OptionRepositoryRepo) AddOption(data *entity.Options) (*entity.Options, map[string]string) {
 	dbErr := map[string]string{}
 	var err error
@@ -38,23 +38,22 @@ func (r *OptionRepositoryRepo) AddOption(data *entity.Options) (*entity.Options,
 	return data, nil
 }
 
-//GetOptionID get data
+// GetOptionID get data
 func (r *OptionRepositoryRepo) GetOptionID(name string) (returnValue int) {
 	row := r.db.Debug().Table(optionTableName).Select("option_id").Where("option_name = ?", name).Row()
 	row.Scan(&returnValue)
 	return returnValue
 }
 
-//GetOption get data
+// GetOption get data
 func (r *OptionRepositoryRepo) GetOption(name string) string {
 	var result string
 	row := r.db.Debug().Table(optionTableName).Select("option_value").Where("option_name = ?", name).Row()
 	row.Scan(&result)
-
 	return result
 }
 
-//SetOption upate data
+// SetOption upate data
 func (r *OptionRepositoryRepo) SetOption(name, value string) {
 	id := r.GetOptionID(name)
 	r.db.Debug().Table(optionTableName).Where("option_id = ?", id).Update("option_value", value)
@@ -73,7 +72,7 @@ func (r *OptionRepositoryRepo) SetOption(name, value string) {
 	// return data, nil
 }
 
-//DeleteOptionID data
+// DeleteOptionID data
 func (r *OptionRepositoryRepo) DeleteOptionID(id uint64) error {
 	var data entity.Options
 	var err error
@@ -84,7 +83,7 @@ func (r *OptionRepositoryRepo) DeleteOptionID(id uint64) error {
 	return nil
 }
 
-//DeleteOption data
+// DeleteOption data
 func (r *OptionRepositoryRepo) DeleteOption(value string) error {
 	var data entity.Options
 	var err error
@@ -95,7 +94,7 @@ func (r *OptionRepositoryRepo) DeleteOption(value string) error {
 	return nil
 }
 
-//GetAll all data
+// GetAll all data
 func (r *OptionRepositoryRepo) GetAll() ([]entity.Options, error) {
 	var data []entity.Options
 	var err error
