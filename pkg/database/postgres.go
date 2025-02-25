@@ -136,7 +136,6 @@ func DbConnect() *gorm.DB {
 
 // RepositoriesInit initial
 func RepositoriesInit(db *gorm.DB) (*Repositories, error) {
-
 	return &Repositories{
 		User:           RepoAuth.UserRepositoryInit(db),
 		Permission:     RepoAuth.PermissionRepositoryInit(db),
